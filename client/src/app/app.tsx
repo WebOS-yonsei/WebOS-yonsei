@@ -1,13 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import ThemeDecorator, { ThemeDecoratorProps } from '@enact/sandstone/ThemeDecorator';
-import Panels from '@enact/sandstone/Panels';
 
-import { MainPanel } from '../views';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { Suspense } from 'react';
+import { routeTree } from '../routeTree.gen';
+
+const router = createRouter({ routeTree });
+
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 export const App = ThemeDecorator((props: ThemeDecoratorProps) => (
   <div {...props}>
-    <Panels>
-      <MainPanel />
-    </Panels>
+    <Suspense>
+      <RouterProvider router={router} />
+    </Suspense>
   </div>
 ));
