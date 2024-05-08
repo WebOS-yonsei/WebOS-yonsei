@@ -1,0 +1,16 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:webos-yonsei
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
