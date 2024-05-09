@@ -152,6 +152,7 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
     return Array.isArray(paths) ? paths : [paths];
   };
 
+  /** @typedef {import("webpack").Configuration} */
   const config = {
     mode: isEnvProduction ? 'production' : 'development',
     // Don't attempt to continue if there are any errors.
@@ -474,6 +475,12 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
         cache: true,
       }),
     ].filter(Boolean),
+    resolve: {
+      alias: {
+        '~': path.resolve(__dirname, '..', 'src'),
+      },
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    },
   };
 
   // NOTE: MiniCssExtractPlugin 관련 버그 수정

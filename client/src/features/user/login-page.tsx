@@ -1,7 +1,7 @@
 import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Button, Heading, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { Link } from '../../widgets';
+import { Link } from '~/widgets';
 import { Userlayout } from './user-layout';
 
 export function LoginPage() {

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import { Link, VectorLogo } from '../../widgets';
+import { Link, VectorLogo } from '~/widgets';
 
 export function Userlayout({ children }: PropsWithChildren) {
   return (
