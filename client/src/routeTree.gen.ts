@@ -11,10 +11,20 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SystemImport } from './routes/system'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
+import { Route as ProfileIndexImport } from './routes/profile.index'
+import { Route as ProfileCreateImport } from './routes/profile.create'
+import { Route as VideoVideoIdIndexImport } from './routes/video.$videoId.index'
+import { Route as VideoVideoIdPlayingImport } from './routes/video.$videoId.playing'
 
 // Create/Update Routes
+
+const SystemRoute = SystemImport.update({
+  path: '/system',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LoginRoute = LoginImport.update({
   path: '/login',
@@ -23,6 +33,26 @@ const LoginRoute = LoginImport.update({
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileIndexRoute = ProfileIndexImport.update({
+  path: '/profile/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileCreateRoute = ProfileCreateImport.update({
+  path: '/profile/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const VideoVideoIdIndexRoute = VideoVideoIdIndexImport.update({
+  path: '/video/$videoId/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const VideoVideoIdPlayingRoute = VideoVideoIdPlayingImport.update({
+  path: '/video/$videoId/playing',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -38,11 +68,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/system': {
+      preLoaderRoute: typeof SystemImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/create': {
+      preLoaderRoute: typeof ProfileCreateImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/': {
+      preLoaderRoute: typeof ProfileIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/video/$videoId/playing': {
+      preLoaderRoute: typeof VideoVideoIdPlayingImport
+      parentRoute: typeof rootRoute
+    }
+    '/video/$videoId/': {
+      preLoaderRoute: typeof VideoVideoIdIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexRoute, LoginRoute])
+export const routeTree = rootRoute.addChildren([
+  IndexRoute,
+  LoginRoute,
+  SystemRoute,
+  ProfileCreateRoute,
+  ProfileIndexRoute,
+  VideoVideoIdPlayingRoute,
+  VideoVideoIdIndexRoute,
+])
 
 /* prettier-ignore-end */
