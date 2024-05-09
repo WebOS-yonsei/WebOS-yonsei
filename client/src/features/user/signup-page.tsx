@@ -2,13 +2,13 @@ import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stac
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Link } from '~/widgets';
-import { Userlayout } from './user-layout';
+import { UserLayout } from './user-layout';
 
 export function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <Userlayout>
+    <UserLayout>
       <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
         <Stack align="center">
           <Heading fontSize="4xl" textAlign="center">
@@ -53,6 +53,6 @@ export function SignUpPage() {
           </form>
         </Box>
       </Stack>
-    </Userlayout>
+    </UserLayout>
   );
 }
