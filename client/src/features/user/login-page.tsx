@@ -43,7 +43,7 @@ export function LoginPage() {
               </Stack>
               <Stack pt={6}>
                 <Text align="center">
-                  회원이 아닌가요?{' '}
+                  회원이 아니신가요?{' '}
                   <Link color="red.600" to="/signup">
                     지금 가입하세요.
                   </Link>
