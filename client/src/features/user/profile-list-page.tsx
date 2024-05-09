@@ -1,34 +1,38 @@
-import { Box, Heading, Stack, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Box, HStack, Heading, IconButton, Stack, Text, VStack } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { UserLayout } from './user-layout';
 
 export function ProfileListPage() {
-  const profiles = [
-    { name: 'John Doe', age: 25 },
-    { name: 'Jane Smith', age: 30 },
-    { name: 'Bob Johnson', age: 35 },
+  const profiles: {
+    name: string;
+    src: string;
+  }[] = [
+    { name: 'Christian Nwamba', src: 'https://bit.ly/code-beast' },
+    { name: 'Segun Adebayo', src: 'https://bit.ly/kent-c-dodds' },
   ];
 
   return (
     <UserLayout>
-      <Stack spacing={8} mx="auto" maxW="lg">
+      <Stack spacing={20} mx="auto">
         <Stack align="center">
           <Heading fontSize="4xl" textAlign="center">
             프로필 선택
           </Heading>
           <Text fontSize="lg" color="gray.600">
-            영상을 시청할 프로필을 선택해주세요.
+            시청할 프로필을 선택해주세요.
           </Text>
         </Stack>
-        <Box rounded="lg" boxShadow="lg" p={8}>
-          <VStack spacing={4} align="start">
-            {profiles.map((profile, index) => (
-              <Box key={index} borderWidth="1px" p={4} borderRadius="md">
-                <Text>Name: {profile.name}</Text>
-                <Text>Age: {profile.age}</Text>
-              </Box>
-            ))}
-          </VStack>
-        </Box>
+        <HStack spacing={8} align="center">
+          {profiles.map((profile, index) => (
+            <VStack key={index} spacing={4}>
+              <Avatar name={profile.name} src={profile.src} size="2xl" />
+              <Text fontWeight="light">{profile.name}</Text>
+            </VStack>
+          ))}
+          <Box pb="50px">
+            <IconButton aria-label="create" icon={<AddIcon />} rounded="full" />
+          </Box>
+        </HStack>
       </Stack>
     </UserLayout>
   );
