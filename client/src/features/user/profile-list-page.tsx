@@ -1,6 +1,7 @@
 import { Avatar, Box, HStack, Heading, IconButton, Stack, Text, VStack } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { UserLayout } from './user-layout';
+import { Link } from '~/widgets';
 
 export function ProfileListPage() {
   const profiles: {
@@ -29,9 +30,11 @@ export function ProfileListPage() {
               <Text fontWeight="light">{profile.name}</Text>
             </VStack>
           ))}
-          <Box pb="50px">
-            <IconButton aria-label="create" icon={<AddIcon />} rounded="full" />
-          </Box>
+          <Link to="/profile/create">
+            <Box pb="50px">
+              <IconButton aria-label="create" icon={<AddIcon />} rounded="full" />
+            </Box>
+          </Link>
         </HStack>
       </Stack>
     </UserLayout>
