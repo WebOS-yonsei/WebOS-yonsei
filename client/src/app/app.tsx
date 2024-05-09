@@ -3,7 +3,10 @@ import ThemeDecorator, { ThemeDecoratorProps } from '@enact/sandstone/ThemeDecor
 
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { Suspense } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Global } from '@emotion/react';
 import { routeTree } from '../routeTree.gen';
+import { globalStyles } from '../styles';
 
 const router = createRouter({ routeTree });
 
@@ -16,8 +19,11 @@ declare module '@tanstack/react-router' {
 
 export const App = ThemeDecorator((props: ThemeDecoratorProps) => (
   <div {...props}>
-    <Suspense>
-      <RouterProvider router={router} />
-    </Suspense>
+    <Global styles={globalStyles} />
+    <ChakraProvider>
+      <Suspense>
+        <RouterProvider router={router} />
+      </Suspense>
+    </ChakraProvider>
   </div>
 ));

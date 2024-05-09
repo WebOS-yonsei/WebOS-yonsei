@@ -1,4 +1,4 @@
-import Button from '@enact/sandstone/Button';
+import { Button } from '@chakra-ui/react';
 import Input from '@enact/sandstone/Input';
 import { Header, Panel } from '@enact/sandstone/Panels';
 import { createFileRoute } from '@tanstack/react-router';
