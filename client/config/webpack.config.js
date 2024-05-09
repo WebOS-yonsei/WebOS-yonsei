@@ -385,6 +385,7 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
           minifyCSS: true,
           minifyURLs: true,
         },
+        publicPath: '/',
       }),
       // Make NODE_ENV environment variable available to the JS code, for example:
       // if (process.env.NODE_ENV === 'production') { ... }.
