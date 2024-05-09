@@ -5,8 +5,8 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { Suspense } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Global } from '@emotion/react';
-import { routeTree } from '../routeTree.gen';
-import { globalStyles } from '../styles';
+import { routeTree } from '~/routeTree.gen';
+import { globalStyles } from '~/styles';
 
 const router = createRouter({ routeTree });
 

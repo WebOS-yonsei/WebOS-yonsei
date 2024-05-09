@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as SystemImport } from './routes/system'
+import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProfileIndexImport } from './routes/profile.index'
@@ -23,6 +24,11 @@ import { Route as VideoVideoIdPlayingImport } from './routes/video.$videoId.play
 
 const SystemRoute = SystemImport.update({
   path: '/system',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignupRoute = SignupImport.update({
+  path: '/signup',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -68,6 +74,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/signup': {
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
     '/system': {
       preLoaderRoute: typeof SystemImport
       parentRoute: typeof rootRoute
@@ -96,6 +106,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   LoginRoute,
+  SignupRoute,
   SystemRoute,
   ProfileCreateRoute,
   ProfileIndexRoute,
