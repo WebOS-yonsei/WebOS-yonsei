@@ -9,7 +9,7 @@ export function SignUpPage() {
 
   return (
     <UserLayout>
-      <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
+      <Stack spacing={8} mx="auto" maxW="lg">
         <Stack align="center">
           <Heading fontSize="4xl" textAlign="center">
             회원가입

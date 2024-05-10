@@ -5,7 +5,7 @@ import { Link } from '~/widgets';
 export function ProfileCreatePage() {
   return (
     <UserLayout>
-      <VStack spacing={10} mx="auto" py={10}>
+      <VStack spacing={10} mx="auto">
         <VStack align="center">
           <Heading fontSize="4xl" textAlign="center">
             프로필 생성
