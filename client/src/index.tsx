@@ -3,10 +3,12 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 
 import { ColorModeScript } from '@chakra-ui/react';
 import { App } from '~/app';
-import { turnOffMajorRelaseWarning } from '~/miscs';
+import { turnOffMajorRelaseWarning, initFirebase } from '~/miscs';
 import { theme } from '~/styles';
 
 turnOffMajorRelaseWarning();
+
+initFirebase();
 
 const appElement = (
   <>
