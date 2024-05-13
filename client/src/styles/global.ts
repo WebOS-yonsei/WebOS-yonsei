@@ -12,7 +12,7 @@ export const globalStyles = css`
     /* theme decorator */
     & > & {
       position: static;
-      padding: 0 1rem;
+      padding: 0;
     }
   }
 `;
