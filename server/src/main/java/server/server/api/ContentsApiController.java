@@ -7,6 +7,6 @@ import server.server.application.ContentsService;
 @RestController
 @RequestMapping("/videos")
 public class ContentsApiController {
-    private final ContentsService contentsService;
+
 
 }
