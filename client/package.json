@@ -6,6 +6,7 @@
   "main": "src/index.tsx",
   "scripts": {
     "serve": "node ./scripts/serve.js",
+    "dev": "bun serve",
     "pack": "node ./scripts/pack.js",
     "pack-p": "node ./scripts/pack.js -p",
     "watch": "node ./scripts/pack.js --watch",
