@@ -11,7 +11,7 @@ export function VideoListPage() {
           <Wrap spacing="30px">
             {Array.from({ length: 5 }).map((_, index) => (
               <WrapItem key={index}>
-                <Link to="/video/$videoId/playing" params={{ videoId: index }}>
+                <Link to="/video/$videoId" params={{ videoId: index }}>
                   <VStack align="stretch">
                     <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" />
                     <Heading fontSize="md">콘텐츠 제목</Heading>
@@ -27,7 +27,7 @@ export function VideoListPage() {
           <Wrap spacing="30px">
             {Array.from({ length: 5 }).map((_, index) => (
               <WrapItem key={index}>
-                <Link to="/video/$videoId/playing" params={{ videoId: index }}>
+                <Link to="/video/$videoId" params={{ videoId: index }}>
                   <VStack align="stretch">
                     <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" />
                     <Heading fontSize="md">콘텐츠 제목</Heading>
