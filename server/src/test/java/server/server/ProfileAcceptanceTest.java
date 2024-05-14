@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ProfileAcceptanceTest extends AcceptanceTest {
     // 통합 테스트
-    
+
     @MockBean
     private SessionRepository sessionRepository;
 
@@ -31,15 +31,15 @@ class ProfileAcceptanceTest extends AcceptanceTest {
         // Mock 세션 데이터 설정
         sessionId = "3u34dwj3245htg4j32htj231324354";
         Session session = Session.builder()
-                        .sessionId(sessionId)
-                        .userId(1L)
-                        .isValid(true)
-                        .build();
+                .sessionId(sessionId)
+                .userId(1L)
+                .isValid(true)
+                .build();
         Mockito.when(sessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(session));
     }
 
     @Test
-    void server_profile_check(){
+    void server_profile_check() {
 
         File jsonFile = new File("src/test/resources/mock/profileRequest.json");
 

@@ -12,15 +12,14 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor
 @AllArgsConstructor(access = PROTECTED)
 public class ProfileRequest {
-    private Long userId;
     private String nickname;
     private String profileUri;
     private Grade grade;
     private String profilePassword;
 
-    public Profile toEntity() {
+    public Profile toEntity(Long userId) {
         return Profile.builder()
-                .userId(this.userId)
+                .userId(userId)
                 .nickname(this.nickname)
                 .imageURI(this.profileUri)
                 .grade(this.grade)

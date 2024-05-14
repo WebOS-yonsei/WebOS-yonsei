@@ -24,7 +24,7 @@ public class ProfileApiController {
             HttpServletResponse response) throws IOException {
 
         Long profileId = profileService.create(sessionId, profileRequest);
-        response.setHeader("Location","/profiles/"+profileId);
+        response.setHeader("Location", "/profiles/" + profileId);
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
 
