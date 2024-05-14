@@ -55,6 +55,7 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
   const isEnvProduction = process.env.NODE_ENV === 'production';
 
   const publicPath = getPublicUrlOrPath(!isEnvProduction, app.publicUrl, process.env.PUBLIC_URL).replace(/^\/$/, '');
+  console.log('public >>> ', publicPath);
 
   // Source maps are resource heavy and can cause out of memory issue for large source files.
   // By default, sourcemaps will be used in development, however it can universally forced
