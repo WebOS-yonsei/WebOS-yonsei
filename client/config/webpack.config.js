@@ -54,7 +54,8 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
   process.env.NODE_ENV = env || process.env.NODE_ENV;
   const isEnvProduction = process.env.NODE_ENV === 'production';
 
-  const publicPath = getPublicUrlOrPath(!isEnvProduction, app.publicUrl, process.env.PUBLIC_URL).replace(/^\/$/, '');
+  // NOTE: ilib에서 node_modules를 정상적으로 가져오지 못하는 이슈 때문에 `replace(/^\/$/, '')` 부분을 삭제함(240514)
+  const publicPath = getPublicUrlOrPath(!isEnvProduction, app.publicUrl, process.env.PUBLIC_URL);
 
   // Source maps are resource heavy and can cause out of memory issue for large source files.
   // By default, sourcemaps will be used in development, however it can universally forced
@@ -386,7 +387,7 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
           minifyCSS: true,
           minifyURLs: true,
         },
-        publicPath: '/',
+        publicPath,
       }),
       // Make NODE_ENV environment variable available to the JS code, for example:
       // if (process.env.NODE_ENV === 'production') { ... }.
