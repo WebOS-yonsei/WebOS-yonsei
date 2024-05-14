@@ -7,7 +7,7 @@ export function VideoLayout({ children }: PropsWithChildren) {
   return (
     <>
       <VideoHeader />
-      <Flex minH="100vh" align="stretch" justify="center" pt="120px" flexDir="column">
+      <Flex minH="100vh" align="stretch" justify="center" pt="160px" flexDir="column">
         <Box flexGrow={1} p="30px">
           {children}
         </Box>

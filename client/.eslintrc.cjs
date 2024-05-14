@@ -32,5 +32,12 @@ module.exports = {
 
     // @typescript-eslint/no-explicit-any와 중복되므로
     'no-unused-vars': 'off',
+
+    // Text, Image 등의 이름을 가진 컴포넌트를 사용하기 위해서
+    'no-shadow': 'off',
+  },
+  env: {
+    browser: true,
+    node: true,
   },
 };
