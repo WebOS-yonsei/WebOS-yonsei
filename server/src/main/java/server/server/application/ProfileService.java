@@ -4,8 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import server.server.api.request.ProfileRequest;
+import server.server.api.response.ProfileResponse;
 import server.server.entity.Profile;
 import server.server.repository.ProfileRepository;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -13,7 +17,7 @@ public class ProfileService {
 
     private final ProfileRepository profilerepository;
 
-//    // 유저 인증
+//    // 현재 로그인 된 유저 인증
 //    public Long getUserId(String sessionId) throws BadRequestException {
 //        Session session = sessionRepository.findBySessionId(sessionId).orElseThrow();
 //        if (!session.getIsValid()) {
@@ -42,4 +46,17 @@ public class ProfileService {
         return profilerepository.save(profile).getId();
     }
 
+
+    // profile list 조회
+    public Set<ProfileResponse> getProfiles(String sessionId) {
+
+        // userId 조회 @Session
+        // Long userId = getUserId(sessionId);
+        long userId = 1L;
+
+        return profilerepository.findByUserId(userId)
+                .stream()
+                .map(Profile::toDTO)
+                .collect(Collectors.toSet());
+    }
 }

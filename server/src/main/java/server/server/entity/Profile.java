@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import server.server.api.response.ProfileResponse;
 
 import static jakarta.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PROTECTED;
@@ -32,4 +33,9 @@ public class Profile {
     private Grade grade;
 
     private String password;
+
+
+    public ProfileResponse toDTO() {
+        return new ProfileResponse(this.id, this.userId, this.nickname, this.imageURI, this.grade, this.password);
+    }
 }
