@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { VideoDetailPage } from '~/features/video';
 
 export const Route = createFileRoute('/video/$videoId/')({
   component: function VideoDetail() {
     const { videoId } = Route.useParams();
-    return <div>hello {videoId}</div>;
+    return <VideoDetailPage videoId={videoId} />;
   },
 });
