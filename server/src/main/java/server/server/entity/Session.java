@@ -23,7 +23,6 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String sessionId;
     private Long userId;
     private Long profileId;
     private Boolean isValid;
