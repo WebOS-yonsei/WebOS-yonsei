@@ -1,7 +1,13 @@
 package server.server.api.response;
 
-import jakarta.persistence.Enumerated;
-import server.server.entity.Grade;
+import lombok.*;
+import server.server.entity.Profile;
 
-public record ProfileResponse(Long id, Long userId, String nickname, String imageURI, Grade grade, String password) {
+import java.util.Set;
+
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProfileResponse {
+    public Set<Profile> profiles;
 }

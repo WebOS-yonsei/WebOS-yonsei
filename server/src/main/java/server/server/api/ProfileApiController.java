@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import server.server.api.request.ProfileRequest;
 import server.server.api.response.ProfileResponse;
 import server.server.application.ProfileService;
+import server.server.entity.Profile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -33,15 +32,13 @@ public class ProfileApiController {
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
 
+
     @GetMapping("/list")
-    public ResponseEntity<Map<String, Set<ProfileResponse>>> getProfileList(
+    public ResponseEntity<ProfileResponse> getProfileList(
             @RequestHeader("sessionId") String sessionId) {
 
-        Set<ProfileResponse> profileSet = profileService.getProfiles(sessionId);
-        Map<String, Set<ProfileResponse>> body = new HashMap<>();
-        body.put("profiles", profileSet);
+        Set<Profile> profileSet = profileService.getProfiles(sessionId);
 
-        return ResponseEntity.ok(body);
+        return ResponseEntity.ok(new ProfileResponse(profileSet));
     }
-
 }
