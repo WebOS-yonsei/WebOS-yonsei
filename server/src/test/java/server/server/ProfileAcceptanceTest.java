@@ -14,10 +14,12 @@ import server.server.repository.ProfileRepository;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 
 class ProfileAcceptanceTest extends AcceptanceTest {
@@ -31,6 +33,12 @@ class ProfileAcceptanceTest extends AcceptanceTest {
     void server_profile_create() {
         // given
         File jsonFile = new File("src/test/resources/mock/profileRequest.json");
+        Profile profile = Profile.builder()
+                .id(2L)
+                .userId(1L)
+                .nickname("프로필1")
+                .build();
+        Mockito.when(profileRepository.save(any(Profile.class))).thenReturn(profile);
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given()
