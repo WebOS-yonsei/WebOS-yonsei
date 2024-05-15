@@ -5,7 +5,7 @@ import { DefaultFooter } from './default-footer';
 
 export function DefaultLayout({ children }: PropsWithChildren) {
   return (
-    <>
+    <Box minW="1200px">
       <DefaultHeader />
       <Flex minH="100vh" align="stretch" justify="center" pt="160px" flexDir="column">
         <Box flexGrow={1} p="30px">
@@ -13,6 +13,6 @@ export function DefaultLayout({ children }: PropsWithChildren) {
         </Box>
         <DefaultFooter />
       </Flex>
-    </>
+    </Box>
   );
 }
