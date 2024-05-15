@@ -4,7 +4,7 @@ import { Link, VectorLogo } from '~/widgets';
 
 export function UserLayout({ children }: PropsWithChildren) {
   return (
-    <Flex minH="100vh" align="center" justify="center" py={8}>
+    <Flex minH="100vh" align="center" justify="center" py={8} minW="1200px">
       <Box as="nav" py={2} px={4} pos="fixed" top={0} left={0} width="100%">
         <Link to="/">
           <VectorLogo />
