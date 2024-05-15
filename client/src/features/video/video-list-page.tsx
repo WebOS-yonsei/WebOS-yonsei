@@ -6,13 +6,13 @@ export function VideoListPage() {
     <DefaultLayout>
       <VStack align="stretch" spacing={20}>
         <VStack align="stretch" spacing={5}>
-          <Heading fontSize="2xl">라바 님의 취향 저격 베스트 콘텐츠</Heading>
+          <Heading fontSize="2xl">라바님의 취향 저격 베스트 콘텐츠</Heading>
           <Wrap spacing="30px">
             {Array.from({ length: 5 }).map((_, index) => (
               <WrapItem key={index}>
                 <Link to="/video/$videoId" params={{ videoId: index }}>
                   <VStack align="stretch">
-                    <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" />
+                    <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" aspectRatio="3 / 2" />
                     <Heading fontSize="md">콘텐츠 제목</Heading>
                     <Text fontSize={20}>콘텐츠 설명</Text>
                   </VStack>
@@ -22,13 +22,13 @@ export function VideoListPage() {
           </Wrap>
         </VStack>
         <VStack align="stretch" spacing={5}>
-          <Heading fontSize="2xl">라바 님이 시청 중인 콘텐츠</Heading>
+          <Heading fontSize="2xl">라바님이 시청 중인 콘텐츠</Heading>
           <Wrap spacing="30px">
             {Array.from({ length: 5 }).map((_, index) => (
               <WrapItem key={index}>
                 <Link to="/video/$videoId" params={{ videoId: index }}>
                   <VStack align="stretch">
-                    <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" />
+                    <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" aspectRatio="3 / 2" />
                     <Heading fontSize="md">콘텐츠 제목</Heading>
                     <Text fontSize={20}>콘텐츠 설명</Text>
                   </VStack>

@@ -9,7 +9,7 @@ export function VideoDetailPage({ videoId }: { videoId: string }) {
           <Heading fontSize="2xl">영상 상세</Heading>
           <HStack spacing={8} align="stretch">
             <VStack align="stretch">
-              <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" />
+              <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" aspectRatio="3 / 2" />
               <Link to="/video/$videoId/playing" params={{ videoId }}>
                 <Button w="100%" colorScheme="red">
                   재생하기
