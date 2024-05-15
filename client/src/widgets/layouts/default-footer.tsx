@@ -1,7 +1,7 @@
 import { Stack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { Link } from '~/widgets';
 
-export function VideoFooter() {
+export function DefaultFooter() {
   return (
     <VStack color="gray.700" bgColor="#0c0c0f" p={4} spacing={8} align="stretch">
       <SimpleGrid columns={3} spacing={8}>
