@@ -1,10 +1,9 @@
 import { Heading, VStack, Image, Button, HStack, Text } from '@chakra-ui/react';
-import { VideoLayout } from './video-layout';
-import { Link } from '~/widgets';
+import { DefaultLayout, Link } from '~/widgets';
 
 export function VideoDetailPage({ videoId }: { videoId: string }) {
   return (
-    <VideoLayout>
+    <DefaultLayout>
       <VStack align="stretch" spacing={20}>
         <VStack align="stretch" spacing={5}>
           <Heading fontSize="2xl">영상 상세</Heading>
@@ -24,6 +23,6 @@ export function VideoDetailPage({ videoId }: { videoId: string }) {
           </HStack>
         </VStack>
       </VStack>
-    </VideoLayout>
+    </DefaultLayout>
   );
 }

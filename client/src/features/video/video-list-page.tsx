@@ -1,10 +1,9 @@
 import { Heading, VStack, Wrap, WrapItem, Image, Text } from '@chakra-ui/react';
-import { VideoLayout } from './video-layout';
-import { Link } from '~/widgets';
+import { DefaultLayout, Link } from '~/widgets';
 
 export function VideoListPage() {
   return (
-    <VideoLayout>
+    <DefaultLayout>
       <VStack align="stretch" spacing={20}>
         <VStack align="stretch" spacing={5}>
           <Heading fontSize="2xl">라바 님의 취향 저격 베스트 콘텐츠</Heading>
@@ -39,6 +38,6 @@ export function VideoListPage() {
           </Wrap>
         </VStack>
       </VStack>
-    </VideoLayout>
+    </DefaultLayout>
   );
 }
