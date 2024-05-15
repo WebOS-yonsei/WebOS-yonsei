@@ -6,13 +6,20 @@ import server.server.entity.Contents;
 import server.server.repository.ContentsRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class ContentsService {
     private final ContentsRepository contentsRepository;
 
-    public static List<Contents> findAllVideos() {
-        return null;
+    // contents list 조회
+    public Set<Contents> getContents(String sessionId) {
+
+        // userId 조회 @Session
+        // Long userId = getUserId(sessionId);
+        long userId = 1L;
+
+        return contentsRepository.findByUserId(userId);
     }
 }

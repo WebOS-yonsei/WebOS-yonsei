@@ -1,24 +1,28 @@
 package server.server.api;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import server.server.api.response.ContentsResponse;
 import server.server.application.ContentsService;
 import server.server.entity.Contents;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/videos")
+@Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/videos")
 public class ContentsApiController {
     private final ContentsService contentsService;
 
-    public ResponseEntity<List<Contents>> listVideos(@RequestParam(required = false) String sessionId) {
-        List<Contents> videos = ContentsService.findAllVideos(); // 비디오 서비스에서 모든 비디오 정보를 가져옵니다.
-        return ResponseEntity.ok().body(videos);
-    }
+    @GetMapping
+    public ResponseEntity<ContentsResponse> getContentsList(
+            @RequestHeader("sessionId") String sessionId){
 
+        Set<Contents> contentsSet = contentsService.getContents(sessionId);
+
+        return ResponseEntity.ok(new ContentsResponse(contentsSet));
+    }
 }
