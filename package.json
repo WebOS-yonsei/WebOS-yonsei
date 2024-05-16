@@ -1,0 +1,14 @@
+{
+  "name": "webos-yonsei",
+  "version": "1.0.0",
+  "description": "webos-yonsei",
+  "scripts": {
+    "postinstall": "husky install"
+  },
+  "keywords": [],
+  "author": "Group 1",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.0.11"
+  }
+}
