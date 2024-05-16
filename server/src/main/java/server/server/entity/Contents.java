@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @Entity
+@Builder
 public class Contents {
 
     @Id
@@ -23,7 +25,7 @@ public class Contents {
     private Long id;
     private String title;
     private String description;
-    private Time duration;
+    private float duration;
     private Grade grade;
     private String thumbnailURI;
     private String genre;
