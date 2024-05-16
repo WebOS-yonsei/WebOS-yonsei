@@ -32,4 +32,5 @@ public class Profile {
     private Grade grade;
 
     private String password;
+
 }
