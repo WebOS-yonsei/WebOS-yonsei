@@ -1,4 +1,4 @@
-package server.server;
+package server.server.acceptance;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
