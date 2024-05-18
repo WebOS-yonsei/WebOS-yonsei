@@ -1,11 +1,11 @@
 import LS2Request from '@enact/webos/LS2Request';
-import { isDev } from '~/utils';
+import { debugLog, isDev } from '~/utils';
 import { MockLS2Request } from './mock-ls2-request';
 
 type Request<Response> = {
   method: string;
   onSuccess: (res: Response) => void;
-  onFailure: (res: Response) => void;
+  onFailure?: (res: Response) => void;
   parameters: {
     subscribe?: boolean;
     [key: string]: unknown;
@@ -13,34 +13,27 @@ type Request<Response> = {
 };
 
 function send<Response>(Req: typeof LS2Request, service: string, params: Request<Response>) {
-  if (params.parameters?.subscribe) {
-    return new Req().send({
-      service,
-      method: params?.method,
-      parameters: params?.parameters,
-      onSuccess: params?.onSuccess,
-      onFailure: params?.onFailure,
-    });
-  }
-
-  return new Promise((onSuccess, onFailure) => {
-    new Req().send({
-      service,
-      method: params?.method,
-      parameters: params?.parameters,
-      onSuccess,
-      onFailure,
-    });
+  return new Req().send({
+    service,
+    method: params.method,
+    parameters: params.parameters,
+    onSuccess: (res: Response) => {
+      debugLog(`${service.toUpperCase()}[S]`, res);
+      params.onSuccess(res);
+    },
+    onFailure: (res: Response) => {
+      debugLog(`${service.toUpperCase()}[F]`, res);
+      params.onFailure?.(res);
+    },
   });
 }
 
-// @see https://github.com/kyuman/enact-template/blob/master/src/libs/request.js
-export function lunaRequest<Response>(service: string) {
-  return (params: Request<Response>) => {
-    if (isDev()) {
-      return send<Response>(MockLS2Request, service, params);
-    }
+// prettier-ignore
+type Service = 
+| 'luna://com.webos.memorymanager'
+| 'luna://com.webos.applicationManager';
 
-    return send<Response>(LS2Request, service, params);
-  };
+// @see https://github.com/kyuman/enact-template/blob/master/src/libs/request.js
+export function lunaRequest<Response>(service: Service) {
+  return (params: Request<Response>) => send<Response>(isDev() ? MockLS2Request : LS2Request, service, params);
 }

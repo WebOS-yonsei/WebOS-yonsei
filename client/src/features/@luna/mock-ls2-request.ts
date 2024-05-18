@@ -86,7 +86,8 @@ export class MockLS2Request {
       filepath = `${filepath}${getHash(parsedUri, params)}`;
     }
 
-    import(join(__dirname, '__mock__', `${filepath}.json`))
+    fetch(join('__mock__', `${filepath}.json`))
+      .then((res) => res.json())
       .then((res) => {
         if (res.errorCode || res.returnValue === false) {
           onFailure(res);

@@ -2,8 +2,10 @@ import LS2Request from '@enact/webos/LS2Request';
 import { useRef, useEffect } from 'react';
 import { debugLog } from '~/utils';
 
-export function useLuna(callback: () => LS2Request) {
-  const ref = useRef<LS2Request | undefined>();
+type CallbackReturn = LS2Request | Promise<unknown>;
+
+export function useLuna(callback: () => CallbackReturn) {
+  const ref = useRef<CallbackReturn | undefined>();
   const callbackRef = useRef(callback);
 
   useEffect(() => {
@@ -20,7 +22,9 @@ export function useLuna(callback: () => LS2Request) {
 
     return () => {
       if (ref.current) {
-        ref.current.cancel();
+        if (ref.current instanceof LS2Request) {
+          ref.current.cancel();
+        }
         ref.current = undefined;
       }
     };
