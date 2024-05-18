@@ -1,13 +1,58 @@
+import LS2Request from '@enact/webos/LS2Request';
 import { isDev } from '~/utils';
+import { MockLS2Request } from './mock-ls2-request';
 
-// @see https://github.com/kyuman/enact-template/blob/master/src/libs/request.js
-export function lunaRequest() {
-  if (isDev()) {
-    // TODO
-    // require('luna-mock');
-    // return send(require('luna-mock').Request, 'luna://com.webos.service.bus', params);
+type Request<Response> = {
+  method: string;
+  onSuccess: (res: Response) => void;
+  onFailure: (res: Response) => void;
+  parameters: {
+    subscribe?: boolean;
+    [key: string]: unknown;
+  };
+};
+
+type SendParams<T> = {
+  service: string;
+} & Request<T>;
+
+function send<T>(
+  Req: {
+    new (): {
+      send: (params: SendParams<T>) => void;
+    };
+  },
+  service: string,
+  params: Request<T>,
+) {
+  if (params.parameters?.subscribe) {
+    return new Req().send({
+      service,
+      method: params?.method,
+      parameters: params?.parameters,
+      onSuccess: params?.onSuccess,
+      onFailure: params?.onFailure,
+    });
   }
 
-  // TODO
-  // return send(LS2Request, service, params);
+  return new Promise((onSuccess, onFailure) => {
+    new Req().send({
+      service,
+      method: params?.method,
+      parameters: params?.parameters,
+      onSuccess,
+      onFailure,
+    });
+  });
+}
+
+// @see https://github.com/kyuman/enact-template/blob/master/src/libs/request.js
+export function lunaRequest<Response>(service: string) {
+  return (params: Request<Response>) => {
+    if (isDev()) {
+      return send<Response>(MockLS2Request, service, params);
+    }
+
+    return send<Response>(LS2Request, service, params);
+  };
 }
