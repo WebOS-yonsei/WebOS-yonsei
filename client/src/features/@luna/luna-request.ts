@@ -12,19 +12,7 @@ type Request<Response> = {
   };
 };
 
-type SendParams<T> = {
-  service: string;
-} & Request<T>;
-
-function send<T>(
-  Req: {
-    new (): {
-      send: (params: SendParams<T>) => void;
-    };
-  },
-  service: string,
-  params: Request<T>,
-) {
+function send<Response>(Req: typeof LS2Request, service: string, params: Request<Response>) {
   if (params.parameters?.subscribe) {
     return new Req().send({
       service,

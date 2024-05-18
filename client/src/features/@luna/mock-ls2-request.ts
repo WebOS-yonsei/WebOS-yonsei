@@ -55,9 +55,9 @@ const getHash = (
 // Please add methods not to use hash name.
 const methods = ['launch'];
 
-export class MockLS2Request<Response> {
+export class MockLS2Request {
   // TODO: can i use generic type here?
-  async send({
+  send({
     service,
     method,
     onSuccess,
@@ -67,8 +67,8 @@ export class MockLS2Request<Response> {
   }: {
     service: string;
     method: string;
-    onSuccess: (res: Response) => void;
-    onFailure: (res: Response) => void;
+    onSuccess: (res: unknown) => void;
+    onFailure: (res: unknown) => void;
     parameters: {
       subscribe?: boolean;
       [key: string]: unknown;
@@ -85,20 +85,26 @@ export class MockLS2Request<Response> {
     if (!methods.includes(method)) {
       filepath = `${filepath}${getHash(parsedUri, params)}`;
     }
-    try {
-      const res = await import(join(__dirname, `${filepath}.json`));
-      if (res.errorCode || res.returnValue === false) {
-        onFailure(res);
-      } else {
-        onSuccess(res);
-      }
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log({ service, method, parameters });
-      // FIXME
-      // @ts-ignore
-      onFailure(err);
-    }
+
+    import(join(__dirname, `${filepath}.json`))
+      .then((res) => {
+        if (res.errorCode || res.returnValue === false) {
+          onFailure(res);
+        } else {
+          onSuccess(res);
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log({ service, method, parameters });
+        onFailure(err);
+      });
+
     return this;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  cancel() {
+    throw new Error('Not implemented');
   }
 }
