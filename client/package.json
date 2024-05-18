@@ -36,6 +36,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@enact/core": "^4.8.0",
+    "@enact/i18n": "^4.8.0",
     "@enact/sandstone": "^2.8.0",
     "@enact/spotlight": "^4.8.0",
     "@enact/ui": "^4.8.0",
