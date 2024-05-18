@@ -2,6 +2,7 @@
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
 import { ColorModeScript } from '@chakra-ui/react';
+import { StrictMode } from 'react';
 import { App } from '~/app';
 import { turnOffMajorRelaseWarning, initFirebase } from '~/miscs';
 import { theme } from '~/styles';
@@ -11,10 +12,10 @@ turnOffMajorRelaseWarning();
 initFirebase();
 
 const appElement = (
-  <>
+  <StrictMode>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <App />
-  </>
+  </StrictMode>
 );
 
 const $root = document.getElementById('root');
