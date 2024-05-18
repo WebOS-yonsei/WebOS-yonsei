@@ -46,9 +46,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
   // Check if TypeScript is setup
   const useTypeScript = fs.existsSync('tsconfig.json');
 
-  // Check if Tailwind config exists
-  const useTailwind = fs.existsSync(path.join(app.context, 'tailwind.config.js'));
-
   process.env.NODE_ENV = env || process.env.NODE_ENV;
   const isEnvProduction = process.env.NODE_ENV === 'production';
 
@@ -89,47 +86,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
             },
           },
         }),
-      },
-      {
-        // Options for PostCSS as we reference these options twice
-        // Adds vendor prefixing based on your specified browser support in
-        // package.json
-        loader: require.resolve('postcss-loader'),
-        options: {
-          postcssOptions: {
-            // Necessary for external CSS imports to work
-            // https://github.com/facebook/create-react-app/issues/2677
-            ident: 'postcss',
-            plugins: [
-              useTailwind && 'tailwindcss',
-              // Fix and adjust for known flexbox issues
-              // See https://github.com/philipwalton/flexbugs
-              'postcss-flexbugs-fixes',
-              // Support @global-import syntax to import css in a global context.
-              'postcss-global-import',
-              // Transpile stage-3 CSS standards based on browserslist targets.
-              // See https://preset-env.cssdb.org/features for supported features.
-              // Includes support for targetted auto-prefixing.
-              [
-                'postcss-preset-env',
-                {
-                  autoprefixer: {
-                    flexbox: 'no-2009',
-                    remove: false,
-                  },
-                  stage: 3,
-                  features: { 'custom-properties': false },
-                },
-              ],
-              // Adds PostCSS Normalize to standardize browser quirks based on
-              // the browserslist targets.
-              !useTailwind && require('postcss-normalize'),
-              // Resolution indepedence support
-              app.ri !== false && require('postcss-resolution-independence')(app.ri),
-            ].filter(Boolean),
-          },
-          sourceMap: shouldUseSourceMap,
-        },
       },
     ];
     if (preProcessor) {
@@ -387,10 +343,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
       // EMFILE errors when hanndling mass amounts of files at once, such as
       // what happens when using ilib bundles/resources.
       new GracefulFsPlugin(),
-      // Automatically configure iLib library within @enact/i18n. Additionally,
-      // ensure the locale data files and the resource files are copied during
-      // the build to the output directory.
-      new ILibPlugin({ publicPath, symlinks: false, ilibAdditionalResourcesPath }),
       // Automatically detect ./appinfo.json and ./webos-meta/appinfo.json files,
       // and parses any to copy over any webOS meta assets at build time.
       new WebOSMetaPlugin({ htmlPlugin: HtmlWebpackPlugin }),
