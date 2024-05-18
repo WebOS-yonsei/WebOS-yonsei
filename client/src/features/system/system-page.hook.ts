@@ -6,7 +6,7 @@ type GetProcStat = {
   returnValue: boolean;
 };
 
-interface GetUnitList {
+type GetUnitList = {
   ATSC3_0_NRT: number;
   unitList: string[];
   usable_memory: number;
@@ -23,7 +23,7 @@ interface GetUnitList {
     cur_vmallocSize: number;
     init_vmallocSize: number;
   };
-}
+};
 
 export function useSystemPage() {
   const [procStat, setProcStat] = useState<GetProcStat>();

@@ -2,8 +2,18 @@ import LS2Request from '@enact/webos/LS2Request';
 import { debugLog, isDev } from '~/utils';
 import { MockLS2Request } from './mock-ls2-request';
 
+// prettier-ignore
+type Service = 
+  | 'luna://com.webos.memorymanager'
+  | 'luna://com.webos.applicationManager';
+
+// prettier-ignore
+type Method =
+  | 'getProcStat'
+  | 'getUnitList';
+
 type Request<Response> = {
-  method: string;
+  method: Method;
   onSuccess: (res: Response) => void;
   onFailure?: (res: Response) => void;
   parameters: {
@@ -11,11 +21,6 @@ type Request<Response> = {
     [key: string]: unknown;
   };
 };
-
-// prettier-ignore
-type Service = 
-| 'luna://com.webos.memorymanager'
-| 'luna://com.webos.applicationManager';
 
 function send<Response>(Req: typeof LS2Request, service: Service, params: Request<Response>) {
   debugLog(`${params.method}[R]`);
