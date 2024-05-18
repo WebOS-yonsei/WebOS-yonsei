@@ -1,7 +1,10 @@
-import { Heading, VStack } from '@chakra-ui/react';
+import { Box, Heading, VStack } from '@chakra-ui/react';
 import { DefaultLayout } from '~/widgets';
+import { useSystemPage } from './system-page.hook';
 
 export function SystemPage() {
+  const { procStat, unitList } = useSystemPage();
+
   return (
     <DefaultLayout>
       <VStack align="stretch" spacing={20}>
@@ -9,7 +12,8 @@ export function SystemPage() {
           <Heading fontSize="2xl">실시간 자원현황 조회</Heading>
         </VStack>
       </VStack>
-      <div>Hello /system!</div>
+      <Box>{JSON.stringify(procStat, null, 2)}</Box>
+      <Box>{JSON.stringify(unitList, null, 2)}</Box>
     </DefaultLayout>
   );
 }
