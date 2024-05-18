@@ -12,7 +12,12 @@ type Request<Response> = {
   };
 };
 
-function send<Response>(Req: typeof LS2Request, service: string, params: Request<Response>) {
+// prettier-ignore
+type Service = 
+| 'luna://com.webos.memorymanager'
+| 'luna://com.webos.applicationManager';
+
+function send<Response>(Req: typeof LS2Request, service: Service, params: Request<Response>) {
   debugLog(`${params.method}[R]`);
 
   return new Req().send({
@@ -29,11 +34,6 @@ function send<Response>(Req: typeof LS2Request, service: string, params: Request
     },
   });
 }
-
-// prettier-ignore
-type Service = 
-| 'luna://com.webos.memorymanager'
-| 'luna://com.webos.applicationManager';
 
 // @see https://github.com/kyuman/enact-template/blob/master/src/libs/request.js
 export function lunaRequest<Response>(service: Service) {
