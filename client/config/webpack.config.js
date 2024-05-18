@@ -18,8 +18,6 @@ const { optionParser: app, cssModuleIdent: getLocalIdent, GracefulFsPlugin, ILib
 const createEnvironmentHash = require('./createEnvironmentHash');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-const smp = new SpeedMeasurePlugin();
-
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (env, contentHash = false, isomorphic = false, noAnimation = false, framework = false, ilibAdditionalResourcesPath) {
@@ -139,14 +137,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
     }
     return loaders;
   };
-
-  const getScssStyleLoaders = (cssLoaderOptions) =>
-    getStyleLoaders(cssLoaderOptions, {
-      loader: require.resolve('sass-loader'),
-      options: {
-        sourceMap: shouldUseSourceMap,
-      },
-    });
 
   const getAdditionalModulePaths = (paths) => {
     if (!paths) return [];
@@ -275,30 +265,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
               // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true,
             },
-            // Opt-in support for CSS Modules, but using SASS
-            // using the extension .module.scss or .module.sass
-            {
-              test: /\.module\.(scss|sass)$/,
-              use: getScssStyleLoaders({
-                importLoaders: 3,
-                modules: {
-                  getLocalIdent,
-                },
-              }),
-            },
-            // Opt-in support for SASS (using .scss or .sass extensions)
-            {
-              test: /\.(scss|sass)$/,
-              use: getScssStyleLoaders({
-                importLoaders: 3,
-                modules: {
-                  ...(app.forceCSSModules ? { getLocalIdent } : { mode: 'icss' }),
-                },
-              }),
-            },
-            // "file" loader handles on all files not caught by the above loaders.
-            // When you `import` an asset, you get its output filename and the file
-            // is copied during the build process.
             {
               // Exclude `js` files to keep "css" loader working as it injects
               // its runtime that would otherwise be processed through "file" loader.
