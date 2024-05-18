@@ -13,16 +13,18 @@ type Request<Response> = {
 };
 
 function send<Response>(Req: typeof LS2Request, service: string, params: Request<Response>) {
+  debugLog(`${params.method}[R]`);
+
   return new Req().send({
     service,
     method: params.method,
     parameters: params.parameters,
     onSuccess: (res: Response) => {
-      debugLog(`${service.toUpperCase()}[S]`, res);
+      debugLog(`${params.method}[S]`, res);
       params.onSuccess(res);
     },
     onFailure: (res: Response) => {
-      debugLog(`${service.toUpperCase()}[F]`, res);
+      debugLog(`${params.method}[F]`, res);
       params.onFailure?.(res);
     },
   });
