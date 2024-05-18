@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = process.env.TSC_COMPILE_ON_ERROR === 'true' ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin') : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -18,8 +17,6 @@ const { optionParser: app, cssModuleIdent: getLocalIdent, GracefulFsPlugin, ILib
 const createEnvironmentHash = require('./createEnvironmentHash');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-const smp = new SpeedMeasurePlugin();
-
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (env, contentHash = false, isomorphic = false, noAnimation = false, framework = false, ilibAdditionalResourcesPath) {
@@ -28,28 +25,8 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
   // Load applicable .env files into environment variables.
   require('./dotenv').load(app.context);
 
-  // Sets the browserslist default fallback set of browsers to the Enact default browser support list.
-  app.setEnactTargetsAsDefault();
-
-  // Check if JSX transform is able
-  const hasJsxRuntime = (() => {
-    if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
-      return false;
-    }
-
-    try {
-      require.resolve('react/jsx-runtime');
-      return true;
-    } catch (e) {
-      return false;
-    }
-  })();
-
   // Check if TypeScript is setup
   const useTypeScript = fs.existsSync('tsconfig.json');
-
-  // Check if Tailwind config exists
-  const useTailwind = fs.existsSync(path.join(app.context, 'tailwind.config.js'));
 
   process.env.NODE_ENV = env || process.env.NODE_ENV;
   const isEnvProduction = process.env.NODE_ENV === 'production';
@@ -92,61 +69,12 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
           },
         }),
       },
-      {
-        // Options for PostCSS as we reference these options twice
-        // Adds vendor prefixing based on your specified browser support in
-        // package.json
-        loader: require.resolve('postcss-loader'),
-        options: {
-          postcssOptions: {
-            // Necessary for external CSS imports to work
-            // https://github.com/facebook/create-react-app/issues/2677
-            ident: 'postcss',
-            plugins: [
-              useTailwind && 'tailwindcss',
-              // Fix and adjust for known flexbox issues
-              // See https://github.com/philipwalton/flexbugs
-              'postcss-flexbugs-fixes',
-              // Support @global-import syntax to import css in a global context.
-              'postcss-global-import',
-              // Transpile stage-3 CSS standards based on browserslist targets.
-              // See https://preset-env.cssdb.org/features for supported features.
-              // Includes support for targetted auto-prefixing.
-              [
-                'postcss-preset-env',
-                {
-                  autoprefixer: {
-                    flexbox: 'no-2009',
-                    remove: false,
-                  },
-                  stage: 3,
-                  features: { 'custom-properties': false },
-                },
-              ],
-              // Adds PostCSS Normalize to standardize browser quirks based on
-              // the browserslist targets.
-              !useTailwind && require('postcss-normalize'),
-              // Resolution indepedence support
-              app.ri !== false && require('postcss-resolution-independence')(app.ri),
-            ].filter(Boolean),
-          },
-          sourceMap: shouldUseSourceMap,
-        },
-      },
     ];
     if (preProcessor) {
       loaders.push(preProcessor);
     }
     return loaders;
   };
-
-  const getScssStyleLoaders = (cssLoaderOptions) =>
-    getStyleLoaders(cssLoaderOptions, {
-      loader: require.resolve('sass-loader'),
-      options: {
-        sourceMap: shouldUseSourceMap,
-      },
-    });
 
   const getAdditionalModulePaths = (paths) => {
     if (!paths) return [];
@@ -275,30 +203,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
               // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true,
             },
-            // Opt-in support for CSS Modules, but using SASS
-            // using the extension .module.scss or .module.sass
-            {
-              test: /\.module\.(scss|sass)$/,
-              use: getScssStyleLoaders({
-                importLoaders: 3,
-                modules: {
-                  getLocalIdent,
-                },
-              }),
-            },
-            // Opt-in support for SASS (using .scss or .sass extensions)
-            {
-              test: /\.(scss|sass)$/,
-              use: getScssStyleLoaders({
-                importLoaders: 3,
-                modules: {
-                  ...(app.forceCSSModules ? { getLocalIdent } : { mode: 'icss' }),
-                },
-              }),
-            },
-            // "file" loader handles on all files not caught by the above loaders.
-            // When you `import` an asset, you get its output filename and the file
-            // is copied during the build process.
             {
               // Exclude `js` files to keep "css" loader working as it injects
               // its runtime that would otherwise be processed through "file" loader.
@@ -325,43 +229,9 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
       // These are only used in production mode
       minimizer: [
         new TerserPlugin({
-          terserOptions: {
-            parse: {
-              // we want uglify-js to parse ecma 8 code. However, we don't want it
-              // to apply any minfication steps that turns valid ecma 5 code
-              // into invalid ecma 5 code. This is why the 'compress' and 'output'
-              // sections only apply transformations that are ecma 5 safe
-              // https://github.com/facebook/create-react-app/pull/4234
-              ecma: 8,
-            },
-            compress: {
-              ecma: 5,
-              warnings: false,
-              // Disabled because of an issue with Uglify breaking seemingly valid code:
-              // https://github.com/facebook/create-react-app/issues/2376
-              // Pending further investigation:
-              // https://github.com/mishoo/UglifyJS2/issues/2011
-              comparisons: false,
-              // Disabled because of an issue with Terser breaking valid code:
-              // https://github.com/facebook/create-react-app/issues/5250
-              // Pending futher investigation:
-              // https://github.com/terser-js/terser/issues/120
-              inline: 2,
-            },
-            mangle: {
-              safari10: true,
-            },
-            output: {
-              ecma: 5,
-              comments: false,
-              // Turned on because emoji and regex is not minified properly using default
-              // https://github.com/facebook/create-react-app/issues/2488
-              ascii_only: true,
-            },
-          },
           // Use multi-process parallel running to improve the build speed
-          // Default number of concurrent runs: os.cpus().length - 1
-          parallel: true,
+          minify: TerserPlugin.esbuildMinify,
+          terserOptions: {},
         }),
         new CssMinimizerPlugin(),
       ],
@@ -415,8 +285,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
       new NodePolyfillPlugin(),
       // Provide meaningful information when modules are not found
       new ModuleNotFoundPlugin(app.context),
-      // Ensure correct casing in module filepathes
-      new CaseSensitivePathsPlugin(),
       // Switch the internal NodeOutputFilesystem to use graceful-fs to avoid
       // EMFILE errors when hanndling mass amounts of files at once, such as
       // what happens when using ilib bundles/resources.
