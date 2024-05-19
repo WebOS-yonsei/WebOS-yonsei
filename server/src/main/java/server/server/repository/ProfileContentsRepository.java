@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface ProfileContentsRepository extends JpaRepository<ProfileContents, Long> {
 
-    List<ProfileContents> findByProfileIdAndStateNot(Long profileId, ProfileContents.State state);
+    List<ProfileContents> findByProfileIdAndState(Long profileId, ProfileContents.State state);
 }

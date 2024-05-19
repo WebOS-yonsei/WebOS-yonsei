@@ -68,7 +68,7 @@ public class ProfileService {
 
         // 로그인 확인 @Session
 
-        List<Long> contentsIdSet = profilecontentsrepository.findByProfileIdAndStateNot(profileId, ProfileContents.State.NONE)
+        List<Long> contentsIdSet = profilecontentsrepository.findByProfileIdAndState(profileId, ProfileContents.State.WATCHING)
                 .stream()
                 .map(ProfileContents::getContentsId)
                 .collect(Collectors.toList());

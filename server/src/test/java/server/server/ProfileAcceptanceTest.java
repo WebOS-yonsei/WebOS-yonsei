@@ -108,8 +108,8 @@ class ProfileAcceptanceTest extends AcceptanceTest {
     void server_profile_historyList() {
         // given
         List<ProfileContents> profileContentsList = new ArrayList<>();
-        ProfileContents profileContent1 = ProfileContents.builder().profileId(1L).contentsId(1L).build();
-        ProfileContents profileContent2 = ProfileContents.builder().profileId(1L).contentsId(2L).build();
+        ProfileContents profileContent1 = ProfileContents.builder().profileId(1L).contentsId(1L).state(ProfileContents.State.WATCHING).build();
+        ProfileContents profileContent2 = ProfileContents.builder().profileId(1L).contentsId(2L).state(ProfileContents.State.WATCHING).build();
         profileContentsList.add(profileContent1);
         profileContentsList.add(profileContent2);
 
@@ -140,7 +140,7 @@ class ProfileAcceptanceTest extends AcceptanceTest {
         contentsList.add(content1);
         contentsList.add(content2);
 
-        Mockito.when(profileContentsRepository.findByProfileIdAndStateNot(1L, ProfileContents.State.NONE)).thenReturn(profileContentsList);
+        Mockito.when(profileContentsRepository.findByProfileIdAndState(1L, ProfileContents.State.WATCHING)).thenReturn(profileContentsList);
         Mockito.when(contentsRepository.findAllById(ids)).thenReturn(contentsList);
 
 
