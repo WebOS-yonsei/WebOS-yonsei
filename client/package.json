@@ -42,12 +42,15 @@
     "@enact/ui": "^4.8.0",
     "@enact/webos": "^4.8.0",
     "@tanstack/react-router": "^1.31.23",
+    "@tanstack/react-table": "^8.17.3",
+    "chart.js": "^4.4.3",
     "core-js": "3.22.8",
     "firebase": "^10.11.1",
     "framer-motion": "^11.1.9",
     "hls.js": "^1.5.8",
     "ilib": "^14.19.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

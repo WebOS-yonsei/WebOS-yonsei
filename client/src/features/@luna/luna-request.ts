@@ -1,5 +1,5 @@
 import LS2Request from '@enact/webos/LS2Request';
-import { debugLog, isDev } from '~/utils';
+import { debugLog, isDev, isTVBrowser } from '~/utils';
 import { MockLS2Request } from './mock-ls2-request';
 
 // prettier-ignore
@@ -7,13 +7,8 @@ type Service =
   | 'luna://com.webos.memorymanager'
   | 'luna://com.webos.applicationManager';
 
-// prettier-ignore
-type Method =
-  | 'getProcStat'
-  | 'getUnitList';
-
 type Request<Response> = {
-  method: Method;
+  method: string;
   onSuccess: (res: Response) => void;
   onFailure?: (res: Response) => void;
   parameters: {
@@ -42,5 +37,6 @@ function send<Response>(Req: typeof LS2Request, service: Service, params: Reques
 
 // @see https://github.com/kyuman/enact-template/blob/master/src/libs/request.js
 export function lunaRequest<Response>(service: Service) {
-  return (params: Request<Response>) => send<Response>(isDev() ? MockLS2Request : LS2Request, service, params);
+  const isMock = isDev() || !isTVBrowser();
+  return (params: Request<Response>) => send<Response>(isMock ? MockLS2Request : LS2Request, service, params);
 }

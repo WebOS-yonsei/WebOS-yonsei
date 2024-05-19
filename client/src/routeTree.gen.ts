@@ -73,38 +73,65 @@ const VideoVideoIdPlayingRoute = VideoVideoIdPlayingImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
     '/system': {
+      id: '/system'
+      path: '/system'
+      fullPath: '/system'
       preLoaderRoute: typeof SystemImport
       parentRoute: typeof rootRoute
     }
     '/profile/create': {
+      id: '/profile/create'
+      path: '/profile/create'
+      fullPath: '/profile/create'
       preLoaderRoute: typeof ProfileCreateImport
       parentRoute: typeof rootRoute
     }
     '/video/list': {
+      id: '/video/list'
+      path: '/video/list'
+      fullPath: '/video/list'
       preLoaderRoute: typeof VideoListImport
       parentRoute: typeof rootRoute
     }
     '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
       preLoaderRoute: typeof ProfileIndexImport
       parentRoute: typeof rootRoute
     }
     '/video/$videoId/playing': {
+      id: '/video/$videoId/playing'
+      path: '/video/$videoId/playing'
+      fullPath: '/video/$videoId/playing'
       preLoaderRoute: typeof VideoVideoIdPlayingImport
       parentRoute: typeof rootRoute
     }
     '/video/$videoId/': {
+      id: '/video/$videoId/'
+      path: '/video/$videoId'
+      fullPath: '/video/$videoId'
       preLoaderRoute: typeof VideoVideoIdIndexImport
       parentRoute: typeof rootRoute
     }
@@ -113,7 +140,7 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexRoute,
   LoginRoute,
   SignupRoute,
@@ -123,6 +150,6 @@ export const routeTree = rootRoute.addChildren([
   ProfileIndexRoute,
   VideoVideoIdPlayingRoute,
   VideoVideoIdIndexRoute,
-])
+})
 
 /* prettier-ignore-end */
