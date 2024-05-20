@@ -7,10 +7,14 @@ import server.server.entity.Contents;
 
 import java.util.List;
 
-
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContentsResponse {
-    public List<Contents> contents;
+
+    private List<Contents> contents;
+
+    public static ContentsResponse of(final List<Contents> contents) {
+        return new ContentsResponse(contents);
+    }
 }
