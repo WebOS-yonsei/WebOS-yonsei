@@ -3,11 +3,11 @@ package server.server.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.server.entity.Contents;
-import server.server.exception.ContentNotFoundException;
 import server.server.repository.ContentsRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -23,7 +23,7 @@ public class ContentsService {
 
         Optional<Contents> optionalContents = contentsRepository.findById(id);
         if (optionalContents.isEmpty()) {
-            throw new ContentNotFoundException("Content not found with id: " + id);
+            throw new NoSuchElementException("Content not found with id: " + id);
         }
 
         return Collections.singletonList(optionalContents.get());
