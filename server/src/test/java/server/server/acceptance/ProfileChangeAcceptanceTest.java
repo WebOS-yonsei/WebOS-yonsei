@@ -40,4 +40,19 @@ public class ProfileChangeAcceptanceTest extends AcceptanceTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
+
+    @Test
+    void 사용자는_프로필에서_빠져나오면_다른_사용자는_그_프로필에_들어갈_수_있다() {
+        회원가입_요청(JoinRequest.of("gitchan", "webos"));
+        final String session1Id = 로그인_요청하고_세션_아이디_반환(LoginRequest.of("gitchan", "webos"));
+        final String session2Id = 로그인_요청하고_세션_아이디_반환(LoginRequest.of("gitchan", "webos"));
+        final Long profileId = 프로필_생성_요청하고_아이디_반환(session1Id, ProfileRequest.of("깃짱", "1234"));
+
+        프로필_선택_요청(session1Id, profileId);
+        프로필_빠져나오기_요청(session1Id);
+
+        final ExtractableResponse<Response> response = 프로필_선택_요청(session2Id, profileId);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
 }
