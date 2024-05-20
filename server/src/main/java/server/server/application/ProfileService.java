@@ -83,4 +83,9 @@ public class ProfileService {
 
         return contentsRepository.findAllById(contentsIdSet);
     }
+
+    public void exitProfile(final Long sessionId) {
+        final Session session = sessionRepository.findById(sessionId).orElseThrow(NoSuchElementException::new);
+        session.exitProfile();
+    }
 }

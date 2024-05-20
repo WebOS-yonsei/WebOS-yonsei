@@ -43,4 +43,18 @@ public class ProfilesStep {
                 .log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> 프로필_빠져나오기_요청(final String sessionId) {
+        return RestAssured.given()
+                .log().all()
+                .contentType(JSON)
+                .header("Authorization", sessionId)
+
+                .when()
+                .post("/profiles/exit")
+
+                .then()
+                .log().all()
+                .extract();
+    }
 }

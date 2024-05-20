@@ -32,4 +32,8 @@ public class Session {
     public void chooseProfile(final Long profileId) {
         this.profileId = profileId;
     }
+
+    public void exitProfile() {
+        this.profileId = null;
+    }
 }

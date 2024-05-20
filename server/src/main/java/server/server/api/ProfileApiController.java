@@ -49,6 +49,12 @@ public class ProfileApiController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/exit")
+    public ResponseEntity<Void> exitProfile(UsersAuth user) {
+        profileService.exitProfile(user.getSessionId());
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/list")
     public ResponseEntity<ProfileResponse> getProfileList(UsersAuth user) {
         List<Profile> profiles = profileService.getProfiles(user.getUserId());
