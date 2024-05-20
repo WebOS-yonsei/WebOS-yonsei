@@ -45,12 +45,7 @@ public class ProfileService {
     }
 
     // profile list 조회
-    public List<Profile> getProfiles(String sessionId) {
-
-        // userId 조회 @Session
-        // Long userId = getUserId(sessionId);
-        long userId = 1L;
-
+    public List<Profile> getProfiles(final Long userId) {
         return profilerepository.findByUserId(userId);
     }
 
