@@ -29,4 +29,18 @@ public class ProfilesStep {
                 .log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> 프로필_선택_요청(final String sessionId, final Long profileId) {
+        return RestAssured.given()
+                .log().all()
+                .contentType(JSON)
+                .header("Authorization", sessionId)
+
+                .when()
+                .post("/profiles/" + profileId)
+
+                .then()
+                .log().all()
+                .extract();
+    }
 }
