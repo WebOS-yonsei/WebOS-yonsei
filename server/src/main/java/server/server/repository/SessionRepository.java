@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SessionRepository extends JpaRepository<Session, Long> {
-  
-    List<Session> findByUserId(Long userId);
 
-    List<Session> findByUserId(final Long userId);
+    List<Session> findByUserId(Long userId);
 
     Optional<Session> findByIdAndProfileId(final Long id, final Long profileId);
 }
