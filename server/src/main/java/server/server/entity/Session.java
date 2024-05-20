@@ -36,4 +36,8 @@ public class Session {
     public void exitProfile() {
         this.profileId = null;
     }
+  
+    public void enterProfile(final Long profileId) {
+        this.profileId = profileId;
+    }
 }

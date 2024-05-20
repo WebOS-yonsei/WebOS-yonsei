@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/videos")
 public class ContentsApiController {
+
     private final ContentsService contentsService;
 
     @GetMapping
