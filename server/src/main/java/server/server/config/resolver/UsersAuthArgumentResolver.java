@@ -27,11 +27,9 @@ public class UsersAuthArgumentResolver implements HandlerMethodArgumentResolver 
 
     @Override
     public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer, final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
-        final String sessionId = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println("sessionId = " + sessionId);
-        final Session session = sessionRepository.findById(Long.parseLong(sessionId)).orElseThrow(NoSuchElementException::new);
+        final String authHeader = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        final Session session = sessionRepository.findById(Long.parseLong(authHeader)).orElseThrow(NoSuchElementException::new);
         final Long userId = session.getUserId();
-        System.out.println("userId = " + userId);
         return new UsersAuth(userId);
     }
 }

@@ -25,6 +25,13 @@ public class UsersApiController {
     private final UsersService usersService;
     private final SessionService sessionService;
 
+    @GetMapping
+    public ResponseEntity<CurrentUserResponse> queryUser(UsersAuth user) {
+        final Long userId = user.getUserId();
+        final String loginId = usersService.loginId(userId);
+        return ResponseEntity.ok(CurrentUserResponse.of(loginId));
+    }
+
     @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody JoinRequest request) {
         usersService.join(request.getLoginId(), request.getPassword());
@@ -42,12 +49,5 @@ public class UsersApiController {
         return ResponseEntity
                 .status(HttpStatus.OK.value())
                 .body(LoginResponse.from(sessionId));
-    }
-
-    @GetMapping
-    public ResponseEntity<CurrentUserResponse> queryUser(UsersAuth user) {
-        final Long userId = user.getUserId();
-        final String loginId = usersService.loginId(userId);
-        return ResponseEntity.ok(CurrentUserResponse.of(loginId));
     }
 }
