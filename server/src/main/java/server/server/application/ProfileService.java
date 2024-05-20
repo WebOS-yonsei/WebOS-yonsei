@@ -6,11 +6,15 @@ import server.server.api.request.ProfileRequest;
 import server.server.entity.Contents;
 import server.server.entity.Profile;
 import server.server.entity.ProfileContents;
+import server.server.entity.Session;
 import server.server.repository.ContentsRepository;
 import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
+import server.server.repository.SessionRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +24,7 @@ public class ProfileService {
     private final ProfileRepository profilerepository;
     private final ProfileContentsRepository profilecontentsrepository;
     private final ContentsRepository contentsRepository;
+    private final SessionRepository sessionRepository;
 
 //    현재 로그인 된 유저 인증
 //    public Long getUserId(String sessionId) throws BadRequestException {
@@ -42,6 +47,24 @@ public class ProfileService {
         Profile profile = profileRequest.toEntity(userId);
 
         return profilerepository.save(profile).getId();
+    }
+
+    public void chooseProfile(final Long sessionId, final Long profileId) {
+        validateConcurrentProfileUsage(sessionId, profileId);
+
+        final Optional<Session> session = sessionRepository.findById(sessionId);
+        if (session.isEmpty()) {
+            throw new NoSuchElementException("해당 세션은 존재하지 않습니다.");
+        }
+
+        session.get().chooseProfile(profileId);
+    }
+
+    private void validateConcurrentProfileUsage(final Long sessionId, final Long profileId) {
+        final Optional<Session> session = sessionRepository.findByIdAndProfileId(sessionId, profileId);
+        if (session.isPresent()) {
+            throw new IllegalArgumentException("해당 세션을 사용중인 유저가 존재합니다.");
+        }
     }
 
     // profile list 조회
