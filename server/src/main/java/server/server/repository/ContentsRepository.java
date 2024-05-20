@@ -7,5 +7,5 @@ import server.server.entity.Users;
 import java.util.Set;
 
 public interface ContentsRepository extends JpaRepository<Contents, Long> {
-    Set<Contents> findByUserId(long userId);
+    Set<Contents> findByUserId(long id);
 }

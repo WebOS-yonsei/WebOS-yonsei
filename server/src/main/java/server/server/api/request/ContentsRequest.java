@@ -22,7 +22,7 @@ public class ContentsRequest {
     private String genre;
     private String sourceURI;
 
-    public Contents toEntity(Long id){
+    public Contents toEntity(){
         return Contents.builder()
                 .title(this.title)
                 .description(this.description)
