@@ -18,8 +18,8 @@ public class ContentsService {
 
         // userId 조회 @Session
         // Long userId = getUserId(sessionId);
-        long userId = 1L;
+        long id = 1L;
 
-        return contentsRepository.findByUserId(userId);
+        return contentsRepository.findById(id);
     }
 }
