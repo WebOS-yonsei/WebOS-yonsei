@@ -36,7 +36,7 @@ public class ProfileApiController {
         Long profileId = profileService.create(user.getUserId(), profileRequest);
 
         return ResponseEntity
-                .created(URI.create("/profiles" + profileId))
+                .created(URI.create("/profiles/" + profileId))
                 .build();
     }
 
