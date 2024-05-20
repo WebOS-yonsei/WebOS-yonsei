@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-
 import static lombok.AccessLevel.PROTECTED;
 
 @AllArgsConstructor(access = PROTECTED)
@@ -26,4 +24,8 @@ public class Session {
     private Long userId;
     private Long profileId;
     private Boolean isValid;
+
+    public static Session from(final Long userId) {
+        return new Session(null, userId, null, true);
+    }
 }

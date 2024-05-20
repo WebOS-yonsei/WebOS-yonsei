@@ -1,18 +1,18 @@
 import { PropsWithChildren } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import { VideoHeader } from './video-header';
-import { VideoFooter } from './video-footer';
+import { DefaultHeader } from './default-header';
+import { DefaultFooter } from './default-footer';
 
-export function VideoLayout({ children }: PropsWithChildren) {
+export function DefaultLayout({ children }: PropsWithChildren) {
   return (
-    <>
-      <VideoHeader />
+    <Box minW="1200px">
+      <DefaultHeader />
       <Flex minH="100vh" align="stretch" justify="center" pt="160px" flexDir="column">
         <Box flexGrow={1} p="30px">
           {children}
         </Box>
-        <VideoFooter />
+        <DefaultFooter />
       </Flex>
-    </>
+    </Box>
   );
 }

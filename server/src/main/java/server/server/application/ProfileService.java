@@ -4,16 +4,26 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import server.server.api.request.ProfileRequest;
+import server.server.entity.Contents;
 import server.server.entity.Profile;
+import server.server.entity.ProfileContents;
+import server.server.repository.ContentsRepository;
+import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
 
     private final ProfileRepository profilerepository;
+    private final ProfileContentsRepository profilecontentsrepository;
+    private final ContentsRepository contentsRepository;
 
-//    // 유저 인증
+//    현재 로그인 된 유저 인증
 //    public Long getUserId(String sessionId) throws BadRequestException {
 //        Session session = sessionRepository.findBySessionId(sessionId).orElseThrow();
 //        if (!session.getIsValid()) {
@@ -42,4 +52,27 @@ public class ProfileService {
         return profilerepository.save(profile).getId();
     }
 
+
+    // profile list 조회
+    public Set<Profile> getProfiles(String sessionId) {
+
+        // userId 조회 @Session
+        // Long userId = getUserId(sessionId);
+        long userId = 1L;
+
+        return profilerepository.findByUserId(userId);
+    }
+
+
+    public List<Contents> getContents(String sessionId, Long profileId) {
+
+        // 로그인 확인 @Session
+
+        List<Long> contentsIdSet = profilecontentsrepository.findByProfileIdAndState(profileId, ProfileContents.State.WATCHING)
+                .stream()
+                .map(ProfileContents::getContentsId)
+                .collect(Collectors.toList());
+
+        return contentsRepository.findAllById(contentsIdSet);
+    }
 }

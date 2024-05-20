@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+message="$(cat $1)"
+requiredPattern="^\[(client|server|all)\] (feat|fix|docs|chore|refactor|etc):.*$"
+if ! [[ $message =~ $requiredPattern ]];
+then
+  echo "=========================================================================="
+  echo "======================   🚨 WRONG COMMIT MESSAGE!   ======================"
+  echo "=========================================================================="
+  echo "== Format should be => [client/server/all] <header>: <body>             =="
+  echo "== Allowed Headers: feat, fix, docs, chore, refactor, etc               =="
+  echo "== EXAMPLE => [client] feat: Google login                               =="
+  echo "=========================================================================="
+  echo "== Your commit message was =>" $message 
+  echo "== For more information, check script in .husky/commit-msg or README.md =="
+  echo "=========================================================================="
+  exit 1
+else
+  echo "=========================================================================="
+  echo "=======================      COMMIT CREATED!!      ======================="
+  echo "=========================================================================="
+fi

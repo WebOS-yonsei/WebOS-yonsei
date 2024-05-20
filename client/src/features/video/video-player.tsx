@@ -20,6 +20,11 @@ export function VideoPlayer({ src }: { src: string }) {
         // eslint-disable-next-line no-console
         console.log('>>> current time: ', video.currentTime);
       });
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
+          video.play();
+        });
+      });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = src;
     }
