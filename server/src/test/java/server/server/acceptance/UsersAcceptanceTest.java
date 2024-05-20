@@ -1,15 +1,16 @@
 package server.server.acceptance;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import server.server.api.request.JoinRequest;
+import server.server.api.request.LoginRequest;
 import server.server.common.AcceptanceTest;
 
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
+import static server.server.acceptance.step.UsersStep.로그인_요청;
+import static server.server.acceptance.step.UsersStep.회원가입_요청;
 
 public class UsersAcceptanceTest extends AcceptanceTest {
 
@@ -21,17 +22,15 @@ public class UsersAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    public static ExtractableResponse<Response> 회원가입_요청(JoinRequest request) {
-        return RestAssured.given()
-                .log().all()
-                .contentType(JSON)
-                .body(request)
+    @Test
+    void 로그인하면_세션_아이디를_받는다() {
+        final String loginId = "gitchan";
+        final String password = "webos";
 
-                .when()
-                .post("/users/join")
+        회원가입_요청(JoinRequest.of(loginId, password));
 
-                .then()
-                .log().all()
-                .extract();
+        final ExtractableResponse<Response> response = 로그인_요청(LoginRequest.of(loginId, password));
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.header("SessionId")).isNotBlank();
     }
 }

@@ -10,18 +10,16 @@ import java.util.Base64;
 @Component
 public class SessionEncryptor {
 
-    private final String secretKey;
+    private final byte[] secretKey;
 
-    public SessionEncryptor(
-            @Value("${encryption.secret-key}") String secretKey
-    ) {
-        this.secretKey = secretKey;
+    public SessionEncryptor(@Value("${encryption.secret-key}") String secretKey) {
+        this.secretKey = Base64.getDecoder().decode(secretKey);
     }
 
     public String encrypt(Long sessionId) {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "AES");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey, "AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
             byte[] encrypted = cipher.doFinal(sessionId.toString().getBytes());
             return Base64.getEncoder().encodeToString(encrypted);
@@ -34,7 +32,7 @@ public class SessionEncryptor {
     public Long decrypt(String encryptedSessionId) {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "AES");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey, "AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
             byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedSessionId));
             return Long.parseLong(new String(decrypted));

@@ -16,4 +16,5 @@ spring:
       ddl-auto: create
 
 encryption:
-  secret-key: VNaqsewrTM84zdZB+52sXOg==
+  secret-key: d2V6ZGZ3a3JweWpiM2x0cnR1bHB2Ym5vZmtkY2N3bHdvaXN3b2xjY3J4ZGp2YmFz
+

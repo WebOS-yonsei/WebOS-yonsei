@@ -38,6 +38,7 @@ public class UsersApiController {
 
         return ResponseEntity
                 .status(HttpStatus.OK.value())
-                .body(LoginResponse.from(sessionId));
+                .header("SessionId", sessionId)
+                .build();
     }
 }

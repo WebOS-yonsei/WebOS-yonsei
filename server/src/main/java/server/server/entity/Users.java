@@ -32,7 +32,8 @@ public class Users {
             final String password
     ) {
         this.loginId = loginId;
-        this.password = encryptPassword(password);
+        this.password = password;
+//        this.password = encryptPassword(password);
     }
 
     private static String encryptPassword(final String password) {
@@ -43,8 +44,9 @@ public class Users {
     }
 
     public void checkPassword(final String password) {
-        final String encryptedPassword = PasswordUtil.encrypt(password);
-        if (!this.password.equals(encryptedPassword)) {
+//        final String encryptedPassword = PasswordUtil.encrypt(password);
+//        if (!this.password.equals(encryptedPassword)) {
+        if (!this.password.equals(password)) {
             throw new IllegalAccessError("아이디 또는 비밀번호가 잘못되었습니다.");
         }
     }
