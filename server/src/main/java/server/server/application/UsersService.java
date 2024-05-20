@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import server.server.entity.Users;
 import server.server.repository.UsersRepository;
 
+import java.util.NoSuchElementException;
+
 @RequiredArgsConstructor
 @Service
 public class UsersService {
@@ -20,10 +22,14 @@ public class UsersService {
         return memberRepository.save(member).getId();
     }
 
-
     public Long login(final String loginId, final String password) {
         final Users member = memberRepository.getByLoginId(loginId);
         member.checkPassword(password);
         return member.getId();
+    }
+
+    public String loginId(final Long userId) {
+        final Users user = memberRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        return user.getLoginId();
     }
 }
