@@ -28,4 +28,8 @@ public class Session {
     public static Session from(final Long userId) {
         return new Session(null, userId, null, true);
     }
+
+    public void chooseProfile(final Long profileId) {
+        this.profileId = profileId;
+    }
 }

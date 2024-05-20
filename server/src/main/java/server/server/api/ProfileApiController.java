@@ -40,19 +40,28 @@ public class ProfileApiController {
                 .build();
     }
 
+    @PostMapping("/{profileId}")
+    public ResponseEntity<Void> chooseProfile(
+            UsersAuth user,
+            @PathVariable("profileId") Long profileId
+    ) {
+        profileService.chooseProfile(user.getSessionId(), profileId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/list")
     public ResponseEntity<ProfileResponse> getProfileList(UsersAuth user) {
         List<Profile> profiles = profileService.getProfiles(user.getUserId());
         return ResponseEntity.ok(new ProfileResponse(profiles));
     }
 
-    @GetMapping("/{profile_id}/history")
+    @GetMapping("/{profileId}/history")
     public ResponseEntity<ProfileHistoryResponse> getProfileHistory(
             UsersAuth user,
-            @PathVariable("profile_id") Long profile_id
+            @PathVariable("profileId") Long profileId
     ) {
 
-        List<Contents> contents = profileService.getContents(user.getUserId(), profile_id);
+        List<Contents> contents = profileService.getContents(user.getUserId(), profileId);
 
         return ResponseEntity.ok(new ProfileHistoryResponse(contents));
     }

@@ -30,6 +30,6 @@ public class UsersAuthArgumentResolver implements HandlerMethodArgumentResolver 
         final String authHeader = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
         final Session session = sessionRepository.findById(Long.parseLong(authHeader)).orElseThrow(NoSuchElementException::new);
         final Long userId = session.getUserId();
-        return new UsersAuth(userId);
+        return new UsersAuth(userId, session.getId());
     }
 }
