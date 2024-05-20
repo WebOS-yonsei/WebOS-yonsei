@@ -1,7 +1,6 @@
 package server.server.application;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import server.server.api.request.ProfileRequest;
 import server.server.entity.Contents;
@@ -33,17 +32,11 @@ public class ProfileService {
 //        return session.getUserId();
 //    }
 
-
     // profile 생성
-    public Long create(String sessionId, ProfileRequest profileRequest) throws BadRequestException {
-
-        // userId 조회 @Session
-        // Long userId = getUserId(sessionId);
-        long userId = 1L;
-
+    public Long create(final Long userId, ProfileRequest profileRequest) {
         // 현재 계정에 존재하는 프로필 개수 확인 - 3개 미만인지
         if (profilerepository.getProfilesNumber(userId) >= 3) {
-            throw new BadRequestException("Cannot create more than 3 profiles");
+            throw new IllegalArgumentException("Cannot create more than 3 profiles");
         }
 
         // 프로필 생성
@@ -51,7 +44,6 @@ public class ProfileService {
 
         return profilerepository.save(profile).getId();
     }
-
 
     // profile list 조회
     public Set<Profile> getProfiles(String sessionId) {
@@ -62,7 +54,6 @@ public class ProfileService {
 
         return profilerepository.findByUserId(userId);
     }
-
 
     public List<Contents> getContents(String sessionId, Long profileId) {
 
