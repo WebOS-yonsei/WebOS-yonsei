@@ -2,6 +2,7 @@ package server.server.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import server.server.api.request.ProfileRequest;
 import server.server.entity.Contents;
 import server.server.entity.Profile;
@@ -17,6 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
@@ -50,21 +52,19 @@ public class ProfileService {
     }
 
     public void chooseProfile(final Long sessionId, final Long profileId) {
-        validateConcurrentProfileUsage(sessionId, profileId);
-
         final Optional<Session> session = sessionRepository.findById(sessionId);
         if (session.isEmpty()) {
             throw new NoSuchElementException("해당 세션은 존재하지 않습니다.");
         }
 
-        session.get().chooseProfile(profileId);
-    }
+        final Long userId = session.get().getUserId();
+        final Optional<Session> profileSession = sessionRepository.findByUserIdAndProfileId(userId, profileId);
 
-    private void validateConcurrentProfileUsage(final Long sessionId, final Long profileId) {
-        final Optional<Session> session = sessionRepository.findByIdAndProfileId(sessionId, profileId);
-        if (session.isPresent()) {
-            throw new IllegalArgumentException("해당 세션을 사용중인 유저가 존재합니다.");
+        if (profileSession.isPresent()) {
+            throw new IllegalArgumentException("해당 프로필은 이미 다른 세션에서 사용중입니다");
         }
+
+        session.get().enterProfile(profileId);
     }
 
     // profile list 조회
