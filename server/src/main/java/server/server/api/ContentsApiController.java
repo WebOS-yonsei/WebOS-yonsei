@@ -8,6 +8,7 @@ import server.server.api.response.ContentsResponse;
 import server.server.application.ContentsService;
 import server.server.entity.Contents;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -21,8 +22,8 @@ public class ContentsApiController {
     public ResponseEntity<ContentsResponse> getContentsList(
             @RequestHeader("sessionId") String sessionId){
 
-        Set<Contents> contentsSet = contentsService.getContents(sessionId);
+        List<Contents> contentsList = contentsService.getContents(sessionId);
 
-        return ResponseEntity.ok(new ContentsResponse(contentsSet));
+        return ResponseEntity.ok(new ContentsResponse(contentsList));
     }
 }

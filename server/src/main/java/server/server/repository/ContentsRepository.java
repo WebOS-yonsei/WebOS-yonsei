@@ -2,10 +2,10 @@ package server.server.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import server.server.entity.Contents;
-import server.server.entity.Users;
 
-import java.util.Set;
+import java.util.Optional;
+
 
 public interface ContentsRepository extends JpaRepository<Contents, Long> {
-    Set<Contents> findById(long id);
+    Optional<Contents> findById(long id);
 }
