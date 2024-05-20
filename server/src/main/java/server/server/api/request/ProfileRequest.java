@@ -16,10 +16,15 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor
 @AllArgsConstructor(access = PROTECTED)
 public class ProfileRequest {
+
     private String nickname;
     private String profileUri;
     private Grade grade;
     private String profilePassword;
+
+    public static ProfileRequest of(final String nickname, final String profilePassword) {
+        return new ProfileRequest(nickname, null, Grade.CHILD, profilePassword);
+    }
 
     public Profile toEntity(Long userId) {
         return Profile.builder()

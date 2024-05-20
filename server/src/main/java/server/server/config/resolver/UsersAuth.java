@@ -6,9 +6,11 @@ import lombok.Getter;
 public class UsersAuth {
 
     private Long userId;
+    private Long sessionId;
 
-    public UsersAuth(final Long userId) {
+    public UsersAuth(final Long userId, final Long sessionId) {
         this.userId = userId;
+        this.sessionId = sessionId;
     }
 
     public UsersAuth() {

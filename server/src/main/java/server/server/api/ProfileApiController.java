@@ -36,8 +36,17 @@ public class ProfileApiController {
         Long profileId = profileService.create(user.getUserId(), profileRequest);
 
         return ResponseEntity
-                .created(URI.create("/profiles" + profileId))
+                .created(URI.create("/profiles/" + profileId))
                 .build();
+    }
+
+    @PostMapping("/{profileId}")
+    public ResponseEntity<Void> chooseProfile(
+            UsersAuth user,
+            @PathVariable("profileId") Long profileId
+    ) {
+        profileService.chooseProfile(user.getSessionId(), profileId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/list")
@@ -46,13 +55,13 @@ public class ProfileApiController {
         return ResponseEntity.ok(new ProfileResponse(profiles));
     }
 
-    @GetMapping("/{profile_id}/history")
+    @GetMapping("/{profileId}/history")
     public ResponseEntity<ProfileHistoryResponse> getProfileHistory(
             UsersAuth user,
-            @PathVariable("profile_id") Long profile_id
+            @PathVariable("profileId") Long profileId
     ) {
 
-        List<Contents> contents = profileService.getContents(user.getUserId(), profile_id);
+        List<Contents> contents = profileService.getContents(user.getUserId(), profileId);
 
         return ResponseEntity.ok(new ProfileHistoryResponse(contents));
     }
