@@ -2,6 +2,7 @@ package server.server.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import server.server.api.request.JoinRequest;
@@ -33,5 +34,17 @@ public class UsersAcceptanceTest extends AcceptanceTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(loginResponse.getSessionId()).isNotEmpty();
+    }
+
+    @Test
+    void 네_명_이상의_사용자는_하나의_아이디로_로그인할_수_없다() {
+        회원가입_요청(JoinRequest.of("gitchan", "webos"));
+
+        로그인_요청(LoginRequest.of("gitchan", "webos"));
+        로그인_요청(LoginRequest.of("gitchan", "webos"));
+        로그인_요청(LoginRequest.of("gitchan", "webos"));
+
+        final ExtractableResponse<Response> response = 로그인_요청(LoginRequest.of("gitchan", "webos"));
+        Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 }

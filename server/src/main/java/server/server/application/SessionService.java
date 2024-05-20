@@ -5,16 +5,21 @@ import org.springframework.stereotype.Service;
 import server.server.entity.Session;
 import server.server.repository.SessionRepository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class SessionService {
 
+    private static final int MAX_SESSION_SIZE = 3;
     private final SessionRepository sessionRepository;
-//    private final SessionEncryptor sessionEncryptor;
 
     public String createSessionId(final Long userId) {
+        final List<Session> sessions = sessionRepository.findByUserId(userId);
+        if (sessions.size() >= MAX_SESSION_SIZE) {
+            throw new IllegalArgumentException("3명 이상의 유저가 동시에 로그인할 수 없습니다.");
+        }
         final Session session = sessionRepository.save(Session.from(userId));
-//        return sessionEncryptor.encrypt(session.getId());
         return String.valueOf(session.getId());
     }
 }
