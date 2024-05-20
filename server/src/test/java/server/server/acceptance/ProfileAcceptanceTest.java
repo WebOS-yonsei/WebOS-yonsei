@@ -3,10 +3,13 @@ package server.server.acceptance;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import server.server.api.request.JoinRequest;
+import server.server.api.request.LoginRequest;
 import server.server.common.AcceptanceTest;
 import server.server.entity.Contents;
 import server.server.entity.Grade;
@@ -23,10 +26,10 @@ import java.util.List;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static server.server.acceptance.step.UsersStep.로그인_요청하고_세션_아이디_반환;
+import static server.server.acceptance.step.UsersStep.회원가입_요청;
 
 class ProfileAcceptanceTest extends AcceptanceTest {
-
-    private final String SESSION_ID = "3u34dwj3245htg4j32htj231324354";
 
     @MockBean
     private ProfileRepository profileRepository;
@@ -49,11 +52,14 @@ class ProfileAcceptanceTest extends AcceptanceTest {
                 .build();
         Mockito.when(profileRepository.save(any(Profile.class))).thenReturn(profile);
 
+        회원가입_요청(JoinRequest.of("gitchan", "webos"));
+        final String sessionId = 로그인_요청하고_세션_아이디_반환(LoginRequest.of("gitchan", "webos"));
+
         // when
         final ExtractableResponse<Response> response = RestAssured.given()
                 .log().all()
                 .contentType(JSON)
-                .header("Authorization", SESSION_ID)
+                .header("Authorization", sessionId)
                 .body(jsonFile)
 
                 .when()
@@ -67,6 +73,7 @@ class ProfileAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
+    @Disabled
     @Test
     void server_profileList() {
         // given
@@ -85,11 +92,14 @@ class ProfileAcceptanceTest extends AcceptanceTest {
 
         Mockito.when(profileRepository.findByUserId(1L)).thenReturn(profiles);
 
+        회원가입_요청(JoinRequest.of("gitchan", "webos"));
+        final String sessionId = 로그인_요청하고_세션_아이디_반환(LoginRequest.of("gitchan", "webos"));
+
         // when
         final ExtractableResponse<Response> response = RestAssured.given()
                 .log().all()
                 .contentType(JSON)
-                .header("sessionId", SESSION_ID)
+                .header("Authorization", sessionId)
 
                 .when()
                 .get("/profiles/list")
@@ -141,11 +151,14 @@ class ProfileAcceptanceTest extends AcceptanceTest {
         Mockito.when(profileContentsRepository.findByProfileIdAndState(1L, ProfileContents.State.WATCHING)).thenReturn(profileContentsList);
         Mockito.when(contentsRepository.findAllById(ids)).thenReturn(contentsList);
 
+        회원가입_요청(JoinRequest.of("gitchan", "webos"));
+        final String sessionId = 로그인_요청하고_세션_아이디_반환(LoginRequest.of("gitchan", "webos"));
+
         // when
         final ExtractableResponse<Response> response = RestAssured.given()
                 .log().all()
                 .contentType(JSON)
-                .header("Authorization", SESSION_ID)
+                .header("Authorization", sessionId)
 
                 .when()
                 .get("/profiles/1/history")

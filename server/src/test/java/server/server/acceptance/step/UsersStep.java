@@ -5,6 +5,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import server.server.api.request.JoinRequest;
 import server.server.api.request.LoginRequest;
+import server.server.api.response.LoginResponse;
 
 import static io.restassured.http.ContentType.JSON;
 
@@ -36,5 +37,11 @@ public class UsersStep {
                 .then()
                 .log().all()
                 .extract();
+    }
+
+    public static String 로그인_요청하고_세션_아이디_반환(LoginRequest request) {
+        final ExtractableResponse<Response> response = 로그인_요청(request);
+        final LoginResponse loginResponse = response.body().as(LoginResponse.class);
+        return loginResponse.getSessionId();
     }
 }
