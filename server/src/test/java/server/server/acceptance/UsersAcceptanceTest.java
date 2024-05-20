@@ -1,7 +1,5 @@
 package server.server.acceptance;
 
-import com.jayway.jsonpath.JsonPath;
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -11,8 +9,8 @@ import server.server.api.request.LoginRequest;
 import server.server.api.response.LoginResponse;
 import server.server.common.AcceptanceTest;
 
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
+import static server.server.acceptance.step.UsersStep.로그인_요청;
 import static server.server.acceptance.step.UsersStep.회원가입_요청;
 
 public class UsersAcceptanceTest extends AcceptanceTest {
@@ -35,19 +33,5 @@ public class UsersAcceptanceTest extends AcceptanceTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(loginResponse.getSessionId()).isNotEmpty();
-    }
-
-    private static ExtractableResponse<Response> 로그인_요청(final LoginRequest request) {
-        return RestAssured.given()
-                .log().all()
-                .contentType(JSON)
-                .body(request)
-
-                .when()
-                .post("/users/login")
-
-                .then()
-                .log().all()
-                .extract();
     }
 }
