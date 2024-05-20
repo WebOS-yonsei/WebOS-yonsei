@@ -1,6 +1,10 @@
 package server.server.api.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import server.server.entity.Grade;
 import server.server.entity.Profile;
 
@@ -20,10 +24,10 @@ public class ProfileRequest {
     public Profile toEntity(Long userId) {
         return Profile.builder()
                 .userId(userId)
-                .nickname(this.nickname)
-                .imageURI(this.profileUri)
-                .grade(this.grade)
-                .password(this.profilePassword)
+                .nickname(nickname)
+                .imageURI(profileUri)
+                .grade(grade)
+                .password(profilePassword)
                 .build();
     }
 }

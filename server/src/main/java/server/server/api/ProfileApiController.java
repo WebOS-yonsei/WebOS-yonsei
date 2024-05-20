@@ -22,7 +22,6 @@ import server.server.entity.Profile;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @Slf4j
@@ -49,18 +48,19 @@ public class ProfileApiController {
     public ResponseEntity<ProfileResponse> getProfileList(
             @RequestHeader("sessionId") String sessionId) {
 
-        Set<Profile> profileSet = profileService.getProfiles(sessionId);
+        List<Profile> profiles = profileService.getProfiles(sessionId);
 
-        return ResponseEntity.ok(new ProfileResponse(profileSet));
+        return ResponseEntity.ok(new ProfileResponse(profiles));
     }
 
     @GetMapping("/{profile_id}/history")
     public ResponseEntity<ProfileHistoryResponse> getProfileHistory(
-            @PathVariable("profile_id") Long profile_id,
-            @RequestHeader("sessionId") String sessionId) {
+            UsersAuth user,
+            @PathVariable("profile_id") Long profile_id
+    ) {
 
-        List<Contents> contentsSet = profileService.getContents(sessionId, profile_id);
+        List<Contents> contents = profileService.getContents(user.getUserId(), profile_id);
 
-        return ResponseEntity.ok(new ProfileHistoryResponse(contentsSet));
+        return ResponseEntity.ok(new ProfileHistoryResponse(contents));
     }
 }

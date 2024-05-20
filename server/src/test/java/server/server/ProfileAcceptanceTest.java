@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -18,13 +17,12 @@ import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
 
 import java.io.File;
-import java.sql.Time;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-
 
 class ProfileAcceptanceTest extends AcceptanceTest {
 
@@ -41,6 +39,7 @@ class ProfileAcceptanceTest extends AcceptanceTest {
 
     @Test
     void server_profile_create() {
+
         // given
         File jsonFile = new File("src/test/resources/mock/profileRequest.json");
         Profile profile = Profile.builder()
@@ -54,7 +53,7 @@ class ProfileAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = RestAssured.given()
                 .log().all()
                 .contentType(JSON)
-                .header("sessionId", SESSION_ID)
+                .header("Authorization", SESSION_ID)
                 .body(jsonFile)
 
                 .when()
@@ -71,20 +70,20 @@ class ProfileAcceptanceTest extends AcceptanceTest {
     @Test
     void server_profileList() {
         // given
-        Set<Profile> profileSet = new HashSet<>();
-        profileSet.add(Profile.builder()
+        List<Profile> profiles = new ArrayList<>();
+        profiles.add(Profile.builder()
                 .id(1L)
                 .userId(1L)
                 .nickname("프로필1")
                 .build());
 
-        profileSet.add(Profile.builder()
+        profiles.add(Profile.builder()
                 .id(2L)
                 .userId(1L)
                 .nickname("프로필2")
                 .build());
 
-        Mockito.when(profileRepository.findByUserId(1L)).thenReturn(profileSet);
+        Mockito.when(profileRepository.findByUserId(1L)).thenReturn(profiles);
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given()
@@ -101,7 +100,6 @@ class ProfileAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-
     }
 
     @Test
@@ -143,12 +141,11 @@ class ProfileAcceptanceTest extends AcceptanceTest {
         Mockito.when(profileContentsRepository.findByProfileIdAndState(1L, ProfileContents.State.WATCHING)).thenReturn(profileContentsList);
         Mockito.when(contentsRepository.findAllById(ids)).thenReturn(contentsList);
 
-
         // when
         final ExtractableResponse<Response> response = RestAssured.given()
                 .log().all()
                 .contentType(JSON)
-                .header("sessionId", SESSION_ID)
+                .header("Authorization", SESSION_ID)
 
                 .when()
                 .get("/profiles/1/history")

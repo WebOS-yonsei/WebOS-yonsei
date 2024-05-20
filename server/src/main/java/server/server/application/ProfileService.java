@@ -11,7 +11,6 @@ import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +45,7 @@ public class ProfileService {
     }
 
     // profile list 조회
-    public Set<Profile> getProfiles(String sessionId) {
+    public List<Profile> getProfiles(String sessionId) {
 
         // userId 조회 @Session
         // Long userId = getUserId(sessionId);
@@ -55,7 +54,7 @@ public class ProfileService {
         return profilerepository.findByUserId(userId);
     }
 
-    public List<Contents> getContents(String sessionId, Long profileId) {
+    public List<Contents> getContents(final Long userId, Long profileId) {
 
         // 로그인 확인 @Session
 
