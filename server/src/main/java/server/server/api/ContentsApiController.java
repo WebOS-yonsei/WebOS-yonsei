@@ -3,9 +3,8 @@ package server.server.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import server.server.api.request.TimeRecordRequest;
 import server.server.api.response.ContentsResponse;
 import server.server.application.ContentsService;
 import server.server.config.resolver.UsersAuth;
@@ -25,5 +24,16 @@ public class ContentsApiController {
     public ResponseEntity<ContentsResponse> getContentsList(UsersAuth user) {
         List<Contents> contents = contentsService.getContents(user.getUserId());
         return ResponseEntity.ok(ContentsResponse.of(contents));
+    }
+
+    @PostMapping("/{video_id}/time/{profile_id}")
+    public ResponseEntity<ContentsResponse> recordContentsTime(
+            @PathVariable("video_id") Long videoId,
+            @PathVariable("profile_id") Long profileId,
+            UsersAuth user,
+            @RequestBody TimeRecordRequest timeRecordRequest) {
+
+        contentsService.recordTime(profileId, videoId, timeRecordRequest.getTime());
+        return ResponseEntity.ok().build();
     }
 }

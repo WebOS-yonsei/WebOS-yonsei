@@ -3,7 +3,9 @@ package server.server.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.server.entity.Contents;
+import server.server.entity.ProfileContents;
 import server.server.repository.ContentsRepository;
+import server.server.repository.ProfileContentsRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,18 +16,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ContentsService {
     private final ContentsRepository contentsRepository;
+    private final ProfileContentsRepository profileContentsRepository;
 
     // contents list 조회
     public List<Contents> getContents(final Long userId) {
 
-        // userId 조회 @Session
-        long id = 1L;
-
-        Optional<Contents> optionalContents = contentsRepository.findById(id);
+        Optional<Contents> optionalContents = contentsRepository.findById(userId);
         if (optionalContents.isEmpty()) {
-            throw new NoSuchElementException("Content not found with id: " + id);
+            throw new NoSuchElementException("Content not found with id: " + userId);
         }
 
         return Collections.singletonList(optionalContents.get());
+    }
+
+    // 시청 시간 기록
+    public void recordTime(Long profileId, Long videoId, float time){
+        ProfileContents profileContent = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId)
+                .orElseThrow(() -> new NoSuchElementException("해당 컨텐츠는 존재하지 않습니다"));
+        profileContent.setTime(time);
+        profileContentsRepository.save(profileContent);
     }
 }
