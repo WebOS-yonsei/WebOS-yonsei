@@ -11,4 +11,6 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     List<Session> findByUserId(Long userId);
 
     Optional<Session> findByIdAndProfileId(final Long id, final Long profileId);
+
+    Optional<Session> findByUserIdAndProfileId(Long userId, Long profileId);
 }
