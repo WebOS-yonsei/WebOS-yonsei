@@ -41,4 +41,11 @@ public class Users {
         }
         return null;
     }
+
+    public void checkPassword(final String password) {
+        final String encryptedPassword = PasswordUtil.encrypt(password);
+        if (!this.password.equals(encryptedPassword)) {
+            throw new IllegalAccessError("아이디 또는 비밀번호가 잘못되었습니다.");
+        }
+    }
 }
