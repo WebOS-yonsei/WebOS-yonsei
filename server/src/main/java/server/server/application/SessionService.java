@@ -10,10 +10,11 @@ import server.server.repository.SessionRepository;
 public class SessionService {
 
     private final SessionRepository sessionRepository;
-    private final SessionEncryptor sessionEncryptor;
+//    private final SessionEncryptor sessionEncryptor;
 
     public String createSessionId(final Long userId) {
         final Session session = sessionRepository.save(Session.from(userId));
-        return sessionEncryptor.encrypt(session.getId());
+//        return sessionEncryptor.encrypt(session.getId());
+        return String.valueOf(session.getId());
     }
 }
