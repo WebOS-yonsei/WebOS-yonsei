@@ -13,7 +13,7 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const resolve = require('resolve');
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin, EnvironmentPlugin } = require('webpack');
-const { optionParser: app, cssModuleIdent: getLocalIdent, GracefulFsPlugin, ILibPlugin, WebOSMetaPlugin } = require('@enact/dev-utils');
+const { optionParser: app, cssModuleIdent: getLocalIdent, GracefulFsPlugin, WebOSMetaPlugin } = require('@enact/dev-utils');
 const createEnvironmentHash = require('./createEnvironmentHash');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
