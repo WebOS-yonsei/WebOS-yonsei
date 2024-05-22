@@ -1,8 +1,14 @@
-import { ThemeConfig, extendTheme } from '@chakra-ui/react';
+import { extendTheme } from '@chakra-ui/react';
 
-const config: ThemeConfig = {
-  initialColorMode: 'dark',
-  useSystemColorMode: false,
-};
-
-export const theme = extendTheme({ config });
+// @see https://github.com/chakra-ui/chakra-ui/discussions/5048
+export const theme = extendTheme({
+  styles: {
+    global: () => ({
+      body: {
+        bg: '#000',
+        // @see https://github.com/chakra-ui/chakra-ui/discussions/5093
+        color: 'white',
+      },
+    }),
+  },
+});

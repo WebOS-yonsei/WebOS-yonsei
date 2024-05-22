@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Global } from '@emotion/react';
 import { routeTree } from '~/routeTree.gen';
-import { globalStyles } from '~/styles';
+import { globalStyles, theme } from '~/styles';
 
 const router = createRouter({ routeTree });
 
@@ -18,7 +18,7 @@ declare module '@tanstack/react-router' {
 export const App = () => (
   <>
     <Global styles={globalStyles} />
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Suspense>
         <RouterProvider router={router} />
       </Suspense>
