@@ -20,9 +20,6 @@
   "license": "UNLICENSED",
   "private": true,
   "repository": "",
-  "enact": {
-    "theme": "sandstone"
-  },
   "eslintIgnore": [
     "node_modules/*",
     "build/*",
@@ -37,7 +34,6 @@
     "@emotion/styled": "^11.11.5",
     "@enact/core": "^4.8.0",
     "@enact/i18n": "^4.8.0",
-    "@enact/sandstone": "^2.8.0",
     "@enact/spotlight": "^4.8.0",
     "@enact/ui": "^4.8.0",
     "@enact/webos": "^4.8.0",
@@ -55,7 +51,6 @@
   },
   "devDependencies": {
     "@enact/dev-utils": "^6.1.0",
-    "@enact/template-sandstone": "^2.8.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@tanstack/router-cli": "^1.30.0",
     "@testing-library/jest-dom": "^6.2.0",

@@ -1,6 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import ThemeDecorator, { ThemeDecoratorProps } from '@enact/sandstone/ThemeDecorator';
-
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { Suspense } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -17,13 +15,13 @@ declare module '@tanstack/react-router' {
   }
 }
 
-export const App = ThemeDecorator((props: ThemeDecoratorProps) => (
-  <div {...props}>
+export const App = () => (
+  <>
     <Global styles={globalStyles} />
     <ChakraProvider>
       <Suspense>
         <RouterProvider router={router} />
       </Suspense>
     </ChakraProvider>
-  </div>
-));
+  </>
+);
