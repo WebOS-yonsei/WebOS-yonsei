@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const ESLintPlugin = require('eslint-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = process.env.TSC_COMPILE_ON_ERROR === 'true' ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin') : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -13,7 +12,7 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const resolve = require('resolve');
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin, EnvironmentPlugin } = require('webpack');
-const { optionParser: app, cssModuleIdent: getLocalIdent, GracefulFsPlugin, ILibPlugin, WebOSMetaPlugin } = require('@enact/dev-utils');
+const { optionParser: app, cssModuleIdent: getLocalIdent, GracefulFsPlugin, WebOSMetaPlugin } = require('@enact/dev-utils');
 const createEnvironmentHash = require('./createEnvironmentHash');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
@@ -289,10 +288,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
       // EMFILE errors when hanndling mass amounts of files at once, such as
       // what happens when using ilib bundles/resources.
       new GracefulFsPlugin(),
-      // Automatically configure iLib library within @enact/i18n. Additionally,
-      // ensure the locale data files and the resource files are copied during
-      // the build to the output directory.
-      new ILibPlugin({ publicPath, symlinks: false, ilibAdditionalResourcesPath }),
       // Automatically detect ./appinfo.json and ./webos-meta/appinfo.json files,
       // and parses any to copy over any webOS meta assets at build time.
       new WebOSMetaPlugin({ htmlPlugin: HtmlWebpackPlugin }),
@@ -334,15 +329,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
             infrastructure: 'silent',
           },
         }),
-      new ESLintPlugin({
-        // Plugin options
-        extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-        formatter: require.resolve('react-dev-utils/eslintFormatter'),
-        eslintPath: require.resolve('eslint'),
-        // ESLint class options
-        resolvePluginsRelativeTo: __dirname,
-        cache: true,
-      }),
     ].filter(Boolean),
     resolve: {
       alias: {

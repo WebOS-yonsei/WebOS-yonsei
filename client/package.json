@@ -20,9 +20,6 @@
   "license": "UNLICENSED",
   "private": true,
   "repository": "",
-  "enact": {
-    "theme": "sandstone"
-  },
   "eslintIgnore": [
     "node_modules/*",
     "build/*",
@@ -36,8 +33,6 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@enact/core": "^4.8.0",
-    "@enact/i18n": "^4.8.0",
-    "@enact/sandstone": "^2.8.0",
     "@enact/spotlight": "^4.8.0",
     "@enact/ui": "^4.8.0",
     "@enact/webos": "^4.8.0",
@@ -48,14 +43,12 @@
     "firebase": "^10.11.1",
     "framer-motion": "^11.1.9",
     "hls.js": "^1.5.8",
-    "ilib": "^14.19.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@enact/dev-utils": "^6.1.0",
-    "@enact/template-sandstone": "^2.8.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@tanstack/router-cli": "^1.30.0",
     "@testing-library/jest-dom": "^6.2.0",
@@ -79,7 +72,6 @@
     "eslint-config-enact": "^4.2.1",
     "eslint-config-enact-proxy": "^1.0.7",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-webpack-plugin": "^4.0.1",
     "expose-loader": "^4.1.0",
     "file-loader": "^6.2.0",
     "filesize": "^10.1.0",

@@ -4,7 +4,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import { ColorModeScript } from '@chakra-ui/react';
 import { App } from '~/app';
 import { turnOffMajorRelaseWarning, initFirebase } from '~/miscs';
-import { theme } from '~/styles';
+import { colorModeTheme } from '~/styles';
 
 turnOffMajorRelaseWarning();
 
@@ -12,7 +12,7 @@ initFirebase();
 
 const appElement = (
   <>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <ColorModeScript initialColorMode={colorModeTheme.config.initialColorMode} />
     <App />
   </>
 );
