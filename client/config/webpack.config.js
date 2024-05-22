@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const ESLintPlugin = require('eslint-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = process.env.TSC_COMPILE_ON_ERROR === 'true' ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin') : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -330,15 +329,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
             infrastructure: 'silent',
           },
         }),
-      new ESLintPlugin({
-        // Plugin options
-        extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-        formatter: require.resolve('react-dev-utils/eslintFormatter'),
-        eslintPath: require.resolve('eslint'),
-        // ESLint class options
-        resolvePluginsRelativeTo: __dirname,
-        cache: true,
-      }),
     ].filter(Boolean),
     resolve: {
       alias: {
