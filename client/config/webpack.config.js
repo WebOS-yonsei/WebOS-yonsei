@@ -289,10 +289,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
       // EMFILE errors when hanndling mass amounts of files at once, such as
       // what happens when using ilib bundles/resources.
       new GracefulFsPlugin(),
-      // Automatically configure iLib library within @enact/i18n. Additionally,
-      // ensure the locale data files and the resource files are copied during
-      // the build to the output directory.
-      new ILibPlugin({ publicPath, symlinks: false, ilibAdditionalResourcesPath }),
       // Automatically detect ./appinfo.json and ./webos-meta/appinfo.json files,
       // and parses any to copy over any webOS meta assets at build time.
       new WebOSMetaPlugin({ htmlPlugin: HtmlWebpackPlugin }),
