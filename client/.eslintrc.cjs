@@ -35,6 +35,9 @@ module.exports = {
 
     // Text, Image 등의 이름을 가진 컴포넌트를 사용하기 위해서
     'no-shadow': 'off',
+
+    // codegen 라이브러리들과의 호환을 위해
+    'no-use-before-define': 'off',
   },
   env: {
     browser: true,
