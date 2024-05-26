@@ -15,7 +15,8 @@
     "lint": "eslint . --fix && prettier . --write --ignore-path .gitignore",
     "license": "node ./scripts/license.js",
     "test": "node ./scripts/test.js",
-    "test-watch": "node ./scripts/test.js --watch"
+    "test-watch": "node ./scripts/test.js --watch",
+    "codegen": "openapi-typescript http://localhost:8080/v3/api-docs --output ./src/features/@api/scheme.ts"
   },
   "license": "UNLICENSED",
   "private": true,
@@ -43,6 +44,7 @@
     "firebase": "^10.11.1",
     "framer-motion": "^11.1.9",
     "hls.js": "^1.5.8",
+    "openapi-fetch": "^0.9.7",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0"
@@ -85,6 +87,7 @@
     "mini-css-extract-plugin": "^2.7.6",
     "minimist": "^1.2.8",
     "node-polyfill-webpack-plugin": "^3.0.0",
+    "openapi-typescript": "^6.7.6",
     "prettier": "^3.2.5",
     "prompts": "^2.4.2",
     "react-dev-utils": "^12.0.1",
