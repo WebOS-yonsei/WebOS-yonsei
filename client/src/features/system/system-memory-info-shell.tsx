@@ -1,112 +1,75 @@
-import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Box, Center, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react';
-import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, Tooltip, Legend, ArcElement, ChartData } from 'chart.js';
-import { UnitList } from './system-page.hook';
+import { useState } from 'react';
+import { useLuna, lunaRequest } from '../@luna';
+import { SystemMemoryInfoContent } from './system-memory-info-content';
 
-ChartJS.register(CategoryScale, LinearScale, Tooltip, Legend, ArcElement);
+type Unit = {
+  TP: string;
+  ID: string;
+  IN: 'F' | 'T';
+  PL: 'F' | 'T';
+  FG: 'F' | 'T';
+  RC: string;
+  SZ: string;
+  PD: string;
+};
 
-const unitListColumnHelper = createColumnHelper<UnitList['unitList'][number]>();
+export type UnitList = {
+  unitList: Unit[];
+  usableMemory: number;
+  usedSwap: number;
+  vmallocSize: number;
+};
 
-const unitListColumns = [
-  unitListColumnHelper.accessor('TP', {
-    header: 'TP',
-    cell: (val) => val.getValue(),
-  }),
-  unitListColumnHelper.accessor('ID', {
-    header: 'ID',
-    cell: (val) => val.getValue(),
-  }),
-  unitListColumnHelper.accessor('IN', {
-    header: 'IN',
-    cell: (val) => val.getValue(),
-  }),
-  unitListColumnHelper.accessor('PL', {
-    header: 'PL',
-    cell: (val) => val.getValue(),
-  }),
-  unitListColumnHelper.accessor('FG', {
-    header: 'FG',
-    cell: (val) => val.getValue(),
-  }),
-  unitListColumnHelper.accessor('RC', {
-    header: 'RC',
-    cell: (val) => val.getValue(),
-  }),
-  unitListColumnHelper.accessor('SZ', {
-    header: 'SZ',
-    cell: (val) => val.getValue(),
-  }),
-  unitListColumnHelper.accessor('PD', {
-    header: 'PD',
-    cell: (val) => val.getValue() || '-',
-  }),
-];
+export function SystemMemoryInfoShell() {
+  const [unitList, setUnitList] = useState<UnitList>();
 
-export function SystemMemoryInfoShell({ unitList }: { unitList: UnitList }) {
-  const unitListTable = useReactTable({
-    data: unitList.unitList,
-    columns: unitListColumns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+  useLuna(() =>
+    lunaRequest<{
+      ATSC3_0_NRT: number;
+      unitList: string[];
+      usable_memory: number;
+      swapUsed: number;
+      EFS_BufferCacheStat: {
+        EFS_BC_CurrentSize: number;
+        EFS_BC_AccuShrinkSize: number;
+        EFS_BC_ZspageSize: number;
+        EFS_BC_AavailSize: number;
+        EFS_BC_compRate: number;
+      };
+      returnValue: boolean;
+      vmallocInfo: {
+        cur_vmallocSize: number;
+        init_vmallocSize: number;
+      };
+    }>('luna://com.webos.memorymanager')({
+      method: 'getUnitList',
+      // eslint-disable-next-line camelcase
+      onSuccess: ({ unitList: rawUnitList, usable_memory, swapUsed, vmallocInfo: { cur_vmallocSize } }) => {
+        const header = rawUnitList[0].split(/\s+/);
 
-  const memoryData: ChartData<'doughnut'> = {
-    labels: ['Usable Memory', 'Swap Used', 'Vmalloc Size'],
-    datasets: [
-      {
-        label: 'Memory Usage (MB)',
-        data: [unitList.usableMemory, unitList.usedSwap, unitList.vmallocSize],
-        backgroundColor: ['rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)'],
+        const mapped = rawUnitList.slice(1).map((row) =>
+          row.split(/\s+/).reduce(
+            (acc, el, index) => {
+              acc[header[index]] = el;
+              return acc;
+            },
+            {} as Record<string, string>,
+          ),
+        ) as Unit[];
+
+        setUnitList({
+          unitList: mapped,
+          usableMemory: Number(usable_memory),
+          usedSwap: Number(swapUsed),
+          vmallocSize: Number(cur_vmallocSize),
+        });
       },
-    ],
-  };
 
-  return (
-    <VStack align="stretch" spacing="32px">
-      <VStack align="stretch">
-        <Heading as="h4" fontSize="24px">
-          Unit List
-        </Heading>
-        <TableContainer>
-          <Table size="sm">
-            <Thead>
-              {unitListTable.getHeaderGroups().map((headerGroup) => (
-                <Tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <Th key={header.id}>
-                      <Box onClick={header.column.getToggleSortingHandler()} cursor={header.column.getCanSort() ? 'pointer' : 'default'}>
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                        {{
-                          asc: ' 🔼',
-                          desc: ' 🔽',
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </Box>
-                    </Th>
-                  ))}
-                </Tr>
-              ))}
-            </Thead>
-            <Tbody>
-              {unitListTable.getRowModel().rows.map((row) => (
-                <Tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <Td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</Td>
-                  ))}
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </VStack>
-      <VStack align="stretch">
-        <Heading as="h4" fontSize="24px">
-          Usable Memory
-        </Heading>
-        <Center>
-          <Doughnut data={memoryData} width={800} height={800} options={{ responsive: false }} />
-        </Center>
-      </VStack>
-    </VStack>
+      parameters: {
+        subscribe: true,
+      },
+    }),
   );
+
+  return unitList ? <SystemMemoryInfoContent unitList={unitList} /> : <div>loading...</div>;
 }

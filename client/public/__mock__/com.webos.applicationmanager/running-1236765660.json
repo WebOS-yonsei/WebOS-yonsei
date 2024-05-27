@@ -1,0 +1,46 @@
+{
+  "subscribed": true,
+  "running": [
+    {
+      "id": "app123",
+      "launchPointId": "launch123",
+      "instanceId": "inst123",
+      "displayId": 1,
+      "processId": "proc456",
+      "webprocessid": "webproc789",
+      "defaultWindowType": "card",
+      "appType": "web"
+    },
+    {
+      "id": "app234",
+      "launchPointId": "launch345",
+      "instanceId": "inst567",
+      "displayId": 101,
+      "processId": "proc678",
+      "webprocessid": "webproc890",
+      "defaultWindowType": "popup",
+      "appType": "native"
+    },
+    {
+      "id": "app345",
+      "launchPointId": "launch456",
+      "instanceId": "inst678",
+      "displayId": 102,
+      "processId": "proc789",
+      "webprocessid": "webproc901",
+      "defaultWindowType": "minimal",
+      "appType": "hybrid"
+    },
+    {
+      "id": "app456",
+      "launchPointId": "launch567",
+      "instanceId": "inst789",
+      "displayId": 103,
+      "processId": "proc890",
+      "webprocessid": "webproc012",
+      "defaultWindowType": "overlay",
+      "appType": "web"
+    }
+  ],
+  "returnValue": true
+}

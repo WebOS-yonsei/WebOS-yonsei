@@ -5,7 +5,7 @@ import { MockLS2Request } from './mock-ls2-request';
 // prettier-ignore
 type Service = 
   | 'luna://com.webos.memorymanager'
-  | 'luna://com.webos.applicationManager';
+  | 'luna://com.webos.applicationmanager';
 
 type Request<Response> = {
   method: string;

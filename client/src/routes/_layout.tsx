@@ -3,13 +3,13 @@ import { DefaultLayout } from '~/widgets';
 
 export const Route = createFileRoute('/_layout')({
   beforeLoad: ({ context }) => {
-    if (!context.user.isLogin) {
+    if (!context.user.isLogin()) {
       throw redirect({
         to: '/login',
       });
     }
 
-    if (!context.user.hasProfile) {
+    if (!context.user.hasProfile()) {
       throw redirect({
         to: '/profile',
       });

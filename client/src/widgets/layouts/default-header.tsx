@@ -4,7 +4,7 @@ import { Link, VectorLogo } from '~/widgets';
 
 export function DefaultHeader() {
   return (
-    <Box py={2} px={4} as="nav" pos="fixed" top={0} left={0} width="100%" bgColor="#0c0c0f" alignItems="center" justifyContent="space-between" display="flex">
+    <Box py={2} px={4} as="nav" pos="fixed" top={0} left={0} width="100%" bgColor="#0c0c0f" alignItems="center" justifyContent="space-between" display="flex" zIndex={100}>
       <Link to="/video/list">
         <VectorLogo />
       </Link>

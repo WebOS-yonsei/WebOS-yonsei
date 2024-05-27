@@ -5,26 +5,26 @@ import { assert } from '~/utils';
 
 export const Route = createFileRoute('/_user/profile/')({
   beforeLoad: ({ context }) => {
-    if (!context.user.isLogin) {
+    if (!context.user.isLogin()) {
       throw redirect({
         to: '/login',
       });
     }
 
-    if (context.user.hasProfile) {
+    if (context.user.hasProfile()) {
       throw redirect({
         to: '/video/list',
       });
     }
   },
   loader: async ({ context }) => {
-    assert(context.user.userId, 'user.userId is required');
+    assert(context.user.sessionId, 'user.sessionId is required');
 
     const { data, error } = await client.GET('/profiles/list', {
       params: {
         query: {
           user: {
-            sessionId: 1,
+            sessionId: context.user.sessionId,
           },
         },
       },
