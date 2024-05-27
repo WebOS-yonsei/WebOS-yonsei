@@ -21,6 +21,7 @@ export function LoginPage() {
   const toast = useToast();
   const navigate = useNavigate();
   const setSessionId = useUser((state) => state.setSessionId);
+  const setUserId = useUser((state) => state.setUserId);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -46,6 +47,7 @@ export function LoginPage() {
     }
 
     setSessionId(data.sessionId);
+    setUserId(loginId);
 
     toast({
       title: '로그인 성공',
