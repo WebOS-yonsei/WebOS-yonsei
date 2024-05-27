@@ -9,7 +9,7 @@ export type User = {
   hasProfile: boolean;
   setUserId: (userId: string | undefined) => void;
   setProfileId: (profileId: string | undefined) => void;
-  setSesssionId: (sessionId: string | undefined) => void;
+  setSessionId: (sessionId: string | undefined) => void;
 };
 
 export const useUser = create(
@@ -19,7 +19,7 @@ export const useUser = create(
       hasProfile: Boolean(get().profileId),
       setUserId: (userId) => set({ userId }),
       setProfileId: (profileId) => set({ profileId }),
-      setSesssionId: (sessionId) => set({ sessionId }),
+      setSessionId: (sessionId) => set({ sessionId }),
     }),
     {
       name: 'user-storage',

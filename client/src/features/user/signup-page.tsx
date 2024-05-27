@@ -1,9 +1,10 @@
-import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Button, Heading, Text } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Button, Heading, Text, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { z } from 'zod';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@tanstack/react-router';
 import { Link } from '~/widgets';
 import { client } from '../@api';
 
@@ -15,6 +16,9 @@ const scheme = z.object({
 type Scheme = z.infer<typeof scheme>;
 
 export function SignUpPage() {
+  const toast = useToast();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const { register, handleSubmit } = useForm<Scheme>({
@@ -22,19 +26,39 @@ export function SignUpPage() {
   });
 
   const onFormValid: SubmitHandler<Scheme> = async ({ loginId, password }) => {
-    const res = await client.POST('/users/join', {
+    const { error } = await client.POST('/users/join', {
       body: {
         loginId,
         password,
       },
     });
-    // eslint-disable-next-line no-console
-    console.log(res);
+
+    if (error) {
+      toast({
+        title: '회원가입 실패',
+        description: '입력하신 정보를 다시 확인해주세요.',
+        status: 'error',
+      });
+      return;
+    }
+
+    toast({
+      title: '회원가입 성공',
+      description: '회원가입이 성공적으로 완료되었습니다.',
+      status: 'success',
+    });
+
+    navigate({
+      to: '/login',
+    });
   };
 
-  const onFormInvalid: SubmitErrorHandler<Scheme> = (err) => {
-    // eslint-disable-next-line no-console
-    console.log(err);
+  const onFormInvalid: SubmitErrorHandler<Scheme> = () => {
+    toast({
+      title: '회원가입 실패',
+      description: '입력하신 정보를 다시 확인해주세요.',
+      status: 'error',
+    });
   };
 
   return (
