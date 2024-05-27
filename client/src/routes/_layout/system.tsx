@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { SystemPage } from '~/features/system';
 
 const searchSchema = z.object({
+  // @see https://github.com/colinhacks/zod/issues/2686
   index: z
     .nativeEnum({
       'process-status': 0,
