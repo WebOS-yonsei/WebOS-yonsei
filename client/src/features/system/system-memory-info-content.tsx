@@ -104,7 +104,7 @@ export function SystemMemoryInfoContent({ unitList }: { unitList: UnitList }) {
           Usable Memory
         </Heading>
         <Center>
-          <Doughnut data={memoryData} width={800} height={800} options={{ responsive: false }} />
+          <Doughnut data={memoryData} width={600} height={600} options={{ responsive: false }} />
         </Center>
       </VStack>
     </VStack>

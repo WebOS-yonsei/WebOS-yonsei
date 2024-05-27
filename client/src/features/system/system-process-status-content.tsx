@@ -133,7 +133,7 @@ export function SystemProcessStatusContent({ procStat }: { procStat: ProcessStat
           CPU Usage
         </Heading>
         <Center>
-          <Bar data={cpuData} options={cpuOptions} width={800} height={800} />
+          <Bar data={cpuData} options={cpuOptions} width={600} height={600} />
         </Center>
       </VStack>
       <VStack align="stretch">
@@ -141,7 +141,7 @@ export function SystemProcessStatusContent({ procStat }: { procStat: ProcessStat
           Interrupts
         </Heading>
         <Center>
-          <Bar data={intrData} options={intrOptions} width={800} height={800} />
+          <Bar data={intrData} options={intrOptions} width={600} height={600} />
         </Center>
       </VStack>
       <VStack align="stretch">
@@ -149,7 +149,7 @@ export function SystemProcessStatusContent({ procStat }: { procStat: ProcessStat
           Processes
         </Heading>
         <Center>
-          <Bar data={processData} options={processOptions} width={800} height={800} />
+          <Bar data={processData} options={processOptions} width={600} height={600} />
         </Center>
       </VStack>
       <VStack align="stretch">
@@ -157,7 +157,7 @@ export function SystemProcessStatusContent({ procStat }: { procStat: ProcessStat
           SoftIRQs
         </Heading>
         <Center>
-          <Bar data={softirqData} options={softirqOptions} width={800} height={800} />
+          <Bar data={softirqData} options={softirqOptions} width={600} height={600} />
         </Center>
       </VStack>
     </VStack>
