@@ -32,10 +32,10 @@ public class ContentsApiController {
     }
 
     @PostMapping("/{videoId}/time/{profileId}")
-    public ResponseEntity<ContentsResponse> recordContentsTime(
+    public ResponseEntity<Void> recordContentsTime(
+            UsersAuth user,
             @PathVariable("videoId") Long videoId,
             @PathVariable("profileId") Long profileId,
-            UsersAuth user,
             @RequestBody TimeRecordRequest timeRecordRequest) {
         contentsService.recordTime(user.getUserId(), profileId, videoId, timeRecordRequest.getTime());
         return ResponseEntity.ok().build();
