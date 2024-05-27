@@ -25,7 +25,7 @@ public class ProfileContents {
     private Long id;
     private Long profileId;
     private Long contentsId;
-    private float time;
+    private Float time;
     private State state;
 
     public enum State {

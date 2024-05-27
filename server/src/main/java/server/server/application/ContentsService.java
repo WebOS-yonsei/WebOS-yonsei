@@ -2,6 +2,7 @@ package server.server.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import server.server.entity.Contents;
 import server.server.entity.ProfileContents;
 import server.server.repository.ContentsRepository;
@@ -12,6 +13,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static server.server.entity.ProfileContents.State.WATCHING;
+
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class ContentsService {
@@ -30,10 +34,19 @@ public class ContentsService {
     }
 
     // 시청 시간 기록
-    public void recordTime(Long profileId, Long videoId, float time){
-        ProfileContents profileContent = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId)
-                .orElseThrow(() -> new NoSuchElementException("해당 컨텐츠는 존재하지 않습니다"));
-        profileContent.setTime(time);
-        profileContentsRepository.save(profileContent);
+    public void recordTime(Long profileId, Long videoId, Float time) {
+        final Optional<ProfileContents> profileContents = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId);
+        if (profileContents.isEmpty()) {
+            profileContentsRepository.save(
+                    ProfileContents.builder()
+                            .profileId(profileId)
+                            .contentsId(videoId)
+                            .time(time)
+                            .state(WATCHING)
+                            .build()
+            );
+            return;
+        }
+        profileContents.get().setTime(time);
     }
 }
