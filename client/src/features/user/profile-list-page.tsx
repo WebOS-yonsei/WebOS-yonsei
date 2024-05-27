@@ -1,15 +1,50 @@
-import { Avatar, Box, HStack, Heading, IconButton, Stack, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Box, HStack, Heading, IconButton, Stack, Text, VStack, useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { Link } from '~/widgets';
+import { useNavigate } from '@tanstack/react-router';
+import { components } from '../@api';
+import { useModal } from '../@contexts';
+import { ProfileSelectModal } from './profile-select-modal';
+import { useUser } from './store';
 
-export function ProfileListPage() {
-  const profiles: {
-    name: string;
-    src: string;
-  }[] = [
-    { name: 'Christian Nwamba', src: 'https://bit.ly/code-beast' },
-    { name: 'Segun Adebayo', src: 'https://bit.ly/kent-c-dodds' },
-  ];
+export function ProfileListPage({ profiles }: { profiles: components['schemas']['Profile'][] }) {
+  const { open, close } = useModal();
+  const navigate = useNavigate();
+  const toast = useToast();
+
+  const setProfileId = useUser((state) => state.setProfileId);
+
+  const onProfileClick = (profileId: number) => () => {
+    open(
+      <ProfileSelectModal
+        profileId={profileId}
+        onClose={close}
+        onSuccess={() => {
+          close();
+          navigate({
+            to: '/video/list',
+          });
+          setProfileId(profileId);
+        }}
+      />,
+    );
+  };
+
+  const onCreateButtonClick = () => {
+    const MAX_PROFILE_CNT = 3;
+
+    if (profiles.length >= MAX_PROFILE_CNT) {
+      toast({
+        title: '프로필 생성 오류',
+        description: `프로필은 최대 ${MAX_PROFILE_CNT}개까지 생성할 수 있습니다.`,
+        status: 'error',
+      });
+      return;
+    }
+
+    navigate({
+      to: '/profile/create',
+    });
+  };
 
   return (
     <Stack spacing={20} mx="auto">
@@ -22,17 +57,15 @@ export function ProfileListPage() {
         </Text>
       </Stack>
       <HStack spacing={8} align="center">
-        {profiles.map((profile, index) => (
-          <VStack key={index} spacing={4}>
-            <Avatar name={profile.name} src={profile.src} size="2xl" />
-            <Text fontWeight="light">{profile.name}</Text>
+        {profiles.map((profile) => (
+          <VStack key={profile.id} spacing={4} onClick={onProfileClick(profile.id!)}>
+            <Avatar name={profile.nickname} src={profile.imageURI} size="2xl" />
+            <Text fontWeight="light">{profile.nickname}</Text>
           </VStack>
         ))}
-        <Link to="/profile/create">
-          <Box pb="50px">
-            <IconButton aria-label="create" icon={<AddIcon />} rounded="full" />
-          </Box>
-        </Link>
+        <Box pb="50px" onClick={onCreateButtonClick}>
+          <IconButton aria-label="create" icon={<AddIcon />} rounded="full" />
+        </Box>
       </HStack>
     </Stack>
   );

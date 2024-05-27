@@ -6,6 +6,7 @@ import { Global } from '@emotion/react';
 import { routeTree } from '~/routeTree.gen';
 import { globalStyles, theme } from '~/styles';
 import { useUser } from '~/features/user';
+import { ModalConsumer, ModalProvider } from '~/features/@contexts';
 
 const router = createRouter({
   routeTree,
@@ -28,14 +29,17 @@ export const App = () => {
     <>
       <Global styles={globalStyles} />
       <ChakraProvider theme={theme}>
-        <Suspense>
-          <RouterProvider
-            router={router}
-            context={{
-              user,
-            }}
-          />
-        </Suspense>
+        <ModalProvider>
+          <Suspense>
+            <RouterProvider
+              router={router}
+              context={{
+                user,
+              }}
+            />
+          </Suspense>
+          <ModalConsumer />
+        </ModalProvider>
       </ChakraProvider>
     </>
   );

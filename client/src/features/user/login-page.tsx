@@ -21,7 +21,6 @@ export function LoginPage() {
   const toast = useToast();
   const navigate = useNavigate();
   const setSessionId = useUser((state) => state.setSessionId);
-  const setUserId = useUser((state) => state.setUserId);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -37,7 +36,7 @@ export function LoginPage() {
       },
     });
 
-    if (error) {
+    if (!data || error) {
       toast({
         title: '로그인 실패',
         description: '입력하신 정보를 다시 확인해주세요.',
@@ -46,8 +45,7 @@ export function LoginPage() {
       return;
     }
 
-    setSessionId(data.sessionId);
-    setUserId(loginId);
+    setSessionId(Number(data.sessionId));
 
     toast({
       title: '로그인 성공',
