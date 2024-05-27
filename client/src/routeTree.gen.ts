@@ -11,30 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SystemImport } from './routes/system'
-import { Route as SignupImport } from './routes/signup'
-import { Route as LoginImport } from './routes/login'
+import { Route as UserImport } from './routes/_user'
+import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
-import { Route as ProfileIndexImport } from './routes/profile.index'
-import { Route as VideoListImport } from './routes/video.list'
-import { Route as ProfileCreateImport } from './routes/profile.create'
-import { Route as VideoVideoIdIndexImport } from './routes/video.$videoId.index'
-import { Route as VideoVideoIdPlayingImport } from './routes/video.$videoId.playing'
+import { Route as UserSignupImport } from './routes/_user/signup'
+import { Route as UserLoginImport } from './routes/_user/login'
+import { Route as LayoutSystemImport } from './routes/_layout/system'
+import { Route as UserProfileIndexImport } from './routes/_user/profile.index'
+import { Route as UserProfileCreateImport } from './routes/_user/profile.create'
+import { Route as LayoutVideoListImport } from './routes/_layout/video.list'
+import { Route as LayoutVideoVideoIdIndexImport } from './routes/_layout/video.$videoId.index'
+import { Route as LayoutVideoVideoIdPlayingImport } from './routes/_layout/video.$videoId.playing'
 
 // Create/Update Routes
 
-const SystemRoute = SystemImport.update({
-  path: '/system',
+const UserRoute = UserImport.update({
+  id: '/_user',
   getParentRoute: () => rootRoute,
 } as any)
 
-const SignupRoute = SignupImport.update({
-  path: '/signup',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const LoginRoute = LoginImport.update({
-  path: '/login',
+const LayoutRoute = LayoutImport.update({
+  id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -43,29 +40,44 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProfileIndexRoute = ProfileIndexImport.update({
+const UserSignupRoute = UserSignupImport.update({
+  path: '/signup',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const UserLoginRoute = UserLoginImport.update({
+  path: '/login',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const LayoutSystemRoute = LayoutSystemImport.update({
+  path: '/system',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const UserProfileIndexRoute = UserProfileIndexImport.update({
   path: '/profile/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => UserRoute,
 } as any)
 
-const VideoListRoute = VideoListImport.update({
-  path: '/video/list',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ProfileCreateRoute = ProfileCreateImport.update({
+const UserProfileCreateRoute = UserProfileCreateImport.update({
   path: '/profile/create',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => UserRoute,
 } as any)
 
-const VideoVideoIdIndexRoute = VideoVideoIdIndexImport.update({
+const LayoutVideoListRoute = LayoutVideoListImport.update({
+  path: '/video/list',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutVideoVideoIdIndexRoute = LayoutVideoVideoIdIndexImport.update({
   path: '/video/$videoId/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => LayoutRoute,
 } as any)
 
-const VideoVideoIdPlayingRoute = VideoVideoIdPlayingImport.update({
+const LayoutVideoVideoIdPlayingRoute = LayoutVideoVideoIdPlayingImport.update({
   path: '/video/$videoId/playing',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -79,61 +91,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupImport
+    '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof UserImport
       parentRoute: typeof rootRoute
     }
-    '/system': {
-      id: '/system'
+    '/_layout/system': {
+      id: '/_layout/system'
       path: '/system'
       fullPath: '/system'
-      preLoaderRoute: typeof SystemImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LayoutSystemImport
+      parentRoute: typeof LayoutImport
     }
-    '/profile/create': {
-      id: '/profile/create'
-      path: '/profile/create'
-      fullPath: '/profile/create'
-      preLoaderRoute: typeof ProfileCreateImport
-      parentRoute: typeof rootRoute
+    '/_user/login': {
+      id: '/_user/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof UserLoginImport
+      parentRoute: typeof UserImport
     }
-    '/video/list': {
-      id: '/video/list'
+    '/_user/signup': {
+      id: '/_user/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof UserSignupImport
+      parentRoute: typeof UserImport
+    }
+    '/_layout/video/list': {
+      id: '/_layout/video/list'
       path: '/video/list'
       fullPath: '/video/list'
-      preLoaderRoute: typeof VideoListImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LayoutVideoListImport
+      parentRoute: typeof LayoutImport
     }
-    '/profile/': {
-      id: '/profile/'
+    '/_user/profile/create': {
+      id: '/_user/profile/create'
+      path: '/profile/create'
+      fullPath: '/profile/create'
+      preLoaderRoute: typeof UserProfileCreateImport
+      parentRoute: typeof UserImport
+    }
+    '/_user/profile/': {
+      id: '/_user/profile/'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof ProfileIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof UserProfileIndexImport
+      parentRoute: typeof UserImport
     }
-    '/video/$videoId/playing': {
-      id: '/video/$videoId/playing'
+    '/_layout/video/$videoId/playing': {
+      id: '/_layout/video/$videoId/playing'
       path: '/video/$videoId/playing'
       fullPath: '/video/$videoId/playing'
-      preLoaderRoute: typeof VideoVideoIdPlayingImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LayoutVideoVideoIdPlayingImport
+      parentRoute: typeof LayoutImport
     }
-    '/video/$videoId/': {
-      id: '/video/$videoId/'
+    '/_layout/video/$videoId/': {
+      id: '/_layout/video/$videoId/'
       path: '/video/$videoId'
       fullPath: '/video/$videoId'
-      preLoaderRoute: typeof VideoVideoIdIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LayoutVideoVideoIdIndexImport
+      parentRoute: typeof LayoutImport
     }
   }
 }
@@ -142,14 +168,86 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  LoginRoute,
-  SignupRoute,
-  SystemRoute,
-  ProfileCreateRoute,
-  VideoListRoute,
-  ProfileIndexRoute,
-  VideoVideoIdPlayingRoute,
-  VideoVideoIdIndexRoute,
+  LayoutRoute: LayoutRoute.addChildren({
+    LayoutSystemRoute,
+    LayoutVideoListRoute,
+    LayoutVideoVideoIdPlayingRoute,
+    LayoutVideoVideoIdIndexRoute,
+  }),
+  UserRoute: UserRoute.addChildren({
+    UserLoginRoute,
+    UserSignupRoute,
+    UserProfileCreateRoute,
+    UserProfileIndexRoute,
+  }),
 })
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/_layout",
+        "/_user"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/_layout": {
+      "filePath": "_layout.tsx",
+      "children": [
+        "/_layout/system",
+        "/_layout/video/list",
+        "/_layout/video/$videoId/playing",
+        "/_layout/video/$videoId/"
+      ]
+    },
+    "/_user": {
+      "filePath": "_user.tsx",
+      "children": [
+        "/_user/login",
+        "/_user/signup",
+        "/_user/profile/create",
+        "/_user/profile/"
+      ]
+    },
+    "/_layout/system": {
+      "filePath": "_layout/system.tsx",
+      "parent": "/_layout"
+    },
+    "/_user/login": {
+      "filePath": "_user/login.tsx",
+      "parent": "/_user"
+    },
+    "/_user/signup": {
+      "filePath": "_user/signup.tsx",
+      "parent": "/_user"
+    },
+    "/_layout/video/list": {
+      "filePath": "_layout/video.list.tsx",
+      "parent": "/_layout"
+    },
+    "/_user/profile/create": {
+      "filePath": "_user/profile.create.tsx",
+      "parent": "/_user"
+    },
+    "/_user/profile/": {
+      "filePath": "_user/profile.index.tsx",
+      "parent": "/_user"
+    },
+    "/_layout/video/$videoId/playing": {
+      "filePath": "_layout/video.$videoId.playing.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/video/$videoId/": {
+      "filePath": "_layout/video.$videoId.index.tsx",
+      "parent": "/_layout"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

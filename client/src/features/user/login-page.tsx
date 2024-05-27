@@ -1,11 +1,72 @@
-import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Button, Heading, Text } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Button, Heading, Text, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { z } from 'zod';
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@tanstack/react-router';
 import { Link } from '~/widgets';
 import { UserLayout } from './user-layout';
+import { client } from '../@api';
+import { useUser } from './store';
+
+const scheme = z.object({
+  loginId: z.string().min(1),
+  password: z.string().min(1),
+});
+
+type Scheme = z.infer<typeof scheme>;
 
 export function LoginPage() {
+  const toast = useToast();
+  const navigate = useNavigate();
+  const setSessionId = useUser((state) => state.setSessionId);
+  const setUserId = useUser((state) => state.setUserId);
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const { register, handleSubmit } = useForm<Scheme>({
+    resolver: zodResolver(scheme),
+  });
+
+  const onFormValid: SubmitHandler<Scheme> = async ({ loginId, password }) => {
+    const { data, error } = await client.POST('/users/login', {
+      body: {
+        loginId,
+        password,
+      },
+    });
+
+    if (error) {
+      toast({
+        title: '로그인 실패',
+        description: '입력하신 정보를 다시 확인해주세요.',
+        status: 'error',
+      });
+      return;
+    }
+
+    setSessionId(data.sessionId);
+    setUserId(loginId);
+
+    toast({
+      title: '로그인 성공',
+      description: '로그인되었습니다.',
+      status: 'success',
+    });
+
+    navigate({
+      to: '/login',
+    });
+  };
+
+  const onFormInvalid: SubmitErrorHandler<Scheme> = () => {
+    toast({
+      title: '로그인 실패',
+      description: '입력하신 정보를 다시 확인해주세요.',
+      status: 'error',
+    });
+  };
 
   return (
     <UserLayout>
@@ -19,16 +80,16 @@ export function LoginPage() {
           </Text>
         </Stack>
         <Box rounded="lg" boxShadow="lg" p={8}>
-          <form>
+          <form onSubmit={handleSubmit(onFormValid, onFormInvalid)}>
             <Stack spacing={4}>
               <FormControl isRequired>
                 <FormLabel>아이디</FormLabel>
-                <Input type="text" />
+                <Input type="text" {...register('loginId')} />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>비밀번호</FormLabel>
                 <InputGroup>
-                  <Input type={showPassword ? 'text' : 'password'} />
+                  <Input type={showPassword ? 'text' : 'password'} {...register('password')} />
                   <InputRightElement h="full">
                     <Button variant="ghost" onClick={() => setShowPassword((prev) => !prev)}>
                       {showPassword ? <ViewIcon /> : <ViewOffIcon />}

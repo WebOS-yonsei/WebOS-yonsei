@@ -5,13 +5,25 @@
 
 
 export interface paths {
+  "/users/login": {
+    post: operations["login"];
+  };
+  "/users/join": {
+    post: operations["join"];
+  };
   "/profiles": {
     post: operations["createProfile"];
   };
-  "/join": {
-    post: operations["join"];
+  "/profiles/{profileId}": {
+    post: operations["chooseProfile"];
   };
-  "/profiles/{profile_id}/history": {
+  "/videos": {
+    get: operations["getContentsList"];
+  };
+  "/users": {
+    get: operations["queryUser"];
+  };
+  "/profiles/{profileId}/history": {
     get: operations["getProfileHistory"];
   };
   "/profiles/list": {
@@ -26,16 +38,29 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    LoginRequest: {
+      loginId?: string;
+      password?: string;
+    };
+    LoginResponse: {
+      sessionId?: string;
+    };
+    JoinRequest: {
+      loginId?: string;
+      password?: string;
+    };
+    UsersAuth: {
+      /** Format: int64 */
+      userId?: number;
+      /** Format: int64 */
+      sessionId?: number;
+    };
     ProfileRequest: {
       nickname?: string;
       profileUri?: string;
       /** @enum {string} */
       grade?: "CHILD" | "ADULT";
       profilePassword?: string;
-    };
-    JoinRequest: {
-      loginId?: string;
-      password?: string;
     };
     Contents: {
       /** Format: int64 */
@@ -49,6 +74,12 @@ export interface components {
       thumbnailURI?: string;
       genre?: string;
       sourceURI?: string;
+    };
+    ContentsResponse: {
+      contents?: components["schemas"]["Contents"][];
+    };
+    CurrentUserResponse: {
+      loginId?: string;
     };
     ProfileHistoryResponse: {
       videos?: components["schemas"]["Contents"][];
@@ -81,21 +112,18 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-  createProfile: {
-    parameters: {
-      header: {
-        sessionId: string;
-      };
-    };
+  login: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ProfileRequest"];
+        "application/json": components["schemas"]["LoginRequest"];
       };
     };
     responses: {
       /** @description OK */
       200: {
-        content: never;
+        content: {
+          "*/*": components["schemas"]["LoginResponse"];
+        };
       };
     };
   };
@@ -112,13 +140,79 @@ export interface operations {
       };
     };
   };
-  getProfileHistory: {
+  createProfile: {
     parameters: {
-      header: {
-        sessionId: string;
+      query: {
+        user: components["schemas"]["UsersAuth"];
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ProfileRequest"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  chooseProfile: {
+    parameters: {
+      query: {
+        user: components["schemas"]["UsersAuth"];
       };
       path: {
-        profile_id: number;
+        profileId: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
+  getContentsList: {
+    parameters: {
+      query: {
+        user: components["schemas"]["UsersAuth"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["ContentsResponse"];
+        };
+      };
+    };
+  };
+  queryUser: {
+    parameters: {
+      query: {
+        user: components["schemas"]["UsersAuth"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["CurrentUserResponse"];
+        };
+      };
+    };
+  };
+  getProfileHistory: {
+    parameters: {
+      query: {
+        user: components["schemas"]["UsersAuth"];
+      };
+      path: {
+        profileId: number;
       };
     };
     responses: {
@@ -132,8 +226,8 @@ export interface operations {
   };
   getProfileList: {
     parameters: {
-      header: {
-        sessionId: string;
+      query: {
+        user: components["schemas"]["UsersAuth"];
       };
     };
     responses: {
