@@ -26,10 +26,10 @@ public class ContentsApiController {
         return ResponseEntity.ok(ContentsResponse.of(contents));
     }
 
-    @PostMapping("/{video_id}/time/{profile_id}")
+    @PostMapping("/{videoId}/time/{profileId}")
     public ResponseEntity<ContentsResponse> recordContentsTime(
-            @PathVariable("video_id") Long videoId,
-            @PathVariable("profile_id") Long profileId,
+            @PathVariable("videoId") Long videoId,
+            @PathVariable("profileId") Long profileId,
             UsersAuth user,
             @RequestBody TimeRecordRequest timeRecordRequest) {
 
