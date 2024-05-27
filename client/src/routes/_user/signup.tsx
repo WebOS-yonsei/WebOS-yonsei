@@ -3,9 +3,9 @@ import { SignUpPage } from '~/features/user';
 
 export const Route = createFileRoute('/_user/signup')({
   beforeLoad: ({ context }) => {
-    if (context.user.isLogin) {
+    if (context.user.isLogin()) {
       throw redirect({
-        to: context.user.hasProfile ? '/profile' : '/video/list',
+        to: context.user.hasProfile() ? '/profile' : '/video/list',
       });
     }
   },
