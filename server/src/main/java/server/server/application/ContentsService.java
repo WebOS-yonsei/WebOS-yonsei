@@ -10,7 +10,6 @@ import server.server.repository.ContentsRepository;
 import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -26,14 +25,19 @@ public class ContentsService {
     private final ProfileContentsRepository profileContentsRepository;
 
     // contents list 조회
-    public List<Contents> getContents(final Long userId) {
-
-        Optional<Contents> optionalContents = contentsRepository.findById(userId);
-        if (optionalContents.isEmpty()) {
-            throw new NoSuchElementException("Content not found with id: " + userId);
+    public List<Contents> getContents(final Long userId, final Long profileId) {
+        final Profile profile = profileRepository.findById(profileId).orElseThrow(NoSuchElementException::new);
+        if (!profile.checkUser(userId)) {
+            throw new IllegalArgumentException("해당 프로필에 접근 권한이 있는 유저가 아닙니다.");
         }
 
-        return Collections.singletonList(optionalContents.get());
+        return profileContentsRepository.findByProfileIdAndState(profileId, WATCHING)
+                .stream()
+                .map(
+                        it -> contentsRepository.findById(it.getContentsId())
+                                .orElseThrow(NoSuchElementException::new)
+                )
+                .toList();
     }
 
     // 시청 시간 기록

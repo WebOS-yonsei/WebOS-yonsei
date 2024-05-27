@@ -25,9 +25,12 @@ public class ContentsApiController {
 
     private final ContentsService contentsService;
 
-    @GetMapping
-    public ResponseEntity<ContentsResponse> getContentsList(UsersAuth user) {
-        List<Contents> contents = contentsService.getContents(user.getUserId());
+    @GetMapping("/{profileId}")
+    public ResponseEntity<ContentsResponse> getContentsList(
+            UsersAuth user,
+            @PathVariable("profileId") Long profileId
+    ) {
+        List<Contents> contents = contentsService.getContents(user.getUserId(), profileId);
         return ResponseEntity.ok(ContentsResponse.of(contents));
     }
 
