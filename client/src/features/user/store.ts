@@ -6,6 +6,7 @@ export type User = {
   profileId?: string | undefined;
   sessionId?: string | undefined;
   isLogin: boolean;
+  hasProfile: boolean;
   setUserId: (userId: string | undefined) => void;
   setProfileId: (profileId: string | undefined) => void;
   setSesssionId: (sessionId: string | undefined) => void;
@@ -15,6 +16,7 @@ export const useUser = create(
   persist<User>(
     (set, get) => ({
       isLogin: Boolean(get().userId && get().sessionId),
+      hasProfile: Boolean(get().profileId),
       setUserId: (userId) => set({ userId }),
       setProfileId: (profileId) => set({ profileId }),
       setSesssionId: (sessionId) => set({ sessionId }),
