@@ -16,7 +16,7 @@ import static lombok.AccessLevel.*;
 public class ContentsRequest {
     private String title;
     private String description;
-    private float duration;
+    private Float duration;
     private Grade grade;
     private String thumbnailURI;
     private String genre;

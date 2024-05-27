@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class TimeRecordRequest {
-    private float time;
+    private Float time;
 }
