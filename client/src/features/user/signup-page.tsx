@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from '~/widgets';
-import { UserLayout } from './user-layout';
 import { client } from '../@api';
 
 const scheme = z.object({
@@ -39,51 +38,49 @@ export function SignUpPage() {
   };
 
   return (
-    <UserLayout>
-      <Stack spacing={8} mx="auto" maxW="lg">
-        <Stack align="center">
-          <Heading fontSize="4xl" textAlign="center">
-            회원가입
-          </Heading>
-          <Text fontSize="lg" color="gray.600">
-            영화, 시리즈 등을 무제한으로 시청하세요.
-          </Text>
-        </Stack>
-        <Box rounded="lg" boxShadow="lg" p={8}>
-          <form onSubmit={handleSubmit(onFormValid, onFormInvalid)}>
-            <Stack spacing={4}>
-              <FormControl isRequired>
-                <FormLabel>아이디</FormLabel>
-                <Input type="text" {...register('loginId')} />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>비밀번호</FormLabel>
-                <InputGroup>
-                  <Input type={showPassword ? 'text' : 'password'} {...register('password')} />
-                  <InputRightElement h="full">
-                    <Button variant="ghost" onClick={() => setShowPassword((prev) => !prev)}>
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <Stack spacing={10} pt={2}>
-                <Button loadingText="Submitting" size="lg" bg="red.600" _hover={{ bg: 'red.700' }} color="white" type="submit">
-                  회원가입
-                </Button>
-              </Stack>
-              <Stack pt={6}>
-                <Text align="center">
-                  이미 회원이신가요?{' '}
-                  <Link color="red.600" to="/login">
-                    바로 로그인하세요.
-                  </Link>
-                </Text>
-              </Stack>
-            </Stack>
-          </form>
-        </Box>
+    <Stack spacing={8} mx="auto" maxW="lg">
+      <Stack align="center">
+        <Heading fontSize="4xl" textAlign="center">
+          회원가입
+        </Heading>
+        <Text fontSize="lg" color="gray.600">
+          영화, 시리즈 등을 무제한으로 시청하세요.
+        </Text>
       </Stack>
-    </UserLayout>
+      <Box rounded="lg" boxShadow="lg" p={8}>
+        <form onSubmit={handleSubmit(onFormValid, onFormInvalid)}>
+          <Stack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>아이디</FormLabel>
+              <Input type="text" {...register('loginId')} />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>비밀번호</FormLabel>
+              <InputGroup>
+                <Input type={showPassword ? 'text' : 'password'} {...register('password')} />
+                <InputRightElement h="full">
+                  <Button variant="ghost" onClick={() => setShowPassword((prev) => !prev)}>
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+            <Stack spacing={10} pt={2}>
+              <Button loadingText="Submitting" size="lg" bg="red.600" _hover={{ bg: 'red.700' }} color="white" type="submit">
+                회원가입
+              </Button>
+            </Stack>
+            <Stack pt={6}>
+              <Text align="center">
+                이미 회원이신가요?{' '}
+                <Link color="red.600" to="/login">
+                  바로 로그인하세요.
+                </Link>
+              </Text>
+            </Stack>
+          </Stack>
+        </form>
+      </Box>
+    </Stack>
   );
 }
