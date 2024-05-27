@@ -52,6 +52,6 @@ public class ProfileChangeAcceptanceTest extends AcceptanceTest {
         프로필_빠져나오기_요청(session1Id);
 
         final ExtractableResponse<Response> response = 프로필_선택_요청(session2Id, profileId);
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }
