@@ -28,16 +28,6 @@ public class ProfileService {
     private final ContentsRepository contentsRepository;
     private final SessionRepository sessionRepository;
 
-//    현재 로그인 된 유저 인증
-//    public Long getUserId(String sessionId) throws BadRequestException {
-//        Session session = sessionRepository.findBySessionId(sessionId).orElseThrow();
-//        if (!session.getIsValid()) {
-//            throw new BadRequestException("Not logged in");
-//        }
-//
-//        return session.getUserId();
-//    }
-
     // profile 생성
     public Long create(final Long userId, ProfileRequest profileRequest) {
         // 현재 계정에 존재하는 프로필 개수 확인 - 3개 미만인지
@@ -73,8 +63,6 @@ public class ProfileService {
     }
 
     public List<Contents> getContents(final Long userId, Long profileId) {
-
-        // 로그인 확인 @Session
 
         List<Long> contentsIdSet = profilecontentsrepository.findByProfileIdAndState(profileId, ProfileContents.State.WATCHING)
                 .stream()
