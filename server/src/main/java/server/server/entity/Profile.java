@@ -33,4 +33,7 @@ public class Profile {
 
     private String password;
 
+    public boolean checkUser(final Long userId) {
+        return this.userId == userId;
+    }
 }

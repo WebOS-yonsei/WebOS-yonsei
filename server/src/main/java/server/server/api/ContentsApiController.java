@@ -37,7 +37,7 @@ public class ContentsApiController {
             @PathVariable("profileId") Long profileId,
             UsersAuth user,
             @RequestBody TimeRecordRequest timeRecordRequest) {
-        contentsService.recordTime(profileId, videoId, timeRecordRequest.getTime());
+        contentsService.recordTime(user.getUserId(), profileId, videoId, timeRecordRequest.getTime());
         return ResponseEntity.ok().build();
     }
 }

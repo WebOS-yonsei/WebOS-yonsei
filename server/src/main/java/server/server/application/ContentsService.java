@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.server.entity.Contents;
+import server.server.entity.Profile;
 import server.server.entity.ProfileContents;
 import server.server.repository.ContentsRepository;
 import server.server.repository.ProfileContentsRepository;
+import server.server.repository.ProfileRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +21,7 @@ import static server.server.entity.ProfileContents.State.WATCHING;
 @Service
 @RequiredArgsConstructor
 public class ContentsService {
+    private final ProfileRepository profileRepository;
     private final ContentsRepository contentsRepository;
     private final ProfileContentsRepository profileContentsRepository;
 
@@ -34,7 +37,12 @@ public class ContentsService {
     }
 
     // 시청 시간 기록
-    public void recordTime(Long profileId, Long videoId, Float time) {
+    public void recordTime(final Long userId, Long profileId, Long videoId, Float time) {
+        final Profile profile = profileRepository.findById(profileId).orElseThrow(NoSuchElementException::new);
+        if (!profile.checkUser(userId)) {
+            throw new IllegalArgumentException("해당 프로필에 접근 권한이 있는 유저가 아닙니다.");
+        }
+
         final Optional<ProfileContents> profileContents = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId);
         if (profileContents.isEmpty()) {
             profileContentsRepository.save(
