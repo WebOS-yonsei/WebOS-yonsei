@@ -19,14 +19,14 @@ public class ContentsService {
     private final ProfileContentsRepository profileContentsRepository;
 
     // contents list 조회
-    public List<Contents> getContents(final Long userId) {
+    public List<Contents> getContents() {
 
-        Optional<Contents> optionalContents = contentsRepository.findById(userId);
-        if (optionalContents.isEmpty()) {
-            throw new NoSuchElementException("Content not found with id: " + userId);
+        List<Contents> ContentsList = contentsRepository.findAll();
+        if (ContentsList.isEmpty()) {
+            throw new NoSuchElementException("There's no Content");
         }
 
-        return Collections.singletonList(optionalContents.get());
+        return ContentsList;
     }
 
     // 시청 시간 기록
@@ -35,5 +35,10 @@ public class ContentsService {
                 .orElseThrow(() -> new NoSuchElementException("해당 컨텐츠는 존재하지 않습니다"));
         profileContent.setTime(time);
         profileContentsRepository.save(profileContent);
+    }
+
+    // 특정 비디오 설명 가져오기
+    public Contents getContentInfo(Long videoId){
+        return contentsRepository.findById(videoId).orElseThrow(NoSuchElementException::new);
     }
 }

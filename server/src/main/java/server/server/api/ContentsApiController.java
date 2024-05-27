@@ -22,7 +22,7 @@ public class ContentsApiController {
 
     @GetMapping
     public ResponseEntity<ContentsResponse> getContentsList(UsersAuth user) {
-        List<Contents> contents = contentsService.getContents(user.getUserId());
+        List<Contents> contents = contentsService.getContents();
         return ResponseEntity.ok(ContentsResponse.of(contents));
     }
 
@@ -35,5 +35,11 @@ public class ContentsApiController {
 
         contentsService.recordTime(profileId, videoId, timeRecordRequest.getTime());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{video_id}")
+    public ResponseEntity<Contents> getContentInfo(UsersAuth user, @PathVariable("video_id") Long videoId) {
+        Contents contentInfo = contentsService.getContentInfo(videoId);
+        return ResponseEntity.ok(contentInfo);
     }
 }

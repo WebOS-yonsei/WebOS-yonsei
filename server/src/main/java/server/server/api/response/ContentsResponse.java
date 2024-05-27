@@ -1,20 +1,21 @@
 package server.server.api.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import server.server.entity.Contents;
 
 import java.util.List;
 
-@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContentsResponse {
 
-    private List<Contents> contents;
+    private List<Contents> videos;
 
-    public static ContentsResponse of(final List<Contents> contents) {
-        return new ContentsResponse(contents);
+    public static ContentsResponse of(final List<Contents> videos) {
+        return new ContentsResponse(videos);
     }
 }
