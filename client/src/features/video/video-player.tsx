@@ -15,7 +15,7 @@ export function VideoPlayer({ src }: { src: string }) {
       hls = new Hls();
       hls.loadSource(src);
       hls.attachMedia(video);
-      hls.on(Hls.Events.FRAG_LOADED, () => {
+      hls.on(Hls.Events.FRAG_PARSED, () => {
         // TODO: send to server
         // eslint-disable-next-line no-console
         console.log('>>> current time: ', video.currentTime);
@@ -29,7 +29,18 @@ export function VideoPlayer({ src }: { src: string }) {
       video.src = src;
     }
 
-    return () => hls?.destroy();
+    const onVideoEnded = () => {
+      // TODO: send to server
+      // eslint-disable-next-line no-console
+      console.log('>>> video ended', video.duration);
+    };
+
+    video.addEventListener('ended', onVideoEnded);
+
+    return () => {
+      hls?.destroy();
+      video.removeEventListener('ended', onVideoEnded);
+    };
   }, [src]);
 
   // eslint-disable-next-line jsx-a11y/media-has-caption
