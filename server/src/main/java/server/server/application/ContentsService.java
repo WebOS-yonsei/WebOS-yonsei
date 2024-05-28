@@ -61,4 +61,8 @@ public class ContentsService {
         }
         profileContents.get().setTime(time);
     }
+
+    public Contents getContentInfo(final Long videoId){
+        return contentsRepository.findById(videoId).orElseThrow(NoSuchElementException::new);
+    }
 }
