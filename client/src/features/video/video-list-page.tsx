@@ -1,19 +1,20 @@
 import { Heading, VStack, Wrap, WrapItem, Image, Text } from '@chakra-ui/react';
 import { Link } from '~/widgets';
+import { components } from '../@api';
 
-export function VideoListPage() {
+export function VideoListPage({ videoList, historyList }: { videoList: components['schemas']['Contents'][]; historyList: components['schemas']['Contents'][] }) {
   return (
     <VStack align="stretch" spacing={20}>
       <VStack align="stretch" spacing={5}>
         <Heading fontSize="2xl">라바님의 취향 저격 베스트 콘텐츠</Heading>
         <Wrap spacing="30px">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <WrapItem key={index}>
-              <Link to="/video/$videoId" params={{ videoId: index }}>
+          {videoList.map((video) => (
+            <WrapItem key={video.id}>
+              <Link to="/video/$videoId" params={{ videoId: video.id }}>
                 <VStack align="stretch">
-                  <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" aspectRatio="3 / 2" />
-                  <Heading fontSize="md">콘텐츠 제목</Heading>
-                  <Text fontSize={20}>콘텐츠 설명</Text>
+                  <Image src={video.thumbnailURI} alt={video.title} aspectRatio="3 / 2" />
+                  <Heading fontSize="md">{video.title}</Heading>
+                  <Text fontSize={20}>{video.description}</Text>
                 </VStack>
               </Link>
             </WrapItem>
@@ -23,13 +24,13 @@ export function VideoListPage() {
       <VStack align="stretch" spacing={5}>
         <Heading fontSize="2xl">라바님이 시청 중인 콘텐츠</Heading>
         <Wrap spacing="30px">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <WrapItem key={index}>
-              <Link to="/video/$videoId" params={{ videoId: index }}>
+          {historyList.map((video) => (
+            <WrapItem key={video.id}>
+              <Link to="/video/$videoId" params={{ videoId: video.id }}>
                 <VStack align="stretch">
-                  <Image src="https://bit.ly/dan-abramov" alt="Dan Abramov" aspectRatio="3 / 2" />
-                  <Heading fontSize="md">콘텐츠 제목</Heading>
-                  <Text fontSize={20}>콘텐츠 설명</Text>
+                  <Image src={video.thumbnailURI} alt={video.title} aspectRatio="3 / 2" />
+                  <Heading fontSize="md">{video.title}</Heading>
+                  <Text fontSize={20}>{video.description}</Text>
                 </VStack>
               </Link>
             </WrapItem>
