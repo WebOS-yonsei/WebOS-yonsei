@@ -10,8 +10,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-
 import static lombok.AccessLevel.PROTECTED;
 
 @AllArgsConstructor(access = PROTECTED)
@@ -27,7 +25,7 @@ public class ProfileContents {
     private Long id;
     private Long profileId;
     private Long contentsId;
-    private Time time;
+    private Float time;
     private State state;
 
     public enum State {
@@ -36,5 +34,9 @@ public class ProfileContents {
         WATCHING,
         COMPLETED,
         ;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
     }
 }
