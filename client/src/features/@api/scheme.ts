@@ -3,34 +3,39 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/users/login": {
-    post: operations["login"];
+  '/videos/{videoId}/time/{profileId}': {
+    post: operations['recordContentsTime'];
   };
-  "/users/join": {
-    post: operations["join"];
+  '/users/login': {
+    post: operations['login'];
   };
-  "/profiles": {
-    post: operations["createProfile"];
+  '/users/join': {
+    post: operations['join'];
   };
-  "/profiles/{profileId}": {
-    post: operations["chooseProfile"];
+  '/profiles': {
+    post: operations['createProfile'];
   };
-  "/videos": {
-    get: operations["getContentsList"];
+  '/profiles/{profileId}': {
+    post: operations['chooseProfile'];
   };
-  "/users": {
-    get: operations["queryUser"];
+  '/profiles/exit': {
+    post: operations['exitProfile'];
   };
-  "/profiles/{profileId}/history": {
-    get: operations["getProfileHistory"];
+  '/videos/{profileId}': {
+    get: operations['getContentsList'];
   };
-  "/profiles/list": {
-    get: operations["getProfileList"];
+  '/users': {
+    get: operations['queryUser'];
   };
-  "/health": {
-    get: operations["healthCheck"];
+  '/profiles/{profileId}/history': {
+    get: operations['getProfileHistory'];
+  };
+  '/profiles/list': {
+    get: operations['getProfileList'];
+  };
+  '/health': {
+    get: operations['healthCheck'];
   };
 }
 
@@ -38,6 +43,16 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    UsersAuth: {
+      /** Format: int64 */
+      userId?: number;
+      /** Format: int64 */
+      sessionId?: number;
+    };
+    TimeRecordRequest: {
+      /** Format: float */
+      time?: number;
+    };
     LoginRequest: {
       loginId?: string;
       password?: string;
@@ -49,17 +64,11 @@ export interface components {
       loginId?: string;
       password?: string;
     };
-    UsersAuth: {
-      /** Format: int64 */
-      userId?: number;
-      /** Format: int64 */
-      sessionId?: number;
-    };
     ProfileRequest: {
       nickname?: string;
       profileUri?: string;
       /** @enum {string} */
-      grade?: "CHILD" | "ADULT";
+      grade?: 'CHILD' | 'ADULT';
       profilePassword?: string;
     };
     Contents: {
@@ -70,19 +79,19 @@ export interface components {
       /** Format: float */
       duration?: number;
       /** @enum {string} */
-      grade?: "CHILD" | "ADULT";
+      grade?: 'CHILD' | 'ADULT';
       thumbnailURI?: string;
       genre?: string;
       sourceURI?: string;
     };
     ContentsResponse: {
-      contents?: components["schemas"]["Contents"][];
+      contents?: components['schemas']['Contents'][];
     };
     CurrentUserResponse: {
       loginId?: string;
     };
     ProfileHistoryResponse: {
-      videos?: components["schemas"]["Contents"][];
+      videos?: components['schemas']['Contents'][];
     };
     Profile: {
       /** Format: int64 */
@@ -92,11 +101,11 @@ export interface components {
       nickname?: string;
       imageURI?: string;
       /** @enum {string} */
-      grade?: "CHILD" | "ADULT";
+      grade?: 'CHILD' | 'ADULT';
       password?: string;
     };
     ProfileResponse: {
-      profiles?: components["schemas"]["Profile"][];
+      profiles?: components['schemas']['Profile'][];
     };
   };
   responses: never;
@@ -111,18 +120,39 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
+  recordContentsTime: {
+    parameters: {
+      query: {
+        user: components['schemas']['UsersAuth'];
+      };
+      path: {
+        videoId: number;
+        profileId: number;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TimeRecordRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
   login: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["LoginRequest"];
+        'application/json': components['schemas']['LoginRequest'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["LoginResponse"];
+          '*/*': components['schemas']['LoginResponse'];
         };
       };
     };
@@ -130,7 +160,7 @@ export interface operations {
   join: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JoinRequest"];
+        'application/json': components['schemas']['JoinRequest'];
       };
     };
     responses: {
@@ -143,19 +173,19 @@ export interface operations {
   createProfile: {
     parameters: {
       query: {
-        user: components["schemas"]["UsersAuth"];
+        user: components['schemas']['UsersAuth'];
       };
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ProfileRequest"];
+        'application/json': components['schemas']['ProfileRequest'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": Record<string, never>;
+          '*/*': Record<string, never>;
         };
       };
     };
@@ -163,7 +193,7 @@ export interface operations {
   chooseProfile: {
     parameters: {
       query: {
-        user: components["schemas"]["UsersAuth"];
+        user: components['schemas']['UsersAuth'];
       };
       path: {
         profileId: number;
@@ -176,40 +206,23 @@ export interface operations {
       };
     };
   };
+  exitProfile: {
+    parameters: {
+      query: {
+        user: components['schemas']['UsersAuth'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
   getContentsList: {
     parameters: {
       query: {
-        user: components["schemas"]["UsersAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["ContentsResponse"];
-        };
-      };
-    };
-  };
-  queryUser: {
-    parameters: {
-      query: {
-        user: components["schemas"]["UsersAuth"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["CurrentUserResponse"];
-        };
-      };
-    };
-  };
-  getProfileHistory: {
-    parameters: {
-      query: {
-        user: components["schemas"]["UsersAuth"];
+        user: components['schemas']['UsersAuth'];
       };
       path: {
         profileId: number;
@@ -219,7 +232,40 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["ProfileHistoryResponse"];
+          '*/*': components['schemas']['ContentsResponse'];
+        };
+      };
+    };
+  };
+  queryUser: {
+    parameters: {
+      query: {
+        user: components['schemas']['UsersAuth'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          '*/*': components['schemas']['CurrentUserResponse'];
+        };
+      };
+    };
+  };
+  getProfileHistory: {
+    parameters: {
+      query: {
+        user: components['schemas']['UsersAuth'];
+      };
+      path: {
+        profileId: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          '*/*': components['schemas']['ProfileHistoryResponse'];
         };
       };
     };
@@ -227,14 +273,14 @@ export interface operations {
   getProfileList: {
     parameters: {
       query: {
-        user: components["schemas"]["UsersAuth"];
+        user: components['schemas']['UsersAuth'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["ProfileResponse"];
+          '*/*': components['schemas']['ProfileResponse'];
         };
       };
     };
