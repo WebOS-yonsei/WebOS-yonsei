@@ -43,4 +43,12 @@ public class ContentsApiController {
         contentsService.recordTime(user.getUserId(), profileId, videoId, timeRecordRequest.getTime());
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{videoId}")
+    public ResponseEntity<Contents> contentInfo(
+            UsersAuth user,
+            @PathVariable("videoId") Long videoId) {
+        Contents content = contentsService.getContentInfo(videoId);
+        return ResponseEntity.ok(content);
+    }
 }
