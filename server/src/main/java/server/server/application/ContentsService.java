@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static server.server.entity.ProfileContents.State.COMPLETED;
 import static server.server.entity.ProfileContents.State.WATCHING;
 
 @Transactional
@@ -58,6 +59,14 @@ public class ContentsService {
                             .build()
             );
             return;
+        }
+
+        final Contents content = contentsRepository.findById(videoId).orElseThrow(NoSuchElementException::new);
+
+        // 1초 정도 남은 건 다 봤다고 생각
+        if ( content.getDuration() <= (time + 1)){
+            profileContents.get().setState(COMPLETED);
+            time = content.getDuration();
         }
         profileContents.get().setTime(time);
     }

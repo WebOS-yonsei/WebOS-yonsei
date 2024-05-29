@@ -41,16 +41,14 @@ public class ContentAcceptanceTest extends AcceptanceTest {
                 .grade(Grade.ADULT)
                 .profilePassword("0123")
                 .build();
-
         프로필_생성_요청(sessionId, profileRequest);
 
-        final ProfileContents profileContent = ProfileContents.builder()
-                .profileId(1L)
-                .contentsId(1L)
-                .state(ProfileContents.State.WATCHING)
+        Contents content = Contents.builder().title("아마겟돈").duration(205.44F).build();
+        Long contentId = contentsRepository.save(content).getId();
+        ProfileContents profileContents = ProfileContents.builder().profileId(1L)
+                .contentsId(contentId)
                 .build();
-
-        profileContentsRepository.save(profileContent);
+        profileContentsRepository.save(profileContents);
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given()

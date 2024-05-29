@@ -25,7 +25,7 @@ public class Contents {
     private Long id;
     private String title;
     private String description;
-    private float duration;
+    private Float duration;
     private Grade grade;
     private String thumbnailURI;
     private String genre;
