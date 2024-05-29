@@ -67,6 +67,8 @@ public class ContentsService {
         if ( content.getDuration() <= (time + 1)){
             profileContents.get().setState(COMPLETED);
             time = content.getDuration();
+        }else{
+            profileContents.get().setState(WATCHING);
         }
         profileContents.get().setTime(time);
     }
