@@ -17,6 +17,8 @@ import server.server.application.SessionService;
 import server.server.application.UsersService;
 import server.server.config.resolver.UsersAuth;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
@@ -28,8 +30,11 @@ public class UsersApiController {
     @GetMapping
     public ResponseEntity<CurrentUserResponse> queryUser(UsersAuth user) {
         final Long userId = user.getUserId();
+        final Long sessionId = user.getSessionId();
         final String loginId = usersService.loginId(userId);
-        return ResponseEntity.ok(CurrentUserResponse.of(loginId));
+        final List<String> info = usersService.currentProfileInfo(sessionId);
+
+        return ResponseEntity.ok(CurrentUserResponse.of(loginId, info.get(0), info.get(1)));
     }
 
     @PostMapping("/join")
