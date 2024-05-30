@@ -23,7 +23,7 @@ public class ProfileRequest {
     private String profilePassword;
 
     public static ProfileRequest of(final String nickname, final String profilePassword) {
-        return new ProfileRequest(nickname, null, Grade.CHILD, profilePassword);
+        return new ProfileRequest(nickname, "https://www.naver.com", Grade.CHILD, profilePassword);
     }
 
     public Profile toEntity(Long userId) {
