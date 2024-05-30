@@ -3,39 +3,43 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
-  '/videos/{videoId}/time/{profileId}': {
-    post: operations['recordContentsTime'];
+  "/videos/{videoId}": {
+    post: operations["contentInfo"];
   };
-  '/users/login': {
-    post: operations['login'];
+  "/videos/{videoId}/time/{profileId}": {
+    post: operations["recordContentsTime"];
   };
-  '/users/join': {
-    post: operations['join'];
+  "/users/login": {
+    post: operations["login"];
   };
-  '/profiles': {
-    post: operations['createProfile'];
+  "/users/join": {
+    post: operations["join"];
   };
-  '/profiles/{profileId}': {
-    post: operations['chooseProfile'];
+  "/profiles": {
+    post: operations["createProfile"];
   };
-  '/profiles/exit': {
-    post: operations['exitProfile'];
+  "/profiles/{profileId}": {
+    post: operations["chooseProfile"];
   };
-  '/videos/{profileId}': {
-    get: operations['getContentsList'];
+  "/profiles/exit": {
+    post: operations["exitProfile"];
   };
-  '/users': {
-    get: operations['queryUser'];
+  "/videos/{profileId}": {
+    get: operations["getContentsList"];
   };
-  '/profiles/{profileId}/history': {
-    get: operations['getProfileHistory'];
+  "/users": {
+    get: operations["queryUser"];
   };
-  '/profiles/list': {
-    get: operations['getProfileList'];
+  "/profiles/{profileId}/history": {
+    get: operations["getProfileHistory"];
   };
-  '/health': {
-    get: operations['healthCheck'];
+  "/profiles/list": {
+    get: operations["getProfileList"];
+  };
+  "/health": {
+    get: operations["healthCheck"];
   };
 }
 
@@ -48,6 +52,19 @@ export interface components {
       userId?: number;
       /** Format: int64 */
       sessionId?: number;
+    };
+    Contents: {
+      /** Format: int64 */
+      id?: number;
+      title?: string;
+      description?: string;
+      /** Format: float */
+      duration?: number;
+      /** @enum {string} */
+      grade?: "CHILD" | "ADULT";
+      thumbnailURI?: string;
+      genre?: string;
+      sourceURI?: string;
     };
     TimeRecordRequest: {
       /** Format: float */
@@ -68,30 +85,19 @@ export interface components {
       nickname?: string;
       profileUri?: string;
       /** @enum {string} */
-      grade?: 'CHILD' | 'ADULT';
+      grade?: "CHILD" | "ADULT";
       profilePassword?: string;
     };
-    Contents: {
-      /** Format: int64 */
-      id?: number;
-      title?: string;
-      description?: string;
-      /** Format: float */
-      duration?: number;
-      /** @enum {string} */
-      grade?: 'CHILD' | 'ADULT';
-      thumbnailURI?: string;
-      genre?: string;
-      sourceURI?: string;
-    };
     ContentsResponse: {
-      contents?: components['schemas']['Contents'][];
+      contents?: components["schemas"]["Contents"][];
     };
     CurrentUserResponse: {
       loginId?: string;
+      nickname?: string;
+      profileURI?: string;
     };
     ProfileHistoryResponse: {
-      videos?: components['schemas']['Contents'][];
+      videos?: components["schemas"]["Contents"][];
     };
     Profile: {
       /** Format: int64 */
@@ -101,11 +107,11 @@ export interface components {
       nickname?: string;
       imageURI?: string;
       /** @enum {string} */
-      grade?: 'CHILD' | 'ADULT';
+      grade?: "CHILD" | "ADULT";
       password?: string;
     };
     ProfileResponse: {
-      profiles?: components['schemas']['Profile'][];
+      profiles?: components["schemas"]["Profile"][];
     };
   };
   responses: never;
@@ -120,10 +126,29 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
+
+  contentInfo: {
+    parameters: {
+      query: {
+        user: components["schemas"]["UsersAuth"];
+      };
+      path: {
+        videoId: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["Contents"];
+        };
+      };
+    };
+  };
   recordContentsTime: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
       path: {
         videoId: number;
@@ -132,7 +157,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['TimeRecordRequest'];
+        "application/json": components["schemas"]["TimeRecordRequest"];
       };
     };
     responses: {
@@ -145,14 +170,14 @@ export interface operations {
   login: {
     requestBody: {
       content: {
-        'application/json': components['schemas']['LoginRequest'];
+        "application/json": components["schemas"]["LoginRequest"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          '*/*': components['schemas']['LoginResponse'];
+          "*/*": components["schemas"]["LoginResponse"];
         };
       };
     };
@@ -160,7 +185,7 @@ export interface operations {
   join: {
     requestBody: {
       content: {
-        'application/json': components['schemas']['JoinRequest'];
+        "application/json": components["schemas"]["JoinRequest"];
       };
     };
     responses: {
@@ -173,19 +198,19 @@ export interface operations {
   createProfile: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['ProfileRequest'];
+        "application/json": components["schemas"]["ProfileRequest"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          '*/*': Record<string, never>;
+          "*/*": Record<string, never>;
         };
       };
     };
@@ -193,7 +218,7 @@ export interface operations {
   chooseProfile: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
       path: {
         profileId: number;
@@ -209,7 +234,7 @@ export interface operations {
   exitProfile: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
     };
     responses: {
@@ -222,7 +247,7 @@ export interface operations {
   getContentsList: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
       path: {
         profileId: number;
@@ -232,7 +257,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          '*/*': components['schemas']['ContentsResponse'];
+          "*/*": components["schemas"]["ContentsResponse"];
         };
       };
     };
@@ -240,14 +265,14 @@ export interface operations {
   queryUser: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          '*/*': components['schemas']['CurrentUserResponse'];
+          "*/*": components["schemas"]["CurrentUserResponse"];
         };
       };
     };
@@ -255,7 +280,7 @@ export interface operations {
   getProfileHistory: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
       path: {
         profileId: number;
@@ -265,7 +290,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          '*/*': components['schemas']['ProfileHistoryResponse'];
+          "*/*": components["schemas"]["ProfileHistoryResponse"];
         };
       };
     };
@@ -273,14 +298,14 @@ export interface operations {
   getProfileList: {
     parameters: {
       query: {
-        user: components['schemas']['UsersAuth'];
+        user: components["schemas"]["UsersAuth"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          '*/*': components['schemas']['ProfileResponse'];
+          "*/*": components["schemas"]["ProfileResponse"];
         };
       };
     };
