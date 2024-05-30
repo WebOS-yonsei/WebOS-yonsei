@@ -2,11 +2,19 @@ import { Heading, VStack, Wrap, WrapItem, Image, Text } from '@chakra-ui/react';
 import { Link } from '~/widgets';
 import { components } from '../@api';
 
-export function VideoListPage({ videoList, historyList }: { videoList: components['schemas']['Contents'][]; historyList: components['schemas']['Contents'][] }) {
+export function VideoListPage({
+  videoList,
+  historyList,
+  user,
+}: {
+  videoList: components['schemas']['Contents'][];
+  historyList: components['schemas']['Contents'][];
+  user: components['schemas']['CurrentUserResponse'];
+}) {
   return (
     <VStack align="stretch" spacing={20}>
       <VStack align="stretch" spacing={5}>
-        <Heading fontSize="2xl">라바님의 취향 저격 베스트 콘텐츠</Heading>
+        <Heading fontSize="2xl">{user.nickname}님의 취향 저격 베스트 콘텐츠</Heading>
         <Wrap spacing="30px">
           {videoList.map((video) => (
             <WrapItem key={video.id}>
@@ -22,7 +30,7 @@ export function VideoListPage({ videoList, historyList }: { videoList: component
         </Wrap>
       </VStack>
       <VStack align="stretch" spacing={5}>
-        <Heading fontSize="2xl">라바님이 시청 중인 콘텐츠</Heading>
+        <Heading fontSize="2xl">{user.nickname}님이 시청 중인 콘텐츠</Heading>
         <Wrap spacing="30px">
           {historyList.map((video) => (
             <WrapItem key={video.id}>
