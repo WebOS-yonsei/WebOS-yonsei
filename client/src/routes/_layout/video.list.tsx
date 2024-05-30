@@ -12,13 +12,16 @@ export const Route = createFileRoute('/_layout/video/list')({
     assert(sessionId, '로그인이 필요합니다.');
     assert(profileId, '프로필이 필요합니다.');
 
-    const [videoList, historyList] = await Promise.all([
-      client.GET('/videos', {
+    const [videoList, historyList, user] = await Promise.all([
+      client.GET('/videos/{profileId}', {
         params: {
           query: {
             user: {
               sessionId,
             },
+          },
+          path: {
+            profileId,
           },
         },
       }),
@@ -34,19 +37,29 @@ export const Route = createFileRoute('/_layout/video/list')({
           },
         },
       }),
+      client.GET('/users', {
+        params: {
+          query: {
+            user: {
+              sessionId,
+            },
+          },
+        },
+      }),
     ]);
 
-    if (!videoList.data?.contents || !historyList.data?.videos || videoList.error || historyList.error) {
+    if (!videoList.data?.contents || !historyList.data?.videos || !user.data || videoList.error || historyList.error || user.error) {
       throw new Error('비디오 목록을 불러오는 중 오류가 발생했습니다.');
     }
 
     return {
       videoList: videoList.data.contents,
       historyList: historyList.data.videos,
+      user: user.data,
     };
   },
   component: function VideoList() {
-    const { videoList, historyList } = Route.useLoaderData();
-    return <VideoListPage videoList={videoList} historyList={historyList} />;
+    const { videoList, historyList, user } = Route.useLoaderData();
+    return <VideoListPage videoList={videoList} historyList={historyList} user={user} />;
   },
 });
