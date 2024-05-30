@@ -39,4 +39,8 @@ public class ProfileContents {
     public void setTime(float time) {
         this.time = time;
     }
+
+    public void setState(State state) {
+        this.state = state;
+    }
 }
