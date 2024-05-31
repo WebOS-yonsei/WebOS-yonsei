@@ -4,7 +4,3 @@ spring:
 
 encryption:
   secret-key: VNaqsewrTM84zdZB+52sXOg==
-
-# 번경 가능함
-server:
-  url: http://localhost:8080

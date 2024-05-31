@@ -12,6 +12,7 @@ public class FileResponse {
     public String url;
 
     public static FileResponse of(final String url) {
-        return new FileResponse(url);
+        return new FileResponse("http://localhost:8080/" + url);
+
     }
 }

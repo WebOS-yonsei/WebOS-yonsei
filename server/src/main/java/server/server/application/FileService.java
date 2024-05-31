@@ -19,10 +19,6 @@ public class FileService {
 
     private static final String UPLOAD_DIRECTORY = "src/main/resources/static/upload";
 
-    @Value("${server.url}")
-    private String serverUrl;
-
-
     public String upload(Long userId, MultipartFile requestFile){
 
         Path uploadPath = Paths.get(UPLOAD_DIRECTORY, String.valueOf(userId));
@@ -43,7 +39,6 @@ public class FileService {
             return e.toString();
         }
 
-        String url = serverUrl + "/upload/" + userId + "/" + originalFilename;
-        return url;
+        return "upload/" + userId + "/" + originalFilename;
     }
 }
