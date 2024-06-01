@@ -6,9 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import server.server.entity.Contents;
 import server.server.entity.Profile;
 import server.server.entity.ProfileContents;
+import server.server.entity.Session;
 import server.server.repository.ContentsRepository;
 import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
+import server.server.repository.SessionRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,6 +26,7 @@ public class ContentsService {
     private final ProfileRepository profileRepository;
     private final ContentsRepository contentsRepository;
     private final ProfileContentsRepository profileContentsRepository;
+    private final SessionRepository sessionRepository;
 
     // contents list 조회
     public List<Contents> getContents(final Long userId, final Long profileId) {
@@ -66,7 +69,7 @@ public class ContentsService {
         // 1초 정도 남은 건 다 봤다고 생각
         if ( content.getDuration() <= (time + 1)){
             profileContents.get().setState(COMPLETED);
-            time = content.getDuration();
+            time = 0F;
         }else{
             profileContents.get().setState(WATCHING);
         }
@@ -75,5 +78,16 @@ public class ContentsService {
 
     public Contents getContentInfo(final Long videoId){
         return contentsRepository.findById(videoId).orElseThrow(NoSuchElementException::new);
+    }
+
+    public Float getCurrentPlaybackTime(Long videoId, Long sessionId){
+
+        final Session session = sessionRepository.findById(sessionId).orElseThrow(NoSuchElementException::new);
+        final Long profileId = session.getProfileId();
+        final Optional<ProfileContents> profileContents = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId);
+        if (profileContents.isEmpty()) {
+            return 0F;
+        }
+        return profileContents.get().getTime();
     }
 }
