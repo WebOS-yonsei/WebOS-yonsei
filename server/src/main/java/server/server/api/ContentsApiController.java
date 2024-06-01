@@ -45,10 +45,11 @@ public class ContentsApiController {
     }
 
     @PostMapping("/{videoId}")
-    public ResponseEntity<Contents> contentInfo(
+    public ResponseEntity<ContentsResponse.ContentInfo> contentInfo(
             UsersAuth user,
             @PathVariable("videoId") Long videoId) {
         Contents content = contentsService.getContentInfo(videoId);
-        return ResponseEntity.ok(content);
+        Float currentPlaybackTime = contentsService.getCurrentPlaybackTime(videoId, user.getSessionId());
+        return ResponseEntity.ok(ContentsResponse.ContentInfo.of(content, currentPlaybackTime));
     }
 }
