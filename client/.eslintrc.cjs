@@ -16,6 +16,7 @@ module.exports = {
     'react/jsx-no-bind': 'off',
     'react/destructuring-assignment': 'off',
     'react/no-array-index-key': 'off',
+    'react/require-default-props': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       // _로 시작하는 변수는 사용하지 않아도 괜찮음
