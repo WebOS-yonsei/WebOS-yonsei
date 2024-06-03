@@ -16,7 +16,7 @@
     "license": "node ./scripts/license.js",
     "test": "node ./scripts/test.js",
     "test-watch": "node ./scripts/test.js --watch",
-    "codegen": "openapi-typescript http://localhost:8080/v3/api-docs --output ./src/features/@api/scheme.ts"
+    "codegen": "bun ./src/openapi.ts"
   },
   "license": "UNLICENSED",
   "private": true,

@@ -26,6 +26,9 @@ export interface paths {
   "/profiles/exit": {
     post: operations["exitProfile"];
   };
+  "/file": {
+    post: operations["uploadFile"];
+  };
   "/videos/{profileId}": {
     get: operations["getContentsList"];
   };
@@ -53,7 +56,7 @@ export interface components {
       /** Format: int64 */
       sessionId?: number;
     };
-    Contents: {
+    ContentInfo: {
       /** Format: int64 */
       id?: number;
       title?: string;
@@ -65,6 +68,8 @@ export interface components {
       thumbnailURI?: string;
       genre?: string;
       sourceURI?: string;
+      /** Format: float */
+      currentPlaybackTime?: number;
     };
     TimeRecordRequest: {
       /** Format: float */
@@ -87,6 +92,22 @@ export interface components {
       /** @enum {string} */
       grade?: "CHILD" | "ADULT";
       profilePassword?: string;
+    };
+    FileResponse: {
+      url?: string;
+    };
+    Contents: {
+      /** Format: int64 */
+      id?: number;
+      title?: string;
+      description?: string;
+      /** Format: float */
+      duration?: number;
+      /** @enum {string} */
+      grade?: "CHILD" | "ADULT";
+      thumbnailURI?: string;
+      genre?: string;
+      sourceURI?: string;
     };
     ContentsResponse: {
       contents?: components["schemas"]["Contents"][];
@@ -140,7 +161,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["Contents"];
+          "*/*": components["schemas"]["ContentInfo"];
         };
       };
     };
@@ -241,6 +262,29 @@ export interface operations {
       /** @description OK */
       200: {
         content: never;
+      };
+    };
+  };
+  uploadFile: {
+    parameters: {
+      query: {
+        user: components["schemas"]["UsersAuth"];
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Format: binary */
+          file: File;
+        };
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["FileResponse"];
+        };
       };
     };
   };
