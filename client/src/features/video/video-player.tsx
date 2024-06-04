@@ -3,30 +3,12 @@ import { useEffect, useRef } from 'react';
 import { assert } from '~/utils';
 import { useUser } from '../user';
 import { client } from '../@api';
-import { useCallbackRef } from '~/hooks';
 
-export function VideoPlayer({ src, videoId }: { src: string; videoId: number }) {
+export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: number; time?: number }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const profileId = useUser((state) => state.profileId);
 
   assert(profileId, 'profileId가 비어있음');
-
-  const recordPlayingTime = useCallbackRef((time: number) => {
-    client.POST('/videos/{videoId}/time/{profileId}', {
-      params: {
-        path: {
-          videoId,
-          profileId,
-        },
-        query: {
-          user: {},
-        },
-      },
-      body: {
-        time,
-      },
-    });
-  });
 
   useEffect(() => {
     const video = videoRef.current;
@@ -34,31 +16,55 @@ export function VideoPlayer({ src, videoId }: { src: string; videoId: number }) 
 
     let hls: Hls;
 
-    if (Hls.isSupported()) {
+    const isM3u8 = src.endsWith('.m3u8');
+
+    if (isM3u8 && Hls.isSupported()) {
       hls = new Hls();
       hls.loadSource(src);
       hls.attachMedia(video);
-      hls.on(Hls.Events.FRAG_PARSED, () => {
-        recordPlayingTime(video.currentTime);
-      });
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
           video.play();
         });
       });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    } else {
       video.src = src;
+      navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
+        video.play();
+      });
     }
 
-    const onVideoEnded = () => recordPlayingTime(video.duration);
+    const onBeforeUnload = () =>
+      client.POST('/videos/{videoId}/time/{profileId}', {
+        params: {
+          path: {
+            videoId,
+            profileId,
+          },
+          query: {
+            user: {},
+          },
+        },
+        body: {
+          time: video.currentTime,
+        },
+      });
 
-    video.addEventListener('ended', onVideoEnded);
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    const onLoadedMetadata = () => {
+      video.currentTime = time;
+    };
+
+    video.addEventListener('loadedmetadata', onLoadedMetadata);
 
     return () => {
       hls?.destroy();
-      video.removeEventListener('ended', onVideoEnded);
+      onBeforeUnload();
+      window.removeEventListener('beforeunload', onBeforeUnload);
+      video.removeEventListener('loadedmetadata', onLoadedMetadata);
     };
-  }, [src, recordPlayingTime]);
+  }, [src, time, profileId, videoId]);
 
   // eslint-disable-next-line jsx-a11y/media-has-caption
   return <video ref={videoRef} controls />;
