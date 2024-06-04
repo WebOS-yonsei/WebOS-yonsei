@@ -3,11 +3,13 @@ import { Box, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, 
 import { Await, DeferredPromise, useNavigate } from '@tanstack/react-router';
 import { MouseEventHandler, Suspense } from 'react';
 import { client, components } from '~/features/@api';
-import { assert } from '~/utils';
+import { useUser } from '~/features/user';
 import { Link, VectorLogo } from '~/widgets';
 
 export function DefaultHeader({ user }: { user: DeferredPromise<components['schemas']['CurrentUserResponse']> }) {
   const naviagate = useNavigate();
+  const setProfileId = useUser((state) => state.setProfileId);
+
   const onProfileLinkClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
     e.preventDefault();
 
@@ -19,13 +21,13 @@ export function DefaultHeader({ user }: { user: DeferredPromise<components['sche
       },
     });
 
-    const link = (e.target as HTMLAnchorElement).getAttribute('href');
-    assert(link, 'href가 비어있음');
-
     if (!error) {
-      naviagate({
-        to: link,
-      });
+      setProfileId(undefined);
+      setTimeout(() => {
+        naviagate({
+          to: '/profile',
+        });
+      }, 300);
     }
   };
 

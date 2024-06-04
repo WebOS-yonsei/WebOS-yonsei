@@ -101,7 +101,5 @@ export class MockLS2Request {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  cancel() {
-    throw new Error('Not implemented');
-  }
+  cancel() {}
 }
