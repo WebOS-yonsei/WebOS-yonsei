@@ -19,7 +19,7 @@ export function DefaultHeader({ user }: { user: DeferredPromise<components['sche
       },
     });
 
-    const link = e.currentTarget.getAttribute('href');
+    const link = (e.target as HTMLAnchorElement).getAttribute('href');
     assert(link, 'href가 비어있음');
 
     if (!error) {
