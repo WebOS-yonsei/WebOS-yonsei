@@ -62,10 +62,10 @@ export function ProfileSelectModal({ profileId, onClose, onSuccess }: { profileI
   };
 
   return (
-    <Modal isOpen onClose={onClose}>
+    <Modal isOpen onClose={onClose} size="xs">
       <ModalOverlay />
       <form onSubmit={handleSubmit(onFormValid, onFormError)}>
-        <ModalContent>
+        <ModalContent bgColor="black">
           <ModalHeader>비밀번호</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -87,10 +87,10 @@ export function ProfileSelectModal({ profileId, onClose, onSuccess }: { profileI
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button mr={3} onClick={onClose}>
               닫기
             </Button>
-            <Button variant="ghost" type="submit">
+            <Button colorScheme="red" type="submit">
               제출
             </Button>
           </ModalFooter>
