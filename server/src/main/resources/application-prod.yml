@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # TODO: 환경변수로 분리하기
-    url: jdbc:mysql://34.47.80.17:3306/webos
+    url: jdbc:mysql://34.47.80.17:3306/webos?&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=UTC
     username: root
     password: connect
   jpa:
