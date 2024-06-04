@@ -13,7 +13,7 @@ spring:
     open-in-view: false
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 encryption:
   secret-key: VNaqsewrTM84zdZB+52sXOg==
