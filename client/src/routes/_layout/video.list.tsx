@@ -6,19 +6,16 @@ import { assert } from '~/utils';
 export const Route = createFileRoute('/_layout/video/list')({
   loader: async ({
     context: {
-      user: { sessionId, profileId },
+      user: { profileId },
     },
   }) => {
-    assert(sessionId, '로그인이 필요합니다.');
     assert(profileId, '프로필이 필요합니다.');
 
     const [videoList, historyList, user] = await Promise.all([
       client.GET('/videos/{profileId}', {
         params: {
           query: {
-            user: {
-              sessionId,
-            },
+            user: {},
           },
           path: {
             profileId,
@@ -28,9 +25,7 @@ export const Route = createFileRoute('/_layout/video/list')({
       client.GET('/profiles/{profileId}/history', {
         params: {
           query: {
-            user: {
-              sessionId,
-            },
+            user: {},
           },
           path: {
             profileId,
@@ -40,9 +35,7 @@ export const Route = createFileRoute('/_layout/video/list')({
       client.GET('/users', {
         params: {
           query: {
-            user: {
-              sessionId,
-            },
+            user: {},
           },
         },
       }),

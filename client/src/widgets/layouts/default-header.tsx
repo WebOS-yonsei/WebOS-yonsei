@@ -3,25 +3,18 @@ import { Box, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, 
 import { Await, DeferredPromise, useNavigate } from '@tanstack/react-router';
 import { MouseEventHandler, Suspense } from 'react';
 import { client, components } from '~/features/@api';
-import { useUser } from '~/features/user';
 import { assert } from '~/utils';
 import { Link, VectorLogo } from '~/widgets';
 
 export function DefaultHeader({ user }: { user: DeferredPromise<components['schemas']['CurrentUserResponse']> }) {
   const naviagate = useNavigate();
-  const sessionId = useUser((state) => state.sessionId);
-
-  assert(sessionId, 'sessionId가 비어있음');
-
   const onProfileLinkClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
     e.preventDefault();
 
     const { error } = await client.POST('/profiles/exit', {
       params: {
         query: {
-          user: {
-            sessionId,
-          },
+          user: {},
         },
       },
     });

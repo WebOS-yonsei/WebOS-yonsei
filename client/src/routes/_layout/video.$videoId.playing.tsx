@@ -1,23 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { client } from '~/features/@api';
 import { VideoPlayingPage } from '~/features/video';
-import { assert } from '~/utils';
 
 export const Route = createFileRoute('/_layout/video/$videoId/playing')({
-  loader: async ({
-    context: {
-      user: { sessionId },
-    },
-    params: { videoId },
-  }) => {
-    assert(sessionId, 'sessionId가 비어있음');
-
+  loader: async ({ params: { videoId } }) => {
     const { data, error } = await client.POST('/videos/{videoId}', {
       params: {
         query: {
-          user: {
-            sessionId,
-          },
+          user: {},
         },
         path: {
           videoId: Number(videoId),

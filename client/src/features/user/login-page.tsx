@@ -54,7 +54,7 @@ export function LoginPage() {
     });
 
     navigate({
-      to: '/login',
+      to: '/profile',
     });
   };
 

@@ -8,10 +8,8 @@ import { useCallbackRef } from '~/hooks';
 export function VideoPlayer({ src, videoId }: { src: string; videoId: number }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const profileId = useUser((state) => state.profileId);
-  const sessionId = useUser((state) => state.sessionId);
 
   assert(profileId, 'profileId가 비어있음');
-  assert(sessionId, 'sessionId가 비어있음');
 
   const recordPlayingTime = useCallbackRef((time: number) => {
     client.POST('/videos/{videoId}/time/{profileId}', {
@@ -21,9 +19,7 @@ export function VideoPlayer({ src, videoId }: { src: string; videoId: number }) 
           profileId,
         },
         query: {
-          user: {
-            sessionId,
-          },
+          user: {},
         },
       },
       body: {

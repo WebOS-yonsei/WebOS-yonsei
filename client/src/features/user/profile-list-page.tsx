@@ -21,10 +21,12 @@ export function ProfileListPage({ profiles }: { profiles: components['schemas'][
         onClose={close}
         onSuccess={() => {
           close();
-          navigate({
-            to: '/video/list',
-          });
           setProfileId(profileId);
+          setTimeout(() => {
+            navigate({
+              to: '/video/list',
+            });
+          }, 300);
         }}
       />,
     );

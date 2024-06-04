@@ -1,7 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { client } from '~/features/@api';
 import { ProfileListPage } from '~/features/user';
-import { assert } from '~/utils';
 
 export const Route = createFileRoute('/_user/profile/')({
   beforeLoad: ({ context }) => {
@@ -17,15 +16,11 @@ export const Route = createFileRoute('/_user/profile/')({
       });
     }
   },
-  loader: async ({ context }) => {
-    assert(context.user.sessionId, 'user.sessionId is required');
-
+  loader: async () => {
     const { data, error } = await client.GET('/profiles/list', {
       params: {
         query: {
-          user: {
-            sessionId: context.user.sessionId,
-          },
+          user: {},
         },
       },
     });
