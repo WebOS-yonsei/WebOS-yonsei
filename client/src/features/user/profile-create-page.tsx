@@ -7,6 +7,7 @@ import { ChangeEventHandler, useState } from 'react';
 import { FileUpload, Link } from '~/widgets';
 import { client } from '../@api';
 import { useUser } from './store';
+import { getImageUrl } from '~/utils';
 
 const scheme = z.object({
   image: z.any(),
@@ -126,7 +127,7 @@ export function ProfileCreatePage() {
           <FormControl isRequired>
             <FormLabel>이미지</FormLabel>
             <HStack spacing={6}>
-              <Avatar size="xl" src={fileUrl !== '' ? fileUrl : undefined} />
+              <Avatar size="xl" src={fileUrl !== '' ? getImageUrl(fileUrl) : undefined} />
               <FileUpload
                 accept={'image/*'}
                 register={register('image', {

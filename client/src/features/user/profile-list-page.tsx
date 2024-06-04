@@ -5,6 +5,7 @@ import { components } from '../@api';
 import { useModal } from '../@contexts';
 import { ProfileSelectModal } from './profile-select-modal';
 import { useUser } from './store';
+import { getImageUrl } from '~/utils';
 
 export function ProfileListPage({ profiles }: { profiles: components['schemas']['Profile'][] }) {
   const { open, close } = useModal();
@@ -59,7 +60,7 @@ export function ProfileListPage({ profiles }: { profiles: components['schemas'][
       <HStack spacing={8} align="center">
         {profiles.map((profile) => (
           <VStack key={profile.id} spacing={4} onClick={onProfileClick(profile.id!)}>
-            <Avatar name={profile.nickname} src={profile.imageURI} size="2xl" />
+            <Avatar name={profile.nickname} src={profile.imageURI ? getImageUrl(profile.imageURI) : undefined} size="2xl" />
             <Text fontWeight="light">{profile.nickname}</Text>
           </VStack>
         ))}
