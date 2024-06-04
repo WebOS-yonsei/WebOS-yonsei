@@ -1,4 +1,4 @@
-import { Heading, VStack, Image, Button, HStack, Text } from '@chakra-ui/react';
+import { Heading, VStack, Image, Button, HStack, Text, Tag } from '@chakra-ui/react';
 import { Link } from '~/widgets';
 import { components } from '../@api';
 
@@ -17,11 +17,15 @@ export function VideoDetailPage({ videoId, videoInfo }: { videoId: number; video
             </Link>
           </VStack>
           <VStack align="stretch" w="100%">
-            <Heading fontSize="2xl">{videoInfo.title}</Heading>
+            <HStack>
+              <Heading fontSize="2xl">{videoInfo.title}</Heading>
+              <HStack>
+                <Tag colorScheme="teal">{videoInfo.genre}</Tag>
+                <Tag colorScheme="red">{videoInfo.duration}초</Tag>
+                <Tag colorScheme="blue">{videoInfo.grade === 'ADULT' ? '성인' : '전체연령가'}</Tag>
+              </HStack>
+            </HStack>
             <Text>{videoInfo.description}</Text>
-            <Text>{videoInfo.genre}</Text>
-            <Text>{videoInfo.duration}초</Text>
-            <Text>{videoInfo.grade === 'ADULT' ? '성인' : '전체연령가'}</Text>
           </VStack>
         </HStack>
       </VStack>

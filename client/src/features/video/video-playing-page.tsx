@@ -9,7 +9,7 @@ export function VideoPlayingPage({ videoId, videoInfo }: { videoId: number; vide
   return (
     <VStack align="stretch" spacing={20}>
       <VStack align="stretch" spacing={5}>
-        <Heading fontSize="2xl">{videoId}</Heading>
+        <Heading fontSize="2xl">{videoInfo.title}</Heading>
         <VideoPlayer src={videoInfo.sourceURI} videoId={videoId} />
       </VStack>
     </VStack>
