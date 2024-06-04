@@ -10,6 +10,7 @@ import server.server.entity.Grade;
 import java.util.List;
 
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContentsResponse {
