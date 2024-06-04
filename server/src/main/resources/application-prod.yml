@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # TODO: 환경변수로 분리하기
+    url: jdbc:mysql://34.47.80.17:3306/webos?&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=UTC
+    username: root
+    password: connect
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+encryption:
+  secret-key: VNaqsewrTM84zdZB+52sXOg==
