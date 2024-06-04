@@ -29,11 +29,8 @@ public class ContentsService {
     private final SessionRepository sessionRepository;
 
     // contents list 조회
-    public List<Contents> getContents(final Long userId, final Long profileId) {
-        final Profile profile = profileRepository.findById(profileId).orElseThrow(NoSuchElementException::new);
-        if (!profile.checkUser(userId)) {
-            throw new IllegalArgumentException("해당 프로필에 접근 권한이 있는 유저가 아닙니다.");
-        }
+    public List<Contents> getContents(final Long userId, final Long sessionId) {
+        Long profileId = getProfileId(userId, sessionId);
 
         return profileContentsRepository.findByProfileIdAndState(profileId, WATCHING)
                 .stream()
@@ -45,11 +42,8 @@ public class ContentsService {
     }
 
     // 시청 시간 기록
-    public void recordTime(final Long userId, Long profileId, Long videoId, Float time) {
-        final Profile profile = profileRepository.findById(profileId).orElseThrow(NoSuchElementException::new);
-        if (!profile.checkUser(userId)) {
-            throw new IllegalArgumentException("해당 프로필에 접근 권한이 있는 유저가 아닙니다.");
-        }
+    public void recordTime(final Long userId, Long sessionId, Long videoId, Float time) {
+        Long profileId = getProfileId(userId, sessionId);
 
         final Optional<ProfileContents> profileContents = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId);
         if (profileContents.isEmpty()) {
@@ -74,6 +68,16 @@ public class ContentsService {
             profileContents.get().setState(WATCHING);
         }
         profileContents.get().setTime(time);
+    }
+
+    private Long getProfileId(Long userId, Long sessionId) {
+        final Session session = sessionRepository.findById(sessionId).orElseThrow(NoSuchElementException::new);
+        Long profileId = session.getProfileId();
+        final Profile profile = profileRepository.findById(profileId).orElseThrow(NoSuchElementException::new);
+        if (!profile.checkUser(userId)) {
+            throw new IllegalArgumentException("해당 프로필에 접근 권한이 있는 유저가 아닙니다.");
+        }
+        return profileId;
     }
 
     public Contents getContentInfo(final Long videoId){

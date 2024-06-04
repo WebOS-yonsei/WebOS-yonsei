@@ -9,6 +9,7 @@ import server.server.entity.Grade;
 
 import java.util.List;
 
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class ContentsResponse {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class ContentInfo{
         private Long id;
