@@ -1,12 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { Suspense } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { Global } from '@emotion/react';
 import { routeTree } from '~/routeTree.gen';
-import { globalStyles, theme } from '~/styles';
+import { colorModeTheme, globalStyles, theme } from '~/styles';
 import { useUser } from '~/features/user';
-import { ModalConsumer, ModalProvider } from '~/features/@contexts';
+import { ModalConsumer, ModalProvider } from '~/features/@context';
 
 const router = createRouter({
   routeTree,
@@ -39,6 +39,7 @@ export const App = () => {
             />
           </Suspense>
           <ModalConsumer />
+          <ColorModeScript initialColorMode={colorModeTheme.config.initialColorMode} />
         </ModalProvider>
       </ChakraProvider>
     </>

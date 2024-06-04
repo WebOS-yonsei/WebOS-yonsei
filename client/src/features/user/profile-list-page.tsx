@@ -2,7 +2,7 @@ import { Avatar, Box, HStack, Heading, IconButton, Stack, Text, VStack, useToast
 import { AddIcon } from '@chakra-ui/icons';
 import { useNavigate } from '@tanstack/react-router';
 import { components } from '../@api';
-import { useModal } from '../@contexts';
+import { useModal } from '../@context';
 import { ProfileSelectModal } from './profile-select-modal';
 import { useUser } from './store';
 import { getImageUrl } from '~/utils';

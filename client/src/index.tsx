@@ -1,21 +1,14 @@
 /* global ENACT_PACK_ISOMORPHIC */
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
-import { ColorModeScript } from '@chakra-ui/react';
 import { App } from '~/app';
 import { turnOffMajorRelaseWarning, initFirebase } from '~/miscs';
-import { colorModeTheme } from '~/styles';
 
 turnOffMajorRelaseWarning();
 
 initFirebase();
 
-const appElement = (
-  <>
-    <ColorModeScript initialColorMode={colorModeTheme.config.initialColorMode} />
-    <App />
-  </>
-);
+const appElement = <App />;
 
 const $root = document.getElementById('root');
 
