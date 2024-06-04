@@ -59,7 +59,7 @@ export function ProfileListPage({ profiles }: { profiles: components['schemas'][
           시청할 프로필을 선택해주세요.
         </Text>
       </Stack>
-      <HStack spacing={8} align="center">
+      <HStack spacing={8} align="center" justify="center">
         {profiles.map((profile) => (
           <VStack key={profile.id} spacing={4} onClick={onProfileClick(profile.id!)}>
             <Avatar name={profile.nickname} src={profile.imageURI ? getImageUrl(profile.imageURI) : undefined} size="2xl" />
