@@ -164,12 +164,12 @@ export function ProfileCreatePage() {
             <FormHelperText>성인이 아닐 경우 볼 수 있는 컨텐츠가 제한됩니다.</FormHelperText>
           </FormControl>
           <HStack justifyContent="space-between" w="full">
-            <Link to="/profile" w="full">
-              <Button bg="red.400" w="full" type="reset" onClick={() => router.history.back()}>
+            <Link to="/profile" w="50%">
+              <Button size="lg" w="full" type="reset" onClick={() => router.history.back()}>
                 취소
               </Button>
             </Link>
-            <Button size="lg" bg="red.600" _hover={{ bg: 'red.700' }} color="white" type="submit">
+            <Button size="lg" w="50%" bg="red.600" _hover={{ bg: 'red.700' }} color="white" type="submit">
               생성
             </Button>
           </HStack>
