@@ -6,7 +6,6 @@ import { z } from 'zod';
 import { ChangeEventHandler, useState } from 'react';
 import { FileUpload, Link } from '~/widgets';
 import { client } from '../@api';
-import { useUser } from './store';
 import { getImageUrl } from '~/utils';
 
 const scheme = z.object({
@@ -22,7 +21,6 @@ export function ProfileCreatePage() {
   const toast = useToast();
   const router = useRouter();
   const navigate = useNavigate();
-  const sessionId = useUser((state) => state.sessionId);
 
   const { register, handleSubmit, control } = useForm<Scheme>({
     resolver: zodResolver(scheme),
@@ -37,9 +35,7 @@ export function ProfileCreatePage() {
     const { error } = await client.POST('/profiles', {
       params: {
         query: {
-          user: {
-            sessionId,
-          },
+          user: {},
         },
       },
       body: {
@@ -87,9 +83,7 @@ export function ProfileCreatePage() {
     const { data, error } = await client.POST('/file', {
       params: {
         query: {
-          user: {
-            sessionId,
-          },
+          user: {},
         },
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -97,6 +91,11 @@ export function ProfileCreatePage() {
       },
       body: {
         file,
+      },
+      bodySerializer: (body) => {
+        const formData = new FormData();
+        formData.set('file', body!.file);
+        return formData;
       },
     });
 

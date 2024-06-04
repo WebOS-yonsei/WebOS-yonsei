@@ -1,6 +1,5 @@
 import { Outlet, createFileRoute, defer, redirect } from '@tanstack/react-router';
 import { client } from '~/features/@api';
-import { assert } from '~/utils';
 import { DefaultLayout } from '~/widgets';
 
 export const Route = createFileRoute('/_layout')({
@@ -17,21 +16,13 @@ export const Route = createFileRoute('/_layout')({
       });
     }
   },
-  loader: async ({
-    context: {
-      user: { sessionId },
-    },
-  }) => {
-    assert(sessionId, 'sessionId가 비어있음');
-
+  loader: async () => {
     const user = defer(
       (async () => {
         const { data, error } = await client.GET('/users', {
           params: {
             query: {
-              user: {
-                sessionId,
-              },
+              user: {},
             },
           },
         });

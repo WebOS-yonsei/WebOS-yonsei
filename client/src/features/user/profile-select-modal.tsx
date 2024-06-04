@@ -17,7 +17,6 @@ import {
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { client } from '../@api';
-import { useUser } from './store';
 
 const scheme = z.object({
   password: z.string().length(4),
@@ -27,7 +26,6 @@ type Scheme = z.infer<typeof scheme>;
 
 export function ProfileSelectModal({ profileId, onClose, onSuccess }: { profileId: number; onClose: () => void; onSuccess: () => void }) {
   const toast = useToast();
-  const sessionId = useUser((state) => state.sessionId);
 
   const { handleSubmit, control } = useForm<Scheme>();
 
@@ -38,9 +36,7 @@ export function ProfileSelectModal({ profileId, onClose, onSuccess }: { profileI
           profileId,
         },
         query: {
-          user: {
-            sessionId,
-          },
+          user: {},
         },
       },
     });
@@ -68,11 +64,11 @@ export function ProfileSelectModal({ profileId, onClose, onSuccess }: { profileI
   return (
     <Modal isOpen onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>비밀번호</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <form onSubmit={handleSubmit(onFormValid, onFormError)}>
+      <form onSubmit={handleSubmit(onFormValid, onFormError)}>
+        <ModalContent>
+          <ModalHeader>비밀번호</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
             <FormControl isRequired>
               <HStack>
                 <Controller
@@ -89,15 +85,17 @@ export function ProfileSelectModal({ profileId, onClose, onSuccess }: { profileI
               </HStack>
               <FormHelperText>해당 프로필의 비밀번호를 입력해주세요</FormHelperText>
             </FormControl>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
-            닫기
-          </Button>
-          <Button variant="ghost">제출</Button>
-        </ModalFooter>
-      </ModalContent>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              닫기
+            </Button>
+            <Button variant="ghost" type="submit">
+              제출
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
     </Modal>
   );
 }
