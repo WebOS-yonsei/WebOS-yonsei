@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { client } from '../@api';
 
 const scheme = z.object({
@@ -27,7 +28,9 @@ type Scheme = z.infer<typeof scheme>;
 export function ProfileSelectModal({ profileId, onClose, onSuccess }: { profileId: number; onClose: () => void; onSuccess: () => void }) {
   const toast = useToast();
 
-  const { handleSubmit, control } = useForm<Scheme>();
+  const { handleSubmit, control } = useForm<Scheme>({
+    resolver: zodResolver(scheme),
+  });
 
   const onFormValid: SubmitHandler<Scheme> = async (_data) => {
     const { error } = await client.POST('/profiles/{profileId}', {
