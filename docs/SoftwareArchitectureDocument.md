@@ -57,7 +57,7 @@
 
 - 토큰 보안: 모든 토큰은 안전하게 저장 및 전송되어야 하며, 토큰 탈취를 방지하기 위해 HTTPS를 사용합니다. 또한, 토큰은 짧은 유효 기간을 가지며, 정기적으로 갱신이 필요합니다.
 
-
+#### 2.3.4. 신뢰성 (Security)
 ## 3. Architectural Overview
 ### 3.1. Frontend Architecture
 ### 3.2. Backend Architecture
