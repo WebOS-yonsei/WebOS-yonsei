@@ -3,10 +3,7 @@ package server.server.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.server.entity.Contents;
-import server.server.entity.Profile;
-import server.server.entity.ProfileContents;
-import server.server.entity.Session;
+import server.server.entity.*;
 import server.server.repository.ContentsRepository;
 import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
@@ -24,26 +21,23 @@ import static server.server.entity.ProfileContents.State.WATCHING;
 @RequiredArgsConstructor
 public class ContentsService {
     private final ProfileRepository profileRepository;
-    private final ContentsRepository contentsRepository;
     private final ProfileContentsRepository profileContentsRepository;
+    private final ContentsRepository contentsRepository;
     private final SessionRepository sessionRepository;
 
     // contents list 조회
     public List<Contents> getContents(final Long userId, final Long sessionId) {
-        Long profileId = getProfileId(userId, sessionId);
+        Profile profile = getProfile(userId, sessionId);
 
-        return profileContentsRepository.findByProfileIdAndState(profileId, WATCHING)
-                .stream()
-                .map(
-                        it -> contentsRepository.findById(it.getContentsId())
-                                .orElseThrow(NoSuchElementException::new)
-                )
-                .toList();
+        if(profile.getGrade() == Grade.ADULT){
+            return contentsRepository.findAll();
+        }
+        return contentsRepository.findAllByGrade(profile.getGrade());
     }
 
     // 시청 시간 기록
-    public void recordTime(final Long userId, Long sessionId, Long videoId, Float time) {
-        Long profileId = getProfileId(userId, sessionId);
+    public void recordTime(final Long userId, final Long sessionId, final Long videoId, Float time) {
+        Long profileId = getProfile(userId, sessionId).getId();
 
         final Optional<ProfileContents> profileContents = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId);
         if (profileContents.isEmpty()) {
@@ -70,14 +64,14 @@ public class ContentsService {
         profileContents.get().setTime(time);
     }
 
-    private Long getProfileId(Long userId, Long sessionId) {
+    private Profile getProfile(Long userId, Long sessionId) {
         final Session session = sessionRepository.findById(sessionId).orElseThrow(NoSuchElementException::new);
         Long profileId = session.getProfileId();
         final Profile profile = profileRepository.findById(profileId).orElseThrow(NoSuchElementException::new);
         if (!profile.checkUser(userId)) {
             throw new IllegalArgumentException("해당 프로필에 접근 권한이 있는 유저가 아닙니다.");
         }
-        return profileId;
+        return profile;
     }
 
     public Contents getContentInfo(final Long videoId){
