@@ -9,7 +9,7 @@ import { client } from '../@api';
 import { getImageUrl } from '~/utils';
 
 const scheme = z.object({
-  image: z.any(),
+  image: z.string().min(1),
   nickname: z.string().min(1),
   password: z.string().length(4),
   isAdult: z.boolean(),
