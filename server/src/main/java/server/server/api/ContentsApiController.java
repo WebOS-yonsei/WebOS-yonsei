@@ -29,7 +29,7 @@ public class ContentsApiController {
     public ResponseEntity<ContentsResponse> getContentsList(
             UsersAuth user
     ) {
-        List<Contents> contents = contentsService.getContents();
+        List<Contents> contents = contentsService.getContents(user.getUserId(), user.getSessionId());
         return ResponseEntity.ok(ContentsResponse.of(contents));
     }
 

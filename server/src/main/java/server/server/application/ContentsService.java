@@ -29,13 +29,15 @@ public class ContentsService {
     private final SessionRepository sessionRepository;
 
     // contents list 조회
-    public List<Contents> getContents() {
-        return contentsRepository.findAll();
+    public List<Contents> getContents(final Long userId, final Long sessionId) {
+        Profile profile = getProfile(userId, sessionId);
+
+        return contentsRepository.findAllByGrade(profile.getGrade());
     }
 
     // 시청 시간 기록
-    public void recordTime(final Long userId, Long sessionId, Long videoId, Float time) {
-        Long profileId = getProfileId(userId, sessionId);
+    public void recordTime(final Long userId, final Long sessionId, final Long videoId, Float time) {
+        Long profileId = getProfile(userId, sessionId).getId();
 
         final Optional<ProfileContents> profileContents = profileContentsRepository.findByProfileIdAndContentsId(profileId, videoId);
         if (profileContents.isEmpty()) {
@@ -62,14 +64,14 @@ public class ContentsService {
         profileContents.get().setTime(time);
     }
 
-    private Long getProfileId(Long userId, Long sessionId) {
+    private Profile getProfile(Long userId, Long sessionId) {
         final Session session = sessionRepository.findById(sessionId).orElseThrow(NoSuchElementException::new);
         Long profileId = session.getProfileId();
         final Profile profile = profileRepository.findById(profileId).orElseThrow(NoSuchElementException::new);
         if (!profile.checkUser(userId)) {
             throw new IllegalArgumentException("해당 프로필에 접근 권한이 있는 유저가 아닙니다.");
         }
-        return profileId;
+        return profile;
     }
 
     public Contents getContentInfo(final Long videoId){
