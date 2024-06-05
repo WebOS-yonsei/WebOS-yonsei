@@ -9,7 +9,7 @@ export function VideoDetailPage({ videoId, videoInfo }: { videoId: number; video
         <Heading fontSize="2xl">영상 상세</Heading>
         <HStack spacing={8} align="stretch">
           <VStack align="stretch">
-            <Image src={videoInfo.thumbnailURI} alt={videoInfo.title} aspectRatio="3 / 2" />
+            <Image src={videoInfo.thumbnailURI} alt={videoInfo.title} aspectRatio="3 / 2" width={600} border="1px solid #eee" />
             <Link to="/video/$videoId/playing" params={{ videoId }}>
               <Button w="100%" colorScheme="red">
                 재생하기
