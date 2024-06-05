@@ -5,10 +5,7 @@
 
 
 export interface paths {
-  "/videos/{videoId}": {
-    post: operations["contentInfo"];
-  };
-  "/videos/{videoId}/time/{profileId}": {
+  "/videos/{videoId}/time": {
     post: operations["recordContentsTime"];
   };
   "/users/login": {
@@ -29,8 +26,11 @@ export interface paths {
   "/file": {
     post: operations["uploadFile"];
   };
-  "/videos/{profileId}": {
+  "/videos": {
     get: operations["getContentsList"];
+  };
+  "/videos/{videoId}": {
+    get: operations["contentInfo"];
   };
   "/users": {
     get: operations["queryUser"];
@@ -55,21 +55,6 @@ export interface components {
       userId?: number;
       /** Format: int64 */
       sessionId?: number;
-    };
-    ContentInfo: {
-      /** Format: int64 */
-      id?: number;
-      title?: string;
-      description?: string;
-      /** Format: float */
-      duration?: number;
-      /** @enum {string} */
-      grade?: "CHILD" | "ADULT";
-      thumbnailURI?: string;
-      genre?: string;
-      sourceURI?: string;
-      /** Format: float */
-      currentPlaybackTime?: number;
     };
     TimeRecordRequest: {
       /** Format: float */
@@ -112,6 +97,21 @@ export interface components {
     ContentsResponse: {
       contents?: components["schemas"]["Contents"][];
     };
+    ContentInfo: {
+      /** Format: int64 */
+      id?: number;
+      title?: string;
+      description?: string;
+      /** Format: float */
+      duration?: number;
+      /** @enum {string} */
+      grade?: "CHILD" | "ADULT";
+      thumbnailURI?: string;
+      genre?: string;
+      sourceURI?: string;
+      /** Format: float */
+      currentPlaybackTime?: number;
+    };
     CurrentUserResponse: {
       loginId?: string;
       nickname?: string;
@@ -148,24 +148,6 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-  contentInfo: {
-    parameters: {
-      query: {
-        user: components["schemas"]["UsersAuth"];
-      };
-      path: {
-        videoId: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["ContentInfo"];
-        };
-      };
-    };
-  };
   recordContentsTime: {
     parameters: {
       query: {
@@ -173,7 +155,6 @@ export interface operations {
       };
       path: {
         videoId: number;
-        profileId: number;
       };
     };
     requestBody: {
@@ -293,15 +274,30 @@ export interface operations {
       query: {
         user: components["schemas"]["UsersAuth"];
       };
-      path: {
-        profileId: number;
-      };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
           "*/*": components["schemas"]["ContentsResponse"];
+        };
+      };
+    };
+  };
+  contentInfo: {
+    parameters: {
+      query: {
+        user: components["schemas"]["UsersAuth"];
+      };
+      path: {
+        videoId: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["ContentInfo"];
         };
       };
     };

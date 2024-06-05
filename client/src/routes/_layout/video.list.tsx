@@ -12,13 +12,10 @@ export const Route = createFileRoute('/_layout/video/list')({
     assert(profileId, '프로필이 필요합니다.');
 
     const [videoList, historyList, user] = await Promise.all([
-      client.GET('/videos/{profileId}', {
+      client.GET('/videos', {
         params: {
           query: {
             user: {},
-          },
-          path: {
-            profileId,
           },
         },
       }),
