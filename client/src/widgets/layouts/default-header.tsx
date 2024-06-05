@@ -4,6 +4,7 @@ import { Await, DeferredPromise, useNavigate } from '@tanstack/react-router';
 import { MouseEventHandler, Suspense } from 'react';
 import { client, components } from '~/features/@api';
 import { useUser } from '~/features/user';
+import { getImageUrl } from '~/utils';
 import { Link, VectorLogo } from '~/widgets';
 
 export function DefaultHeader({ user }: { user: DeferredPromise<components['schemas']['CurrentUserResponse']> }) {
@@ -45,7 +46,7 @@ export function DefaultHeader({ user }: { user: DeferredPromise<components['sche
             {(data) => (
               <Menu>
                 <MenuButton as={Button} rounded="full" variant="link" cursor="pointer" minW={0}>
-                  <Avatar size="sm" src={data?.profileURI} />
+                  <Avatar size="sm" src={data.profileURI ? getImageUrl(data.profileURI) : undefined} />
                 </MenuButton>
                 <MenuList>
                   <Link to="/profile" onClick={onProfileLinkClick}>

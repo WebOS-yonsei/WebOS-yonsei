@@ -5,5 +5,7 @@ export function getImageUrl(url: string) {
 
   assert(baseUrl, 'REACT_APP_SERVER_BASE_URL이 비어있음');
 
-  return `${baseUrl}/${url}`;
+  const replaced = url.replace(/^http:\/\/localhost:\d+\//, '');
+
+  return `${baseUrl}/${replaced}`;
 }
