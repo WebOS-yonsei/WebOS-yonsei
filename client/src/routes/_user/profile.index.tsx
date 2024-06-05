@@ -13,6 +13,9 @@ export const Route = createFileRoute('/_user/profile/')({
     if (context.user.hasProfile()) {
       throw redirect({
         to: '/video/list',
+        search: {
+          index: 0,
+        },
       });
     }
   },

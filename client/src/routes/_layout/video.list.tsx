@@ -11,7 +11,8 @@ const searchSchema = z.object({
       recommend: 0,
       watching: 1,
     } as const)
-    .catch(0),
+    .optional()
+    .default(0),
 });
 
 export const Route = createFileRoute('/_layout/video/list')({
