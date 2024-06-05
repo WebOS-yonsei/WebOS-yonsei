@@ -28,7 +28,7 @@
 - Database: MySQL
 ## 2. Architectural Driver
 ### 2.1. UseCase Diagram
-<img src="./docs/images/usecasdiagram.png" alt="cover" />
+<img src=".\docs\images\usecasediagram.png" alt="cover" />
 
 ### 2.2. Functional Requirements
 |ID|Function|Description|Priority|
@@ -69,6 +69,6 @@
 ### 3.2. Backend Architecture
 ## 4. Data Design
 ### 4.1. Database Schema
-<img src="./docs/images/dataschema.png" alt="cover" />
+<img src=".\docs\images\dataschema.png" alt="cover" />
 
 ### 4.2 Data Model
