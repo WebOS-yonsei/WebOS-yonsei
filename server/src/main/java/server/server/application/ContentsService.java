@@ -24,21 +24,13 @@ import static server.server.entity.ProfileContents.State.WATCHING;
 @RequiredArgsConstructor
 public class ContentsService {
     private final ProfileRepository profileRepository;
-    private final ContentsRepository contentsRepository;
     private final ProfileContentsRepository profileContentsRepository;
+    private final ContentsRepository contentsRepository;
     private final SessionRepository sessionRepository;
 
     // contents list 조회
-    public List<Contents> getContents(final Long userId, final Long sessionId) {
-        Long profileId = getProfileId(userId, sessionId);
-
-        return profileContentsRepository.findByProfileIdAndState(profileId, WATCHING)
-                .stream()
-                .map(
-                        it -> contentsRepository.findById(it.getContentsId())
-                                .orElseThrow(NoSuchElementException::new)
-                )
-                .toList();
+    public List<Contents> getContents() {
+        return contentsRepository.findAll();
     }
 
     // 시청 시간 기록
