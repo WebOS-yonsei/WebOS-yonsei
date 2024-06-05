@@ -28,7 +28,7 @@ export const App = () => {
   return (
     <>
       <Global styles={globalStyles} />
-      <ChakraProvider theme={theme}>
+      <ChakraProvider theme={theme} toastOptions={{ defaultOptions: { position: 'top-right' } }}>
         <ModalProvider>
           <Suspense>
             <RouterProvider
