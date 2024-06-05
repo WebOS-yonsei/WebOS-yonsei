@@ -33,7 +33,7 @@ export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: 
       });
     }
 
-    const onBeforeUnload = () =>
+    const onBeforeUnload = () => {
       client.POST('/videos/{videoId}/time', {
         params: {
           path: {
@@ -47,13 +47,16 @@ export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: 
           time: video.currentTime,
         },
       });
+    };
 
     window.addEventListener('beforeunload', onBeforeUnload);
 
     return () => {
-      hls?.destroy();
       onBeforeUnload();
       window.removeEventListener('beforeunload', onBeforeUnload);
+
+      // @note destory를 마지막에 수행해야 시간전달에 이상이 없음
+      hls?.destroy();
     };
   }, [src, time, videoId]);
 
