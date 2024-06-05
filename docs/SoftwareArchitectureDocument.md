@@ -28,7 +28,7 @@
 - Database: MySQL
 ## 2. Architectural Driver
 ### 2.1. UseCase Diagram
-<img src="./docs/images/dataschema.png" alt="cover" />
+<img src="./docs/images/usecasdiagram.png" alt="cover" />
 
 ### 2.2. Functional Requirements
 |ID|Function|Description|Priority|
@@ -57,7 +57,13 @@
 
 - 토큰 보안: 모든 토큰은 안전하게 저장 및 전송되어야 하며, 토큰 탈취를 방지하기 위해 HTTPS를 사용합니다. 또한, 토큰은 짧은 유효 기간을 가지며, 정기적으로 갱신이 필요합니다.
 
-#### 2.3.4. 신뢰성 (Security)
+#### 2.3.4. 신뢰성 (Reliability)
+- 가용성: 시스템 가용성은 99.9% 이상이어야 합니다.
+
+- 백업 및 복구: 데이터는 매일 백업되며, 재해 복구 계획이 마련되어 있어야 합니다.
+
+- 장애 대응: 시스템 장애 발생 시 1시간 이내에 복구가 가능해야 합니다. 
+
 ## 3. Architectural Overview
 ### 3.1. Frontend Architecture
 ### 3.2. Backend Architecture
