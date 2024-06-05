@@ -15,7 +15,7 @@ export const Route = createFileRoute('/_user/profile/create')({
         search: {
           index: 0,
         },
-      });
+     });
     }
   },
   component: () => <ProfileCreatePage />,
