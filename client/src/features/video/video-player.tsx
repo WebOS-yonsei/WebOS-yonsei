@@ -1,14 +1,10 @@
 import Hls from 'hls.js';
 import { useEffect, useRef } from 'react';
 import { assert } from '~/utils';
-import { useUser } from '../user';
 import { client } from '../@api';
 
 export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: number; time?: number }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const profileId = useUser((state) => state.profileId);
-
-  assert(profileId, 'profileId가 비어있음');
 
   useEffect(() => {
     const video = videoRef.current;
@@ -35,11 +31,10 @@ export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: 
     }
 
     const onBeforeUnload = () =>
-      client.POST('/videos/{videoId}/time/{profileId}', {
+      client.POST('/videos/{videoId}/time', {
         params: {
           path: {
             videoId,
-            profileId,
           },
           query: {
             user: {},
@@ -64,7 +59,7 @@ export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: 
       window.removeEventListener('beforeunload', onBeforeUnload);
       video.removeEventListener('loadedmetadata', onLoadedMetadata);
     };
-  }, [src, time, profileId, videoId]);
+  }, [src, time, videoId]);
 
   // eslint-disable-next-line jsx-a11y/media-has-caption
   return <video ref={videoRef} controls />;

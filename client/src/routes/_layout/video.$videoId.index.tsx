@@ -4,7 +4,7 @@ import { VideoDetailPage } from '~/features/video';
 
 export const Route = createFileRoute('/_layout/video/$videoId/')({
   loader: async ({ params: { videoId } }) => {
-    const { data, error } = await client.POST('/videos/{videoId}', {
+    const { data, error } = await client.GET('/videos/{videoId}', {
       params: {
         query: {
           user: {},
