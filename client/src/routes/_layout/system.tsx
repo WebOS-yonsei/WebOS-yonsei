@@ -10,7 +10,8 @@ const searchSchema = z.object({
       'memory-info': 1,
       'running-application': 2,
     } as const)
-    .catch(0),
+    .optional()
+    .default(0),
 });
 
 export const Route = createFileRoute('/_layout/system')({

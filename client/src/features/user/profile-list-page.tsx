@@ -25,6 +25,9 @@ export function ProfileListPage({ profiles }: { profiles: components['schemas'][
           setTimeout(() => {
             navigate({
               to: '/video/list',
+              search: {
+                index: 0,
+              },
             });
           }, 300);
         }}
