@@ -58,7 +58,7 @@ public class ContentAcceptanceTest extends AcceptanceTest {
                 .body("{\"time\": 206.333333}")
 
                 .when()
-                .post("/videos/2/time/2")
+                .post("/videos/2/time")
 
                 .then()
                 .log().all()
@@ -89,7 +89,7 @@ public class ContentAcceptanceTest extends AcceptanceTest {
                 .header("Authorization", sessionId)
 
                 .when()
-                .post("/videos/1")
+                .get("/videos/1")
 
                 .then()
                 .log().all()

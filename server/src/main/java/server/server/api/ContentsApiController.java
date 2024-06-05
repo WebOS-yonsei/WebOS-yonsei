@@ -25,26 +25,24 @@ public class ContentsApiController {
 
     private final ContentsService contentsService;
 
-    @GetMapping("/{profileId}")
+    @GetMapping
     public ResponseEntity<ContentsResponse> getContentsList(
-            UsersAuth user,
-            @PathVariable("profileId") Long profileId
+            UsersAuth user
     ) {
-        List<Contents> contents = contentsService.getContents(user.getUserId(), profileId);
+        List<Contents> contents = contentsService.getContents(user.getUserId(), user.getSessionId());
         return ResponseEntity.ok(ContentsResponse.of(contents));
     }
 
-    @PostMapping("/{videoId}/time/{profileId}")
+    @PostMapping("/{videoId}/time")
     public ResponseEntity<Void> recordContentsTime(
             UsersAuth user,
             @PathVariable("videoId") Long videoId,
-            @PathVariable("profileId") Long profileId,
             @RequestBody TimeRecordRequest timeRecordRequest) {
-        contentsService.recordTime(user.getUserId(), profileId, videoId, timeRecordRequest.getTime());
+        contentsService.recordTime(user.getUserId(), user.getSessionId(), videoId, timeRecordRequest.getTime());
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{videoId}")
+    @GetMapping("/{videoId}")
     public ResponseEntity<ContentsResponse.ContentInfo> contentInfo(
             UsersAuth user,
             @PathVariable("videoId") Long videoId) {
