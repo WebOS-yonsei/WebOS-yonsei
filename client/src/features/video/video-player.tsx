@@ -15,7 +15,9 @@ export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: 
     const isM3u8 = src.endsWith('.m3u8');
 
     if (isM3u8 && Hls.isSupported()) {
-      hls = new Hls();
+      hls = new Hls({
+        startPosition: time,
+      });
       hls.loadSource(src);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
@@ -25,6 +27,7 @@ export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: 
       });
     } else {
       video.src = src;
+      video.currentTime = time;
       navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
         video.play();
       });
@@ -47,17 +50,10 @@ export function VideoPlayer({ src, videoId, time = 0 }: { src: string; videoId: 
 
     window.addEventListener('beforeunload', onBeforeUnload);
 
-    const onLoadedMetadata = () => {
-      video.currentTime = time;
-    };
-
-    video.addEventListener('loadedmetadata', onLoadedMetadata);
-
     return () => {
       hls?.destroy();
       onBeforeUnload();
       window.removeEventListener('beforeunload', onBeforeUnload);
-      video.removeEventListener('loadedmetadata', onLoadedMetadata);
     };
   }, [src, time, videoId]);
 
