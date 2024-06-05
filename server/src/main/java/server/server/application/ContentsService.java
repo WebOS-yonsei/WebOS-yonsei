@@ -3,10 +3,7 @@ package server.server.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.server.entity.Contents;
-import server.server.entity.Profile;
-import server.server.entity.ProfileContents;
-import server.server.entity.Session;
+import server.server.entity.*;
 import server.server.repository.ContentsRepository;
 import server.server.repository.ProfileContentsRepository;
 import server.server.repository.ProfileRepository;
@@ -32,6 +29,9 @@ public class ContentsService {
     public List<Contents> getContents(final Long userId, final Long sessionId) {
         Profile profile = getProfile(userId, sessionId);
 
+        if(profile.getGrade() == Grade.ADULT){
+            return contentsRepository.findAll();
+        }
         return contentsRepository.findAllByGrade(profile.getGrade());
     }
 
