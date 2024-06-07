@@ -117,3 +117,44 @@
 <img src="./images/dataschema.png" alt="cover" />
 
 ### 4.2 Data Model
+
+데이터 모델은 Application의 Data와 그 Data 간의 Relation을 시각화하고 설명합니다. 
+
+#### 4.2.1 Users Table
+
+- 사용자 정보를 저장합니다.
+- 주요 필드: id, username, loginId(email 주소), password, createdAt, updatedAt
+
+#### 4.2.2 Profile Table
+
+- 사용자의 프로필 정보를 저장합니다. 
+- 주요 필드: id, userId (users 테이블 참조), nickname, profileURI, grade, profilePassword, createdAt, updatedAt
+
+#### 4.2.3 Profile_Contents Table
+
+- 프로필과 콘텐츠 간의 관계를 저장합니다.
+- 주요 필드: id, profileId (profile 테이블 참조), contentId (content 테이블 참조), timeline, state, createdAt, updatedAt
+
+#### 4.2.4 Content Table
+
+- 콘텐츠 정보를 저장합니다.
+- 주요 필드: id, title, description, duration, grade, thumbnailUri, genre, uri, createdAt, updatedAt
+
+#### 4.2.5 Session Table
+
+- 사용자의 세션 정보를 저장합니다. 
+- 주요 필드: id, userId (users 테이블 참조, 기본값 null), profileId (profile 테이블 참조), isValid, expiredTime, createdAt, updatedAt
+
+#### 4.2.6 User_Session Table
+
+- 사용자와 세션 간의 연결을 저장합니다.
+- 주요 필드: id, userId (users 테이블 참조), connectionCount, createdAt, updatedAt
+
+#### 관계 (Relationships)
+
+- users 테이블은 profile 테이블과 1대 다 관계를 가집니다.
+- profile 테이블은 profile_contents 테이블과 1대 다 관계를 가집니다.
+- content 테이블은 profile_contents 테이블과 1대 다 관계를 가집니다.
+- users 테이블은 session 테이블과 1대 다 관계를 가집니다.
+- profile 테이블은 session 테이블과 1대 다 관계를 가집니다.
+- users 테이블은 user_session 테이블과 1대 다 관계를 가집니다.
