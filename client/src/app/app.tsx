@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { RouterProvider, createHashHistory, createRouter } from '@tanstack/react-router';
 import { Suspense } from 'react';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { Global } from '@emotion/react';
@@ -8,11 +8,14 @@ import { colorModeTheme, globalStyles, theme } from '~/styles';
 import { useUser } from '~/features/user';
 import { ModalConsumer, ModalProvider } from '~/features/@context';
 
+const history = createHashHistory();
+
 const router = createRouter({
   routeTree,
   context: {
     user: undefined!,
   },
+  history,
 });
 
 // Register the router instance for type safety

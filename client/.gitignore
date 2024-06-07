@@ -15,3 +15,5 @@ dist
 npm-debug.log
 
 .firebase
+
+com.app.*
