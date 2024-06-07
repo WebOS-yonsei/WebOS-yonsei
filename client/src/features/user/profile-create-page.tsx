@@ -3,13 +3,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { ChangeEventHandler, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FileUpload, Link } from '~/widgets';
 import { client } from '../@api';
-import { getImageUrl } from '~/utils';
 
 const scheme = z.object({
-  image: z.string().min(1),
+  image: z.any().refine((v) => v && v.length > 0),
   nickname: z.string().min(1),
   password: z.string().length(4),
   isAdult: z.boolean(),
@@ -22,17 +21,45 @@ export function ProfileCreatePage() {
   const router = useRouter();
   const navigate = useNavigate();
 
-  const { register, handleSubmit, control } = useForm<Scheme>({
+  const { register, handleSubmit, control, watch } = useForm<Scheme>({
     resolver: zodResolver(scheme),
     defaultValues: {
       isAdult: false,
     },
   });
 
-  const [fileUrl, setFileUrl] = useState('');
-
   const onFormValid: SubmitHandler<Scheme> = async (data) => {
-    const { error } = await client.POST('/profiles', {
+    // upload image
+    const { data: fileData, error: fileError } = await client.POST('/file', {
+      params: {
+        query: {
+          user: {},
+        },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+      body: {
+        file: data.image[0],
+      },
+      bodySerializer: (body) => {
+        const formData = new FormData();
+        formData.set('file', body!.file);
+        return formData;
+      },
+    });
+
+    if (!fileData?.url || fileError) {
+      toast({
+        title: '이미지 업로드 실패',
+        description: '이미지 업로드에 실패했습니다.',
+        status: 'error',
+      });
+      return;
+    }
+
+    // create profile
+    const { error: profilesError } = await client.POST('/profiles', {
       params: {
         query: {
           user: {},
@@ -41,12 +68,12 @@ export function ProfileCreatePage() {
       body: {
         nickname: data.nickname,
         profilePassword: data.password,
-        profileUri: fileUrl,
+        profileUri: fileData.url,
         grade: data.isAdult ? 'ADULT' : 'CHILD',
       },
     });
 
-    if (error) {
+    if (profilesError) {
       toast({
         title: '프로필 생성 실패',
         description: '프로필 생성에 실패했습니다.',
@@ -74,42 +101,25 @@ export function ProfileCreatePage() {
     });
   };
 
-  const onFileUploadChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) {
-      return;
+  const [profileImageUrl, setProfileImageUrl] = useState<string | undefined>();
+
+  const watchImage = watch('image');
+
+  useEffect(() => {
+    const image = watchImage?.[0];
+
+    if (!image) {
+      return undefined;
     }
 
-    const { data, error } = await client.POST('/file', {
-      params: {
-        query: {
-          user: {},
-        },
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-      body: {
-        file,
-      },
-      bodySerializer: (body) => {
-        const formData = new FormData();
-        formData.set('file', body!.file);
-        return formData;
-      },
-    });
+    const url = window.URL.createObjectURL(image);
 
-    if (!data?.url || error) {
-      toast({
-        title: '이미지 업로드 실패',
-        description: '이미지 업로드에 실패했습니다.',
-        status: 'error',
-      });
-      return;
-    }
+    setProfileImageUrl(url);
 
-    setFileUrl(data.url);
-  };
+    return () => {
+      window.URL.revokeObjectURL(url);
+    };
+  }, [watchImage]);
 
   return (
     <VStack spacing={10} mx="auto">
@@ -126,13 +136,8 @@ export function ProfileCreatePage() {
           <FormControl isRequired>
             <FormLabel>이미지</FormLabel>
             <HStack spacing={6}>
-              <Avatar size="xl" src={fileUrl !== '' ? getImageUrl(fileUrl) : undefined} />
-              <FileUpload
-                accept={'image/*'}
-                register={register('image', {
-                  onChange: onFileUploadChange,
-                })}
-              >
+              <Avatar size="xl" src={profileImageUrl} />
+              <FileUpload accept={'image/*'} register={register('image')}>
                 <Button w="full">이미지 변경</Button>
               </FileUpload>
             </HStack>

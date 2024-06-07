@@ -14,7 +14,7 @@
 
 - [깃허브 컨벤션](https://github.com/WebOS-yonsei/WebOS-yonsei/discussions/6) 및 코딩 컨벤션 논의
 - 클라이언트 기술 스택: enact Framework
-- 서버 기술 스택: Spring Boot Framework, Kotlin, MySQL, JdbcTemplate
+- 서버 기술 스택: Spring Boot Framework, Java, MySQL, JdbcTemplate
 
 ### 2. 기능 목록 정의
 
