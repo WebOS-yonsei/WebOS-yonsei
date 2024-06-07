@@ -27,26 +27,71 @@
 
 - Database: MySQL
 ## 2. Architectural Driver
-### 2.1. UseCase Diagram
-<img src="./docs/images/dataschema.png" alt="cover" />
+### 2.1 UseCase Diagram
+<img src="./images/usecasediagram.png" alt="cover" />
 
 ### 2.2. Functional Requirements
-|ID|Function|Description|Priority|
-|--|-------------|---|---|
-|테스|테스트2|테스트3|테스트3|
-|테스|테스트2|테스트3|테스트3|
-### 2.3. Non-Functional Requirements
-#### 2.3.1. 성능 (Perfomance)
+
+#### 2.2.1 로그인 이전 상태
+1. `FR01`: 회원 가입
+   -   `FR01-1`
+       -   사용자로부터 아이디 발급 요청을 받으면 사용자 정보를 입력받고, 사용할 수 있는 사용자 ID를 발급한다.
+    -   `FR01-2`
+        -   발급 받은 ID와 해당 사용자 정보를 함께 저장한다. 
+
+2. `FR02`: 로그인
+   -  `FR02-1`
+      -  사용자로부터 로그인 요청을 받으면 사용자 ID를 입력받고, 서버의 데이터베이스에 등록되었는지 여부를 확인해 등록되어 있다면 로그인을 수행한다.
+
+#### 2.2.2 로그인 이후
+3. `FR03`: 프로필 생성
+   -  `FR03-1`
+      -  사용자로부터 프로필 생성 요청을 받으면 프로필 정보를 입력받고, 사용할 수 있는 프로필 ID를 발급한다.
+   -  `FR03-2`
+      -  원하는 이미지를 업로드 하고 해당 이미지와 프로필 ID 정보를 함께 저장한다.
+
+4. `FR04`: 프로필 리스트 조회
+   -  `FR04-1`
+      -  사용자로부터 프로필 리스트 조회 요청을 받으면 해당 사용자 ID에 존재하는 모든 프로필 정보를 반환한다. 
+
+5. `FR05`: 프로필 진입
+   -  `FR05-1`
+      -  사용자로부터 특정 프로필 진입 요청을 받으면 해당 프로필이 데이터베이스에 존재하는지 확인 후 프로필 진입을 수행한다. 
+
+6. `FR06`: 프로필에서 빠져나오기
+   -  `FR06-1`
+      -  프로필로부터 빠져나올려는 요청을 받으면 프로필 진입 상태로 돌아간다.
+
+7. `FR07`: 영상 리스트 조회 
+   -  `FR07-1`
+      -  사용자로부터 영상 리스트 조회 요청을 받으면 존재하는 모든 영상 정보를 반환한다. 
+
+8. `FR08`: 영상 재생
+   -  `FR08-1`
+      -  사용자로부터 미디어 재생 요청을 받으면 재생을 원하는 미디어 파일을 입력받고, 재생 가능한 파일인지 확인한다.
+   -  `FR08-2`
+      -  사용자가 선택한 미디어에 대해 이전에 재생한 기록이 있으면 해당 위치부터 재생을 시작한다.  
+   -  `FR08-3`: 미디어 재생 과정에서 재생/일시 정지 기능을 지원한다.
+
+9. `FR09`: 실시간 자원현황 조회
+   -  `FR09-1`
+      -  실시간 자원현황 조회 요청을 받으면 현재 CPU,Memory 사용에 대한 정보를 반환하고 이를 시각화 한다. 
+
+10. `FR10`: 로그아웃
+   -  `FR10-1`: 로그아웃 요청을 받으면 로그인 이전 상태로 돌아간다. 
+
+### 2.3 Non-Functional Requirements
+#### 2.3.1 성능 (Perfomance)
 - 응답 시간: 모든 User Interface 요청은 2초 이내에 응답해야 합니다. 
 
 - 동시 사용자 수용량: System은 최대 10,000명의 동시 사용자를 지원할 수 있어야 합니다. 
 
 - 스트리밍 속도: HD 영상 스트리밍은 버퍼링 없이 제공되어야 합니다. 
-#### 2.3.2. 확장성 (Scalability)
+#### 2.3.2 확장성 (Scalability)
 - 수평 확장성: System은 필요에 따라 서버를 추가하여 수평적으로 확장할 수 있어야 합니다. 
 
 - 데이터베이스 확장성: 데이터베이스는 증가하는 사용자와 데이터 양에 따라 확장 가능해야 합니다.  
-#### 2.3.3. 보안 (Security)
+#### 2.3.3 보안 (Security)
 - 데이터 암호화: 모든 데이터 전송은 SSL/TLS를 통해 암호화되어야 합니다. 
 
 - 사용자 인증: OAuth 2.0 프로토콜을 사용하여 사용자 인증을 처리합니다. 사용자가 로그인하면 Access Token이 발급되며, 이 토큰을 통해 사용자는 인증된 세션을 유지 할 수 있습니다. 
@@ -57,12 +102,59 @@
 
 - 토큰 보안: 모든 토큰은 안전하게 저장 및 전송되어야 하며, 토큰 탈취를 방지하기 위해 HTTPS를 사용합니다. 또한, 토큰은 짧은 유효 기간을 가지며, 정기적으로 갱신이 필요합니다.
 
+#### 2.3.4 신뢰성 (Reliability)
+- 가용성: 시스템 가용성은 99.9% 이상이어야 합니다.
+
+- 백업 및 복구: 데이터는 매일 백업되며, 재해 복구 계획이 마련되어 있어야 합니다.
+
+- 장애 대응: 시스템 장애 발생 시 1시간 이내에 복구가 가능해야 합니다. 
 
 ## 3. Architectural Overview
-### 3.1. Frontend Architecture
-### 3.2. Backend Architecture
+### 3.1 Frontend Architecture
+### 3.2 Backend Architecture
 ## 4. Data Design
-### 4.1. Database Schema
-<img src="./docs/images/dataschema.png" alt="cover" />
+### 4.1 Database Schema
+<img src="./images/dataschema.png" alt="cover" />
 
 ### 4.2 Data Model
+
+데이터 모델은 Application의 Data와 그 Data 간의 Relation을 시각화하고 설명합니다. 
+
+#### 4.2.1 Users Table
+
+- 사용자 정보를 저장합니다.
+- 주요 필드: id, username, loginId(email 주소), password, createdAt, updatedAt
+
+#### 4.2.2 Profile Table
+
+- 사용자의 프로필 정보를 저장합니다. 
+- 주요 필드: id, userId (users 테이블 참조), nickname, profileURI, grade, profilePassword, createdAt, updatedAt
+
+#### 4.2.3 Profile_Contents Table
+
+- 프로필과 콘텐츠 간의 관계를 저장합니다.
+- 주요 필드: id, profileId (profile 테이블 참조), contentId (content 테이블 참조), timeline, state, createdAt, updatedAt
+
+#### 4.2.4 Content Table
+
+- 콘텐츠 정보를 저장합니다.
+- 주요 필드: id, title, description, duration, grade, thumbnailUri, genre, uri, createdAt, updatedAt
+
+#### 4.2.5 Session Table
+
+- 사용자의 세션 정보를 저장합니다. 
+- 주요 필드: id, userId (users 테이블 참조, 기본값 null), profileId (profile 테이블 참조), isValid, expiredTime, createdAt, updatedAt
+
+#### 4.2.6 User_Session Table
+
+- 사용자와 세션 간의 연결을 저장합니다.
+- 주요 필드: id, userId (users 테이블 참조), connectionCount, createdAt, updatedAt
+
+#### 관계 (Relationships)
+
+- users 테이블은 profile 테이블과 1대 다 관계를 가집니다.
+- profile 테이블은 profile_contents 테이블과 1대 다 관계를 가집니다.
+- content 테이블은 profile_contents 테이블과 1대 다 관계를 가집니다.
+- users 테이블은 session 테이블과 1대 다 관계를 가집니다.
+- profile 테이블은 session 테이블과 1대 다 관계를 가집니다.
+- users 테이블은 user_session 테이블과 1대 다 관계를 가집니다.
