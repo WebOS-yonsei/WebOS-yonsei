@@ -8,7 +8,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const getPublicUrlOrPath = require('react-dev-utils/getPublicUrlOrPath');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const resolve = require('resolve');
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin, EnvironmentPlugin } = require('webpack');
@@ -92,8 +91,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
     // These are the "entry points" to our application.
     entry: {
       main: [
-        // Include any polyfills needed for the target browsers.
-        require.resolve('./polyfills'),
         // This is your app's code
         app.context,
       ],
@@ -280,8 +277,6 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
           filename: contentHash ? '[name].[contenthash].css' : '[name].css',
           chunkFilename: contentHash ? 'chunk.[name].[contenthash].css' : 'chunk.[name].css',
         }),
-      // Webpack5 removed node polyfills but we need this to run screenshot tests
-      new NodePolyfillPlugin(),
       // Provide meaningful information when modules are not found
       new ModuleNotFoundPlugin(app.context),
       // Switch the internal NodeOutputFilesystem to use graceful-fs to avoid
