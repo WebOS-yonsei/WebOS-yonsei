@@ -8,7 +8,7 @@ import { FileUpload, Link } from '~/widgets';
 import { client } from '../@api';
 
 const scheme = z.object({
-  image: z.any().refine((v) => v && v.length > 0),
+  image: z.any().refine((v) => v && v.length >= 0),
   nickname: z.string().min(1),
   password: z.string().length(4),
   isAdult: z.boolean(),
@@ -29,33 +29,39 @@ export function ProfileCreatePage() {
   });
 
   const onFormValid: SubmitHandler<Scheme> = async (data) => {
-    // upload image
-    const { data: fileData, error: fileError } = await client.POST('/file', {
-      params: {
-        query: {
-          user: {},
-        },
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-      body: {
-        file: data.image[0],
-      },
-      bodySerializer: (body) => {
-        const formData = new FormData();
-        formData.set('file', body!.file);
-        return formData;
-      },
-    });
+    let fileUrl = '';
 
-    if (!fileData?.url || fileError) {
-      toast({
-        title: '이미지 업로드 실패',
-        description: '이미지 업로드에 실패했습니다.',
-        status: 'error',
+    if (data.image.length > 0) {
+      // upload image
+      const { data: fileData, error: fileError } = await client.POST('/file', {
+        params: {
+          query: {
+            user: {},
+          },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        body: {
+          file: data.image[0],
+        },
+        bodySerializer: (body) => {
+          const formData = new FormData();
+          formData.set('file', body!.file);
+          return formData;
+        },
       });
-      return;
+
+      if (!fileData?.url || fileError) {
+        toast({
+          title: '이미지 업로드 실패',
+          description: '이미지 업로드에 실패했습니다.',
+          status: 'error',
+        });
+        return;
+      }
+
+      fileUrl = fileData.url;
     }
 
     // create profile
@@ -68,7 +74,9 @@ export function ProfileCreatePage() {
       body: {
         nickname: data.nickname,
         profilePassword: data.password,
-        profileUri: fileData.url,
+        ...(fileUrl && {
+          profileUri: fileUrl,
+        }),
         grade: data.isAdult ? 'ADULT' : 'CHILD',
       },
     });
@@ -93,7 +101,9 @@ export function ProfileCreatePage() {
     });
   };
 
-  const onFormError: SubmitErrorHandler<Scheme> = () => {
+  const onFormError: SubmitErrorHandler<Scheme> = (e) => {
+    console.log(e);
+
     toast({
       title: '프로필 생성 실패',
       description: '입력하신 정보를 다시 확인해주세요.',

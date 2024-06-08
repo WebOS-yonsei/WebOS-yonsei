@@ -1,5 +1,3 @@
-import { join } from 'path';
-
 const adjustPath = (path: string) => {
   let tmp = path;
   if (!/^(luna|palm):\/\//.test(path)) {
@@ -86,7 +84,7 @@ export class MockLS2Request {
       filepath = `${filepath}${getHash(parsedUri, params)}`;
     }
 
-    fetch(join('__mock__', `${filepath}.json`))
+    fetch(`/__mock__/${filepath}.json`)
       .then((res) => res.json())
       .then((res) => {
         if (res.errorCode || res.returnValue === false) {
