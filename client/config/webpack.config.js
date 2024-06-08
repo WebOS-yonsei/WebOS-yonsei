@@ -324,6 +324,11 @@ module.exports = function (env, contentHash = false, isomorphic = false, noAnima
             infrastructure: 'silent',
           },
         }),
+      new DefinePlugin({
+        process: {
+          env: {},
+        },
+      }),
     ].filter(Boolean),
     resolve: {
       alias: {
