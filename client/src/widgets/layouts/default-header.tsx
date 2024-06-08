@@ -10,6 +10,7 @@ import { Link, VectorLogo } from '~/widgets';
 export function DefaultHeader({ user }: { user: DeferredPromise<components['schemas']['CurrentUserResponse']> }) {
   const naviagate = useNavigate();
   const setProfileId = useUser((state) => state.setProfileId);
+  const setSessionId = useUser((state) => state.setSessionId);
 
   const onProfileLinkClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
     e.preventDefault();
@@ -30,6 +31,16 @@ export function DefaultHeader({ user }: { user: DeferredPromise<components['sche
         });
       }, 300);
     }
+  };
+
+  const onLogoutClick = () => {
+    setProfileId(undefined);
+    setSessionId(undefined);
+    setTimeout(() => {
+      naviagate({
+        to: '/',
+      });
+    }, 300);
   };
 
   return (
@@ -54,7 +65,7 @@ export function DefaultHeader({ user }: { user: DeferredPromise<components['sche
                       프로필변경
                     </MenuItem>
                   </Link>
-                  <MenuItem color="black" fontSize="20px">
+                  <MenuItem color="black" fontSize="20px" onClick={onLogoutClick}>
                     로그아웃
                   </MenuItem>
                 </MenuList>
