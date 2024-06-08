@@ -1,5 +1,6 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
-import { IconButton, VStack } from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
+import { VStack } from './vstack';
 
 export function ScrollButtonGroup() {
   return (
