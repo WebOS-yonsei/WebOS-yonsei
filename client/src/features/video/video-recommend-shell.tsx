@@ -1,6 +1,7 @@
-import { VStack, Heading, Text, Image, Grid, GridItem } from '@chakra-ui/react';
+import { Heading, Text, Image, Grid, GridItem } from '@chakra-ui/react';
 import { Link } from '@tanstack/react-router';
 import { components } from '../@api';
+import { VStack } from '~/widgets';
 
 export function VideoRecommendShell({ user, videoList }: { videoList: components['schemas']['Contents'][]; user: components['schemas']['CurrentUserResponse'] }) {
   return (

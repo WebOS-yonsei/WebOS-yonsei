@@ -1,4 +1,5 @@
-import { Heading, VStack } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
+import { VStack } from '~/widgets';
 import { VideoPlayer } from './video-player';
 import { components } from '../@api';
 import { assert } from '~/utils';

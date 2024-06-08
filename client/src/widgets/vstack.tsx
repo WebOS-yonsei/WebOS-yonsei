@@ -7,7 +7,7 @@ export function VStack(props: StackProps) {
     spacing: 0,
     css: css({
       '& > * + *': {
-        marginTop: typeof props.spacing === 'string' ? props.spacing : `var(--chakra-space-${props.spacing ?? 4})`,
+        marginTop: typeof props.spacing === 'string' ? props.spacing : `var(--chakra-space-${props.spacing ?? 2})`,
       },
     }),
   });

@@ -1,7 +1,8 @@
 import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Box, Center, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+import { Box, Center, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, Tooltip, Legend, ArcElement, ChartData } from 'chart.js';
+import { VStack } from '~/widgets';
 import { UnitList } from './system-memory-info-shell';
 
 ChartJS.register(CategoryScale, LinearScale, Tooltip, Legend, ArcElement);

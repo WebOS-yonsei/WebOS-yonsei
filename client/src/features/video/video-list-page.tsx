@@ -1,5 +1,6 @@
-import { Heading, VStack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Heading, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useNavigate } from '@tanstack/react-router';
+import { VStack } from '~/widgets';
 import { components } from '../@api';
 import { VideoRecommendShell } from './video-recommend-shell';
 import { VideoWatchingShell } from './video-watching-shell';

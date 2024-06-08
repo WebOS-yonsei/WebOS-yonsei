@@ -1,11 +1,11 @@
-import { Stack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
-import { Link } from '~/widgets';
+import { SimpleGrid, Text } from '@chakra-ui/react';
+import { Link, VStack } from '~/widgets';
 
 export function DefaultFooter() {
   return (
     <VStack color="gray.700" bgColor="#0c0c0f" p={4} spacing={8} align="stretch">
       <SimpleGrid columns={3} spacing={8}>
-        <Stack align="flex-start">
+        <VStack align="flex-start">
           <Text fontWeight="bold" fontSize="20px">
             Company
           </Text>
@@ -14,8 +14,8 @@ export function DefaultFooter() {
               {item}
             </Link>
           ))}
-        </Stack>
-        <Stack align="flex-start">
+        </VStack>
+        <VStack align="flex-start">
           <Text fontWeight="bold" fontSize="20px">
             Support
           </Text>
@@ -24,8 +24,8 @@ export function DefaultFooter() {
               {item}
             </Link>
           ))}
-        </Stack>
-        <Stack align="flex-start">
+        </VStack>
+        <VStack align="flex-start">
           <Text fontWeight="bold" fontSize="20px">
             Legal
           </Text>
@@ -34,7 +34,7 @@ export function DefaultFooter() {
               {item}
             </Link>
           ))}
-        </Stack>
+        </VStack>
       </SimpleGrid>
       <Text fontSize="20px">© 2024 Connected Platform Group No.1. All rights reserved</Text>
     </VStack>

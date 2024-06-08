@@ -1,5 +1,5 @@
-import { Heading, VStack, Image, Button, HStack, Text, Tag } from '@chakra-ui/react';
-import { Link } from '~/widgets';
+import { Heading, Image, Button, Text, Tag } from '@chakra-ui/react';
+import { Link, VStack, HStack } from '~/widgets';
 import { components } from '../@api';
 
 export function VideoDetailPage({ videoId, videoInfo }: { videoId: number; videoInfo: components['schemas']['Contents'] }) {

@@ -1,4 +1,4 @@
-import { Avatar, Box, HStack, Heading, IconButton, Stack, Text, VStack, useToast } from '@chakra-ui/react';
+import { Avatar, Box, Heading, IconButton, Text, useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { useNavigate } from '@tanstack/react-router';
 import { components } from '../@api';
@@ -6,6 +6,7 @@ import { useModal } from '../@context';
 import { ProfileSelectModal } from './profile-select-modal';
 import { useUser } from './store';
 import { getImageUrl } from '~/utils';
+import { HStack, VStack } from '~/widgets';
 
 export function ProfileListPage({ profiles }: { profiles: components['schemas']['Profile'][] }) {
   const { open, close } = useModal();
@@ -53,15 +54,15 @@ export function ProfileListPage({ profiles }: { profiles: components['schemas'][
   };
 
   return (
-    <Stack spacing={20} mx="auto">
-      <Stack align="center">
+    <VStack spacing={20} mx="auto">
+      <VStack align="center">
         <Heading fontSize="4xl" textAlign="center">
           프로필 선택
         </Heading>
         <Text fontSize="lg" color="gray.600">
           시청할 프로필을 선택해주세요.
         </Text>
-      </Stack>
+      </VStack>
       <HStack spacing={8} align="center" justify="center">
         {profiles.map((profile) => (
           <VStack key={profile.id} spacing={4} onClick={onProfileClick(profile.id!)}>
@@ -73,6 +74,6 @@ export function ProfileListPage({ profiles }: { profiles: components['schemas'][
           <IconButton aria-label="create" icon={<AddIcon />} rounded="full" />
         </Box>
       </HStack>
-    </Stack>
+    </VStack>
   );
 }

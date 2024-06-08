@@ -1,11 +1,11 @@
-import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Button, Heading, Text, useToast } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Heading, Text, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { z } from 'zod';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from '@tanstack/react-router';
-import { Link } from '~/widgets';
+import { Link, VStack } from '~/widgets';
 import { UserLayout } from './user-layout';
 import { client } from '../@api';
 import { useUser } from './store';
@@ -68,18 +68,18 @@ export function LoginPage() {
 
   return (
     <UserLayout>
-      <Stack spacing={8} mx="auto" maxW="lg">
-        <Stack align="center">
+      <VStack spacing={8} mx="auto" maxW="lg">
+        <VStack align="center">
           <Heading fontSize="4xl" textAlign="center">
             로그인
           </Heading>
           <Text fontSize="lg" color="gray.600">
             영화, 시리즈 등을 무제한으로 시청하세요.
           </Text>
-        </Stack>
+        </VStack>
         <Box rounded="lg" boxShadow="lg" p={8}>
           <form onSubmit={handleSubmit(onFormValid, onFormInvalid)}>
-            <Stack spacing={4}>
+            <VStack spacing={4}>
               <FormControl isRequired>
                 <FormLabel>아이디</FormLabel>
                 <Input type="text" {...register('loginId')} />
@@ -95,23 +95,23 @@ export function LoginPage() {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <Stack spacing={10} pt={2}>
+              <VStack spacing={10} pt={2} align="stretch" w="full">
                 <Button loadingText="Submitting" size="lg" bg="red.600" _hover={{ bg: 'red.700' }} color="white" type="submit">
                   로그인
                 </Button>
-              </Stack>
-              <Stack pt={6}>
+              </VStack>
+              <VStack pt={6}>
                 <Text align="center">
                   회원이 아니신가요?{' '}
                   <Link color="red.600" to="/signup">
                     지금 가입하세요.
                   </Link>
                 </Text>
-              </Stack>
-            </Stack>
+              </VStack>
+            </VStack>
           </form>
         </Box>
-      </Stack>
+      </VStack>
     </UserLayout>
   );
 }
