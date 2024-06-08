@@ -1,6 +1,7 @@
 import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { VStack, Heading, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
+import { Heading, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
 import { Application } from './system-running-application-shell';
+import { VStack } from '~/widgets';
 
 const appListColumnHelper = createColumnHelper<Application>();
 

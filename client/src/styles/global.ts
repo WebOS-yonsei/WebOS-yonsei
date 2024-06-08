@@ -9,4 +9,13 @@ export const globalStyles = css`
   html {
     font-size: 24px;
   }
+
+  // :where(...) 연산자가 webOS에서 동작하지 않음
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    color: white;
+  }
 `;

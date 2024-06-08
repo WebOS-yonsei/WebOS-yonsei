@@ -1,10 +1,10 @@
-import { Avatar, Button, Checkbox, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, PinInput, PinInputField, Text, VStack, useToast } from '@chakra-ui/react';
+import { Avatar, Button, Checkbox, FormControl, FormHelperText, FormLabel, Heading, Input, PinInput, PinInputField, Text, useToast } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useEffect, useState } from 'react';
-import { FileUpload, Link } from '~/widgets';
+import { FileUpload, Link, HStack, VStack } from '~/widgets';
 import { client } from '../@api';
 
 const scheme = z.object({
@@ -101,9 +101,7 @@ export function ProfileCreatePage() {
     });
   };
 
-  const onFormError: SubmitErrorHandler<Scheme> = (e) => {
-    console.log(e);
-
+  const onFormError: SubmitErrorHandler<Scheme> = () => {
     toast({
       title: '프로필 생성 실패',
       description: '입력하신 정보를 다시 확인해주세요.',

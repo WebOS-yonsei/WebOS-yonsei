@@ -1,6 +1,7 @@
-import { Center, Heading, VStack } from '@chakra-ui/react';
+import { Center, Heading } from '@chakra-ui/react';
 import { Chart as ChartJS, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, LineElement, PointElement } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { VStack } from '~/widgets';
 import { ProcessStat } from './system-process-status-shell';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement);

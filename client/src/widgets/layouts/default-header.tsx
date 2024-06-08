@@ -1,11 +1,11 @@
 import { SettingsIcon } from '@chakra-ui/icons';
-import { Box, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, HStack } from '@chakra-ui/react';
+import { Box, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, IconButton } from '@chakra-ui/react';
 import { Await, DeferredPromise, useNavigate } from '@tanstack/react-router';
 import { MouseEventHandler, Suspense } from 'react';
 import { client, components } from '~/features/@api';
 import { useUser } from '~/features/user';
 import { getImageUrl } from '~/utils';
-import { Link, VectorLogo } from '~/widgets';
+import { Link, VectorLogo, HStack } from '~/widgets';
 
 export function DefaultHeader({ user }: { user: DeferredPromise<components['schemas']['CurrentUserResponse']> }) {
   const naviagate = useNavigate();

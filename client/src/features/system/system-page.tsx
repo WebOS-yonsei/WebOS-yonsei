@@ -1,5 +1,6 @@
-import { Heading, VStack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Heading, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useNavigate } from '@tanstack/react-router';
+import { VStack } from '~/widgets';
 import { SystemMemoryInfoShell } from './system-memory-info-shell';
 import { SystemProcessStatusShell } from './system-process-status-shell';
 import { SystemRunningApplicationShell } from './system-running-application-shell';
