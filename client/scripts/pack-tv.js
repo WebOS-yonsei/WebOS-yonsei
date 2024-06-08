@@ -15,6 +15,8 @@ function init() {
   const modifiedContent = indexContent.replace('/main.js', 'bundle.js');
   fs.writeFileSync(indexPath, modifiedContent, 'utf8');
 
+  console.log('### Packaging the app ###');
+  execSync('ares-package -n ./dist');
   console.log('### Done! ###');
 }
 
