@@ -43,6 +43,8 @@ public class UsersService {
     public List<String> currentProfileInfo(final Long sessionId) {
         final Session session = sessionRepository.findById(sessionId).orElseThrow(NoSuchElementException::new);
         final Profile profile = profileRepository.findById(session.getProfileId()).orElseThrow(NoSuchElementException::new);
+
+        if(profile.getImageURI().isBlank()) return List.of(profile.getNickname(), "");
         return List.of(profile.getNickname(), profile.getImageURI());
     }
 }
