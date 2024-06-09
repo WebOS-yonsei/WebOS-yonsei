@@ -141,7 +141,7 @@ export function ProfileCreatePage() {
       </VStack>
       <form onSubmit={handleSubmit(onFormValid, onFormError)}>
         <VStack spacing={5}>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>이미지</FormLabel>
             <HStack spacing={6}>
               <Avatar size="xl" src={profileImageUrl} />
