@@ -1,6 +1,3 @@
-Need to install the following packages:
-openapi-to-md@1.0.24
-Ok to proceed? (y) 
 # Webos Yonsei
 
 > Version 1.0.0
