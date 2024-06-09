@@ -33,7 +33,7 @@
 
 ### 유닛 테스트
 
-- 각 모듈의 기능을 postman과 [swagger](https://github.com/WebOS-yonsei/WebOS-yonsei/tree/main/docs/webos-server-swagger.html)를 통해 개별적으로 테스트한다.
+- 각 모듈의 기능을 postman과 [swagger](https://webos-yonsei.shop/swagger-ui/index.html#/)를 통해 개별적으로 테스트한다.
 
 ### 인수 테스트
 
